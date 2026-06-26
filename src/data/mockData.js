@@ -3,8 +3,7 @@ export const navItems = [
     { label: "Properties", href: "#properties" },
     { label: "Features", href: "#features" },
     { label: "Testimonials", href: "#testimonials" },
-    { label: "Contact", href: "#footer" },
-    { label: "Admin", href: "#admin", icon: "fa-shield-alt" }
+    { label: "Contact", href: "#footer" }
 ];
 
 export const initialProperties = [

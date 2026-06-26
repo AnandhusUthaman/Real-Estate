@@ -8,6 +8,8 @@ import Testimonials from './components/Testimonials';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
 import AdminLoginModal from './components/AdminLoginModal';
+import ContactModal from './components/ContactModal';
+
 
 // Admin Components
 import AdminSidebar from './components/admin/AdminSidebar';
@@ -25,11 +27,15 @@ import {
   initialUsers
 } from './data/mockData';
 
+// Local server API integration
+
+
+
 export default function App() {
-  // Navigation & Modal State
-  const [view, setView] = useState('public'); // 'public' | 'admin'
+  // Routing & Modal States
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
   const [adminTab, setAdminTab] = useState('overview'); // 'overview' | 'listings' | 'users' | 'messages' | 'settings'
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   // App Data States (with localStorage recovery)
   const [properties, setProperties] = useState(() => {
@@ -52,8 +58,76 @@ export default function App() {
     return saved ? JSON.parse(saved) : initialUsers;
   });
 
-  // Toast State
+  // Toast State & Helper (declared first so useEffects can use it)
   const [toast, setToast] = useState({ message: '', type: 'success', show: false });
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type, show: true });
+    setTimeout(() => {
+      setToast((prev) => ({ ...prev, show: false }));
+    }, 3000);
+  };
+
+  // Sync state with URL pathname changes (e.g. Back/Forward browser navigation)
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+    };
+  }, []);
+
+  // Custom navigate handler
+  const navigate = (path) => {
+    window.history.pushState({}, '', path);
+    setCurrentPath(path);
+  };
+
+  // Protect /admin route and redirect appropriately
+  useEffect(() => {
+    const session = localStorage.getItem('hv_session');
+    if (currentPath === '/admin' && !session) {
+      navigate('/login');
+      showToast('Please login to access the admin panel.', 'error');
+    } else if (currentPath === '/login' && session) {
+      navigate('/admin');
+    }
+  }, [currentPath]);
+
+  // Fetch data on mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch properties
+        const resProperties = await fetch('http://localhost:5000/api/properties');
+        if (resProperties.ok) {
+          const dbProperties = await resProperties.json();
+          setProperties(dbProperties);
+        }
+
+        // Fetch messages
+        const resMessages = await fetch('http://localhost:5000/api/messages');
+        if (resMessages.ok) {
+          const dbMessages = await resMessages.json();
+          setMessages(dbMessages);
+        }
+
+        // Fetch users
+        const resUsers = await fetch('http://localhost:5000/api/users');
+        if (resUsers.ok) {
+          const dbUsers = await resUsers.json();
+          setUsers(dbUsers);
+        }
+      } catch (err) {
+        console.error('Error fetching data from backend:', err.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Search Filter State
   const [searchFilters, setSearchFilters] = useState({ query: '', type: 'all' });
@@ -76,19 +150,25 @@ export default function App() {
     localStorage.setItem('hv_users', JSON.stringify(users));
   }, [users]);
 
-  // Toast Helper
-  const showToast = (message, type = 'success') => {
-    setToast({ message, type, show: true });
-    setTimeout(() => {
-      setToast((prev) => ({ ...prev, show: false }));
-    }, 3000);
-  };
-
   // Search Logic
-  const handleSearch = ({ query, type }) => {
+  const handleSearch = async ({ query, type }) => {
     setSearchFilters({ query, type });
     setSearchActive(true);
     showToast(`Searching for "${query || 'all'}" (${type === 'all' ? 'all types' : type})`);
+
+    try {
+      const url = new URL('http://localhost:5000/api/properties');
+      if (query) url.searchParams.append('query', query);
+      if (type && type !== 'all') url.searchParams.append('type', type);
+
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        setProperties(data);
+      }
+    } catch (err) {
+      showToast(`Search failed: ${err.message}`, 'error');
+    }
 
     // Smooth scroll to properties section
     setTimeout(() => {
@@ -97,9 +177,24 @@ export default function App() {
     }, 100);
   };
 
-  const clearSearch = () => {
+  const clearSearch = async () => {
     setSearchFilters({ query: '', type: 'all' });
     setSearchActive(false);
+
+    try {
+      const res = await fetch('http://localhost:5000/api/properties');
+      if (res.ok) {
+        const data = await res.json();
+        setProperties(data);
+      }
+    } catch (err) {
+      console.error('Failed to reload properties:', err.message);
+    }
+  };
+
+  // Message sent callback
+  const handleMessageSent = (newMessage) => {
+    setMessages((prev) => [newMessage, ...prev]);
   };
 
   // Toggle Favorite Handler
@@ -121,31 +216,84 @@ export default function App() {
   };
 
   // Admin Listing CRUD Operations
-  const handleAddProperty = (newProperty) => {
-    setProperties((prev) => {
-      const nextId = prev.length > 0 ? Math.max(...prev.map((p) => p.id)) + 1 : 1;
-      return [{ id: nextId, ...newProperty, featured: false }, ...prev];
-    });
+  const handleAddProperty = async (newProperty) => {
+    try {
+      const res = await fetch('http://localhost:5000/api/properties', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProperty)
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to add property');
+      }
+      const data = await res.json();
+      setProperties((prev) => [data, ...prev]);
+    } catch (err) {
+      showToast(`Error: ${err.message}`, 'error');
+    }
   };
 
-  const handleUpdateProperty = (updatedProperty) => {
-    setProperties((prev) =>
-      prev.map((p) => (p.id === updatedProperty.id ? updatedProperty : p))
-    );
+  const handleUpdateProperty = async (updatedProperty) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/properties/${updatedProperty.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedProperty)
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to update property');
+      }
+      const data = await res.json();
+      setProperties((prev) =>
+        prev.map((p) => (p.id === data.id ? data : p))
+      );
+    } catch (err) {
+      showToast(`Error: ${err.message}`, 'error');
+    }
   };
 
-  const handleDeleteProperty = (id) => {
-    setProperties((prev) => prev.filter((p) => p.id !== id));
-    // Clean up favorites if deleted
-    setFavorites((prev) => prev.filter((favId) => favId !== id));
+  const handleDeleteProperty = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/properties/${id}`, {
+        method: 'DELETE'
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to delete property');
+      }
+      setProperties((prev) => prev.filter((p) => p.id !== id));
+      setFavorites((prev) => prev.filter((favId) => favId !== id));
+    } catch (err) {
+      showToast(`Error: ${err.message}`, 'error');
+    }
   };
 
   // Admin Message Interactions
-  const handleToggleMessageRead = (id) => {
-    setMessages((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, read: !m.read } : m))
-    );
+  const handleToggleMessageRead = async (id) => {
+    const targetMessage = messages.find((m) => m.id === id);
+    if (!targetMessage) return;
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/messages/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ read: !targetMessage.read })
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to update message');
+      }
+      const data = await res.json();
+      setMessages((prev) =>
+        prev.map((m) => (m.id === data.id ? data : m))
+      );
+    } catch (err) {
+      showToast(`Error: ${err.message}`, 'error');
+    }
   };
+
 
   // Scroll to Properties section
   const handleBrowseListings = () => {
@@ -170,65 +318,35 @@ export default function App() {
         <span>{toast.message}</span>
       </div>
 
-      {view === 'public' ? (
-        <>
-          {/* Public Navbar & Header */}
-          <Header
-            onAddListingClick={() => showToast('Add listing feature — demo mode. Sign in as admin for full access.')}
-            onAdminClick={() => setIsLoginModalOpen(true)}
-          />
-
-          {/* Main Public Content */}
-          <main>
-            <Hero onSearch={handleSearch} />
-
-            <Properties
-              properties={searchActive ? filteredProperties : properties}
-              searchActive={searchActive}
-              favorites={favorites}
-              onToggleFavorite={handleToggleFavorite}
-              onCardClick={handleCardClick}
-            />
-
-            <Features />
-            <Stats />
-            <Testimonials />
-
-            <CTA
-              onContactClick={() => showToast('Contact form would open — demo mode')}
-              onBrowseListings={handleBrowseListings}
-            />
-          </main>
-
-          {/* Footer */}
-          <Footer onFooterLinkClick={(label) => showToast(`Footer link "${label}" clicked — demo mode`)} />
-
-          {/* Admin Login Modal */}
-          <AdminLoginModal
-            isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
-            onLoginSuccess={() => setView('admin')}
-            showToast={showToast}
-          />
-        </>
-      ) : (
+      {currentPath === '/login' ? (
+        <AdminLoginModal
+          onLoginSuccess={() => navigate('/admin')}
+          showToast={showToast}
+          onNavigate={navigate}
+        />
+      ) : currentPath === '/admin' ? (
         /* Admin Dashboard View */
-        <div className="admin-dashboard-layout">
+        <div className="admin-dashboard-layout animate-fade-in visible">
           <AdminSidebar
             activeTab={adminTab}
             onTabChange={(tab) => setAdminTab(tab)}
-            onLogout={() => {
-              setView('public');
+            onLogout={async () => {
+              try {
+                await fetch('http://localhost:5000/api/auth/logout', { method: 'POST' });
+              } catch (e) {
+                console.error(e);
+              }
+              localStorage.removeItem('hv_session');
+              navigate('/login');
               showToast('Logged out successfully');
             }}
           />
 
-          <div className="admin-content">
+          <div className="admin-content animate-fade-up visible">
             <AdminHeader
               activeTab={adminTab}
               onAddPropertyClick={() => {
                 setAdminTab('listings');
-                // The listings page modal form handles creation
               }}
               onNotificationClick={() => showToast('No new notifications')}
             />
@@ -268,6 +386,51 @@ export default function App() {
             </div>
           </div>
         </div>
+      ) : (
+        /* Public Landing Page View */
+        <>
+          {/* Public Navbar & Header */}
+          <Header
+            onAddListingClick={() => {
+              navigate('/login');
+              showToast('Please sign in as admin to add listings.');
+            }}
+            onAdminClick={() => navigate('/login')}
+          />
+
+          {/* Main Public Content */}
+          <main>
+            <Hero onSearch={handleSearch} />
+
+            <Properties
+              properties={searchActive ? filteredProperties : properties}
+              searchActive={searchActive}
+              favorites={favorites}
+              onToggleFavorite={handleToggleFavorite}
+              onCardClick={handleCardClick}
+            />
+
+            <Features />
+            <Stats />
+            <Testimonials />
+
+            <CTA
+              onContactClick={() => setIsContactModalOpen(true)}
+              onBrowseListings={handleBrowseListings}
+            />
+          </main>
+
+          {/* Footer */}
+          <Footer onFooterLinkClick={(label) => showToast(`Footer link "${label}" clicked — demo mode`)} />
+
+          {/* Contact Modal */}
+          <ContactModal
+            isOpen={isContactModalOpen}
+            onClose={() => setIsContactModalOpen(false)}
+            showToast={showToast}
+            onMessageSent={handleMessageSent}
+          />
+        </>
       )}
     </div>
   );
