@@ -1,79 +1,187 @@
-export const navItems = [
-    { label: "Home", href: "#hero" },
-    { label: "Properties", href: "#properties" },
-    { label: "Features", href: "#features" },
-    { label: "Testimonials", href: "#testimonials" },
-    { label: "Contact", href: "#footer" }
+export const luxuryProperties = [
+  {
+    id: 1,
+    title: "The Obsidian Penthouse",
+    location: "One Canal Residences, Dubai Marina",
+    price: "$24,500,000",
+    type: "sale",
+    status: "Exclusive",
+    beds: 5,
+    baths: 6,
+    area: "8,900 sqft",
+    img: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?auto=format&fit=crop&w=800&q=80",
+    featured: true,
+    tagline: "Unrivaled skyline views with a private infinity terrace and dedicated butler service.",
+    amenities: ["Private Pool", "24/7 Concierge", "Sky Lounge", "Private Elevator", "Wine Cellar", "Wellness Spa"],
+    nearby: ["Marina Yacht Club - 5 min", "The Palm Jumeirah - 10 min", "Helipad Access - 2 min"],
+    floorPlan: "Level 44 Suite Layout (Double Story)",
+    description: "Designed by internationally acclaimed architects, The Obsidian Penthouse represents the pinnacle of urban luxury. Every detail has been meticulously sourced, from the absolute black marble flooring to custom Italian brass fixtures. Spanning two levels, the residence boasts panoramic floor-to-ceiling windows looking out over the yacht club and Arabian Gulf."
+  },
+  {
+    id: 2,
+    title: "Villa Al-Zubarah",
+    location: "Palm Jumeirah Yacht Marina, Dubai",
+    price: "$48,000,000",
+    type: "sale",
+    status: "Off-Market",
+    beds: 7,
+    baths: 8,
+    area: "14,500 sqft",
+    img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
+    featured: true,
+    tagline: "Waterfront estate featuring private beach access and superyacht berthing.",
+    amenities: ["Private Beach", "Superyacht Dock", "Infinity Pool", "Home Cinema", "Guest Guesthouse", "10-Car Gallery"],
+    nearby: ["Nakheel Mall - 8 min", "Atlantis The Royal - 5 min", "Downtown Dubai - 20 min"],
+    floorPlan: "Beachfront Wing & Entertainment Pavilions",
+    description: "Villa Al-Zubarah is an iconic beachfront architectural masterpiece. Showcasing pristine modern design integrated with traditional clean lines, the estate opens directly onto its own 50-meter private beach. Features include a bespoke chef's kitchen, custom smart-home automation, and a spa retreat."
+  },
+  {
+    id: 3,
+    title: "The Luminary Estate",
+    location: "Bel Air Road, Beverly Hills",
+    price: "$65,000,000",
+    type: "sale",
+    status: "Newly Completed",
+    beds: 8,
+    baths: 10,
+    area: "21,000 sqft",
+    img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+    featured: true,
+    tagline: "Hilltop sanctuary with floating glass dining pavilion and private olive grove.",
+    amenities: ["Infinity Edge Pool", "Olive Grove", "Gym & Yoga Studio", "Commercial Kitchen", "Tennis Court", "Safe Room"],
+    nearby: ["Rodeo Drive - 10 min", "Los Angeles Country Club - 12 min", "LAX Airport - 30 min"],
+    floorPlan: "North Wing (Family Bedrooms) & South Wing (State Rooms)",
+    description: "Nestled behind triple-gated entries on one of Bel Air's most prestigious ridges, The Luminary Estate is a tour de force. Features custom glass walls that disappear into pocket doors at the touch of a button, revealing a breathtaking 180-degree vista of the Los Angeles skyline."
+  },
+  {
+    id: 4,
+    title: "Elysian Water Residences",
+    location: "Biscayne Bay Park, Miami Beach",
+    price: "$35,000/mo",
+    type: "rent",
+    status: "For Lease",
+    beds: 3,
+    baths: 4,
+    area: "4,200 sqft",
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+    featured: true,
+    tagline: "Spectacular glass-fronted bay view duplex with luxury yacht slip.",
+    amenities: ["Bay-view Pool", "Yacht Slip", "Private Cabanas", "Fitness Center", "Valet Parking", "Pet Grooming Suite"],
+    nearby: ["Bal Harbour Shops - 8 min", "South Beach - 12 min", "Miami Design District - 15 min"],
+    floorPlan: "Level 12 Duplex Flow",
+    description: "Enjoy high-end waterfront living in this fully furnished design-forward residence. Boasting ultra-premium finishes by Minotti, custom Gaggenau appliances, and a sprawling double-height terrace facing the sunset over Biscayne Bay."
+  },
+  {
+    id: 5,
+    title: "The Kensington Mews",
+    location: "Kensington Gardens Palace, London",
+    price: "$18,500,000",
+    type: "sale",
+    status: "Available",
+    beds: 4,
+    baths: 4,
+    area: "3,800 sqft",
+    img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+    featured: false,
+    tagline: "Stately brick townhouse refurbished with modern underground pool and cinema room.",
+    amenities: ["Subterranean Pool", "Wine Vault", "Private Courtyard", "Integrated Smart Tech", "Underfloor Heating", "24hr Concierge"],
+    nearby: ["Kensington Palace - 3 min walk", "Royal Albert Hall - 8 min walk", "Harrods - 5 min drive"],
+    floorPlan: "Ground, Lower Ground, First & Second Floors Layout",
+    description: "An elegant classic Victorian facade gives way to a thoroughly modernized luxury home. Complete with a subterranean leisure center including a pool, steam room, and state-of-the-art cinema."
+  },
+  {
+    id: 6,
+    title: "The Vista Ridge Retreat",
+    location: "Cap d'Antibes, French Riviera",
+    price: "$75,000/mo",
+    type: "rent",
+    status: "Summer Season",
+    beds: 6,
+    baths: 6,
+    area: "6,500 sqft",
+    img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80",
+    featured: false,
+    tagline: "Mediterranean escape overlooking the sea, with private access path to sandy coves.",
+    amenities: ["Sea View Pool", "Private Cove Path", "Outdoor Kitchen", "Guest Cottage", "Tennis Court", "Helipad Access"],
+    nearby: ["Hotel du Cap-Eden-Roc - 5 min", "Nice Airport - 25 min", "Cannes Port - 15 min"],
+    floorPlan: "Main Residence (3 Levels) & Pool Pavilion",
+    description: "An exceptional luxury villa perched high on Cap d'Antibes. Experience the ultimate Mediterranean lifestyle with curated modern furnishings, magnificent terraced gardens, and panoramic views of the turquoise sea."
+  }
 ];
 
-export const initialProperties = [
-    { id: 1, title: "Modern Family Villa", location: "Beverly Hills, CA", price: "$2,450,000", type: "sale", status: "For Sale", beds: 4, baths: 3, area: "3,200 sqft", img: "https://picsum.photos/400/300?random=1", featured: true },
-    { id: 2, title: "Luxury Waterfront Apt", location: "Miami Beach, FL", price: "$4,800/mo", type: "rent", status: "For Rent", beds: 3, baths: 2, area: "1,800 sqft", img: "https://picsum.photos/400/300?random=2", featured: true },
-    { id: 3, title: "Downtown Penthouse", location: "New York, NY", price: "$3,950,000", type: "sale", status: "For Sale", beds: 5, baths: 4, area: "4,100 sqft", img: "https://picsum.photos/400/300?random=3", featured: true },
-    { id: 4, title: "Cozy Suburban Home", location: "Austin, TX", price: "$2,100/mo", type: "rent", status: "For Rent", beds: 3, baths: 2, area: "1,500 sqft", img: "https://picsum.photos/400/300?random=4", featured: true },
-    { id: 5, title: "Hilltop Estate", location: "San Francisco, CA", price: "$5,800,000", type: "sale", status: "For Sale", beds: 6, baths: 5, area: "5,500 sqft", img: "https://picsum.photos/400/300?random=5", featured: false },
-    { id: 6, title: "Chic Studio Loft", location: "Chicago, IL", price: "$1,800/mo", type: "rent", status: "For Rent", beds: 1, baths: 1, area: "750 sqft", img: "https://picsum.photos/400/300?random=6", featured: false },
-    { id: 7, title: "Oceanview Paradise", location: "Malibu, CA", price: "$6,200,000", type: "sale", status: "For Sale", beds: 5, baths: 4, area: "4,800 sqft", img: "https://picsum.photos/400/300?random=7", featured: false },
-    { id: 8, title: "Garden Apartment", location: "Seattle, WA", price: "$2,500/mo", type: "rent", status: "For Rent", beds: 2, baths: 1, area: "1,100 sqft", img: "https://picsum.photos/400/300?random=8", featured: false }
+export const luxuryAgents = [
+  {
+    id: 1,
+    name: "Victoria Sterling",
+    role: "Senior Private Broker & Founder",
+    specialization: "Ultra-High-Net-Worth Advisory (Global)",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&h=400&q=80",
+    email: "victoria@luxeestate.com",
+    phone: "+1 (310) 909-8800",
+    bio: "Over 18 years of experience representing royal families, corporate titans, and elite athletes in securing their private residential assets globally."
+  },
+  {
+    id: 2,
+    name: "Marcus Vance",
+    role: "Managing Partner",
+    specialization: "Waterfront Penthouses & Estates",
+    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&h=400&q=80",
+    email: "marcus@luxeestate.com",
+    phone: "+971 (50) 808-9900",
+    bio: "Based in our Dubai office, Marcus handles high-volume transactions on Palm Jumeirah, Dubai Marina, and off-market branded residences."
+  },
+  {
+    id: 3,
+    name: "Helena Rostova",
+    role: "Senior Associate Director",
+    specialization: "European Historic Estates & Mansions",
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&h=400&q=80",
+    email: "helena@luxeestate.com",
+    phone: "+44 20 7946 0958",
+    bio: "Helena specializes in premium listings across London, the French Riviera, and Swiss lakeside estates."
+  }
 ];
 
-export const features = [
-    { icon: "fa-map-marked-alt", color: "#0A3B25", title: "Prime Locations", desc: "Properties in the most desirable neighborhoods and up-and-coming areas." },
-    { icon: "fa-handshake", color: "#D8C2A4", title: "Expert Guidance", desc: "Seasoned agents with deep local market knowledge at your service." },
-    { icon: "fa-shield-alt", color: "#2A6151", title: "Secure Process", desc: "End-to-end secure transactions with full legal and financial oversight." },
-    { icon: "fa-chart-line", color: "#B2B7AA", title: "Smart Investment", desc: "Data-driven insights to help you make informed real estate decisions." }
+export const luxuryProjects = [
+  {
+    id: 1,
+    title: "One Canal Residences",
+    developer: "Ellington Properties & DAMAC",
+    status: "Under Construction",
+    completionYear: "2027",
+    location: "Water Canal, Dubai",
+    img: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80",
+    description: "Ultra-luxury branded residences featuring private pools, sky gardens, and architecture by world-famous designers."
+  },
+  {
+    id: 2,
+    title: "The L'Amara Hills",
+    developer: "Emaar Properties",
+    status: "Exclusively Launched",
+    completionYear: "2026",
+    location: "Dubai Hills Estate",
+    img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+    description: "A limited enclave of modern masterpieces nestled alongside an 18-hole championship golf course."
+  }
 ];
 
-export const stats = [
-    { number: "1,200+", label: "Properties Listed" },
-    { number: "98%", label: "Client Satisfaction" },
-    { number: "500+", label: "Happy Families" },
-    { number: "15+", label: "Years Experience" }
-];
-
-export const testimonials = [
-    { name: "Sarah Johnson", role: "Homeowner", avatar: "https://i.pravatar.cc/80?img=1", text: "HomeVerse made our dream of owning a home a reality. Their team was incredibly supportive and knowledgeable throughout the entire process.", rating: 5 },
-    { name: "Michael Chen", role: "Investor", avatar: "https://i.pravatar.cc/80?img=2", text: "I've worked with many real estate platforms, but HomeVerse stands out for their attention to detail and commitment to finding the best deals.", rating: 5 },
-    { name: "Theresa Lee", role: "First-time Buyer", avatar: "https://i.pravatar.cc/80?img=3", text: "As a first-time buyer I was nervous, but the team guided me step by step. I found my perfect condo in just two weeks!", rating: 5 },
-    { name: "David Kim", role: "Property Seller", avatar: "https://i.pravatar.cc/80?img=4", text: "Sold my house in record time at a great price. The marketing and negotiation skills of the HomeVerse team are outstanding.", rating: 5 },
-    { name: "Emily Rodriguez", role: "Renter", avatar: "https://i.pravatar.cc/80?img=5", text: "Renting has never been easier. The platform is intuitive and the listings are always up-to-date with accurate details.", rating: 5 },
-    { name: "James Wilson", role: "Real Estate Agent", avatar: "https://i.pravatar.cc/80?img=6", text: "Partnering with HomeVerse has been a game-changer for my business. Their tools and network are top-notch.", rating: 5 }
-];
-
-export const footerLinks1 = [
-    { label: "About Us", href: "#" },
-    { label: "Our Team", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Press & Media", href: "#" },
-    { label: "FAQ", href: "#" }
-];
-
-export const footerLinks2 = [
-    { label: "Houses", href: "#" },
-    { label: "Apartments", href: "#" },
-    { label: "Villas", href: "#" },
-    { label: "Condos", href: "#" },
-    { label: "Commercial", href: "#" }
-];
-
-export const contactInfo = [
-    { icon: "fa-map-marker-alt", text: "123 Main Street, Suite 100, Los Angeles, CA 90001" },
-    { icon: "fa-phone-alt", text: "+1 (800) 123-4567" },
-    { icon: "fa-envelope", text: "info@homeverse.com" },
-    { icon: "fa-clock", text: "Mon-Fri: 9AM - 7PM, Sat: 10AM - 4PM" }
-];
-
-export const initialMessages = [
-    { id: 1, from: "John Doe", email: "john@example.com", subject: "Interested in Villa", date: "2 hours ago", read: false },
-    { id: 2, from: "Jane Smith", email: "jane@example.com", subject: "Financing Options", date: "5 hours ago", read: false },
-    { id: 3, from: "Bob Wilson", email: "bob@example.com", subject: "Property Tour Request", date: "1 day ago", read: true },
-    { id: 4, from: "Alice Brown", email: "alice@example.com", subject: "Investment Portfolio", date: "2 days ago", read: true }
-];
-
-export const initialUsers = [
-    { id: 1, name: "Sarah Johnson", email: "sarah@example.com", role: "Homeowner", status: "active", joined: "Jan 12, 2025" },
-    { id: 2, name: "Michael Chen", email: "michael@example.com", role: "Investor", status: "active", joined: "Dec 3, 2024" },
-    { id: 3, name: "Theresa Lee", email: "theresa@example.com", role: "Buyer", status: "active", joined: "Feb 8, 2025" },
-    { id: 4, name: "David Kim", email: "david@example.com", role: "Seller", status: "inactive", joined: "Nov 20, 2024" },
-    { id: 5, name: "Emily Rodriguez", email: "emily@example.com", role: "Renter", status: "active", joined: "Mar 1, 2025" }
+export const luxuryBlogs = [
+  {
+    id: 1,
+    title: "The Evolution of Branded Residences: A Global Demand",
+    category: "Market Insights",
+    readTime: "6 min read",
+    date: "June 14, 2026",
+    img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    snippet: "Analyzing why affluent buyers continue to invest heavily in homes affiliated with legendary hospitality brands like Armani, Bulgari, and Ritz-Carlton."
+  },
+  {
+    id: 2,
+    title: "Design Philosophy: Bringing Wellness into Mansion Architecture",
+    category: "Architecture & Design",
+    readTime: "4 min read",
+    date: "May 28, 2026",
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+    snippet: "Exploring how luxury developers integrate medical-grade air filtration, biological circadian lighting, and soundscape layouts."
+  }
 ];
