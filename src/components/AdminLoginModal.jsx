@@ -30,23 +30,27 @@ export default function AdminLoginModal({ onLoginSuccess, showToast, onNavigate 
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-[var(--accent)] to-white flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gray-100 animate-fade-up visible">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">
-            <i className="fas fa-shield-alt text-[var(--primary)] mr-2"></i> Admin Login
+    <div className="min-h-screen bg-[#07111D] relative overflow-hidden flex items-center justify-center p-4">
+      {/* Ambient background glows */}
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-[var(--secondary)]/10 blur-[150px] rounded-full pointer-events-none"></div>
+      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-blue-900/20 blur-[150px] rounded-full pointer-events-none"></div>
+
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded p-8 max-w-md w-full shadow-2xl animate-fade-up visible relative z-10">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-xl font-serif text-white font-medium tracking-wide">
+            Portal Authorization
           </h2>
           <button
             onClick={() => onNavigate('/')}
-            className="text-sm text-[var(--primary)] hover:underline flex items-center gap-1 cursor-pointer"
+            className="text-xs text-[var(--secondary)] hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer font-light tracking-wider uppercase"
             disabled={loading}
           >
-            <i className="fas fa-arrow-left"></i> Home
+            <i className="fas fa-arrow-left text-[10px]"></i> Exit
           </button>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="font-semibold text-sm text-[var(--text-dark)]">Email</label>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">Email Address</label>
             <input
               type="email"
               placeholder="admin@homeverse.com"
@@ -54,11 +58,11 @@ export default function AdminLoginModal({ onLoginSuccess, showToast, onNavigate 
               onChange={(e) => setEmail(e.target.value)}
               required
               disabled={loading}
-              className="mt-1 w-full border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:border-[var(--primary)]"
+              className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[var(--secondary)] focus:ring-1 focus:ring-[var(--secondary)] transition-all font-light"
             />
           </div>
           <div>
-            <label className="font-semibold text-sm text-[var(--text-dark)]">Password</label>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">Password</label>
             <input
               type="password"
               placeholder="••••••••"
@@ -66,26 +70,29 @@ export default function AdminLoginModal({ onLoginSuccess, showToast, onNavigate 
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={loading}
-              className="mt-1 w-full border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:border-[var(--primary)]"
+              className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[var(--secondary)] focus:ring-1 focus:ring-[var(--secondary)] transition-all font-light"
             />
           </div>
-          <button type="submit" className="btn-primary w-full justify-center mt-2 animate-bounce-subtle" disabled={loading}>
+          <button 
+            type="submit" 
+            className="btn-gold w-full justify-center mt-2 cursor-pointer shadow-lg"
+            disabled={loading}
+          >
             {loading ? (
               <>
-                <i className="fas fa-spinner fa-spin mr-2"></i> Signing In...
+                <i className="fas fa-spinner fa-spin mr-2"></i> Authorizing...
               </>
             ) : (
               <>
-                <i className="fas fa-lock"></i> Sign In
+                Sign In
               </>
             )}
           </button>
-          <p className="text-xs text-gray-400 text-center mt-2">
-            Demo: admin@homeverse.com / admin123
+          <p className="text-[10px] text-gray-500 text-center mt-4 tracking-wider uppercase">
+            Demo Credentials: admin@homeverse.com / admin123
           </p>
         </form>
       </div>
     </div>
   );
 }
-

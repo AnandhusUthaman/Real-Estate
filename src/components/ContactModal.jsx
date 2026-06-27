@@ -55,25 +55,25 @@ export default function ContactModal({ isOpen, onClose, showToast, onMessageSent
     <div
       id="contact-modal"
       onClick={handleOverlayClick}
-      class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-[#0D1B2A]/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
     >
-      <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold">
-            <i class="fas fa-envelope text-[var(--primary)] mr-2"></i> Contact Our Team
+      <div className="bg-white border border-gray-100/50 rounded p-8 max-w-md w-full shadow-2xl transition-all duration-300">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-serif text-[var(--primary)] font-medium">
+            Request Information
           </h2>
           <button
             onClick={onClose}
-            class="text-2xl text-gray-400 hover:text-gray-600 cursor-pointer"
+            className="text-xl text-gray-400 hover:text-[var(--secondary)] transition duration-300 cursor-pointer"
             aria-label="Close modal"
             disabled={loading}
           >
-            <i class="fas fa-times"></i>
+            <i className="fas fa-times"></i>
           </button>
         </div>
-        <form onSubmit={handleSubmit} class="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label class="font-semibold text-sm text-[var(--text-dark)]">Full Name</label>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-dark)] mb-1">Full Name</label>
             <input
               type="text"
               placeholder="John Doe"
@@ -81,11 +81,11 @@ export default function ContactModal({ isOpen, onClose, showToast, onMessageSent
               onChange={(e) => setName(e.target.value)}
               required
               disabled={loading}
-              class="mt-1"
+              className="w-full border border-gray-200/80 rounded px-4 py-3 text-sm focus:outline-none focus:border-[var(--secondary)] focus:ring-1 focus:ring-[var(--secondary)] transition-all bg-gray-50/50 text-[var(--text-dark)] font-light"
             />
           </div>
           <div>
-            <label class="font-semibold text-sm text-[var(--text-dark)]">Email Address</label>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-dark)] mb-1">Email Address</label>
             <input
               type="email"
               placeholder="john@example.com"
@@ -93,29 +93,29 @@ export default function ContactModal({ isOpen, onClose, showToast, onMessageSent
               onChange={(e) => setEmail(e.target.value)}
               required
               disabled={loading}
-              class="mt-1"
+              className="w-full border border-gray-200/80 rounded px-4 py-3 text-sm focus:outline-none focus:border-[var(--secondary)] focus:ring-1 focus:ring-[var(--secondary)] transition-all bg-gray-50/50 text-[var(--text-dark)] font-light"
             />
           </div>
           <div>
-            <label class="font-semibold text-sm text-[var(--text-dark)]">Message / Subject</label>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-dark)] mb-1">Inquiry / Message</label>
             <textarea
-              placeholder="I am interested in buying/renting a property..."
+              placeholder="I am interested in exploring listings details..."
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               required
               rows="4"
               disabled={loading}
-              class="mt-1 w-full border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:border-[var(--primary)] resize-none"
+              className="w-full border border-gray-200/80 rounded px-4 py-3 text-sm focus:outline-none focus:border-[var(--secondary)] focus:ring-1 focus:ring-[var(--secondary)] transition-all bg-gray-50/50 text-[var(--text-dark)] font-light resize-none"
             ></textarea>
           </div>
-          <button type="submit" class="btn-primary w-full justify-center mt-2" disabled={loading}>
+          <button type="submit" className="btn-primary w-full justify-center mt-2 cursor-pointer" disabled={loading}>
             {loading ? (
               <>
-                <i class="fas fa-spinner fa-spin mr-2"></i> Sending...
+                <i className="fas fa-spinner fa-spin mr-2"></i> Submitting...
               </>
             ) : (
               <>
-                <i class="fas fa-paper-plane"></i> Send Message
+                Submit Inquiry
               </>
             )}
           </button>

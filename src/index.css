@@ -1,20 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #0A3B25;
-  --primary-dark: #052014;
-  --primary-light: #2A6151;
-  --secondary: #D8C2A4;
-  --accent: #B2B7AA;
-  --text-dark: #0F2119;
-  --text-muted: #687C74;
-  --bg-light: #FCF7F0;
-  --shadow-sm: 0 2px 8px rgba(10, 59, 37, 0.06);
-  --shadow-md: 0 8px 30px rgba(10, 59, 37, 0.1);
-  --shadow-lg: 0 20px 60px rgba(10, 59, 37, 0.12);
-  --radius: 16px;
+  --primary: #0B1F3A;
+  --primary-dark: #132B4C;
+  --primary-light: #334155;
+  --secondary: #C9A34E;
+  --accent: #E8B84A;
+  --text-dark: #0B1F3A;
+  --text-muted: #64748B;
+  --bg-light: #F8F9FB;
+  --border-color: #E5E7EB;
+  --divider-color: #D1D5DB;
+  --shadow-sm: 0 4px 12px rgba(11, 31, 58, 0.03);
+  --shadow-md: 0 10px 25px rgba(11, 31, 58, 0.05);
+  --shadow-lg: 0 20px 45px rgba(11, 31, 58, 0.08);
+  --radius: 12px;
   --radius-sm: 8px;
-  --transition: all 0.3s ease;
+  --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Custom Reset and Styles */
@@ -31,108 +33,193 @@ html {
 body {
   font-family: 'Inter', sans-serif;
   background: #fff;
-  color: var(--text-dark);
-  line-height: 1.6;
+  color: var(--text-muted);
+  line-height: 1.7;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  color: var(--primary);
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
 .section {
-  padding: 80px 0;
+  padding: 100px 0;
 }
 
 .section-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  letter-spacing: -0.02em;
+  font-size: 2.75rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  color: var(--primary);
 }
 
 .section-subtitle {
   color: var(--text-muted);
-  font-size: 1.1rem;
+  font-size: 1rem;
   max-width: 600px;
-  margin: 0 auto 3rem;
+  margin: 0 auto 4rem;
   text-align: center;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 .btn-primary {
   background: var(--primary);
   color: #fff;
-  padding: 12px 32px;
-  border-radius: 50px;
-  font-weight: 600;
+  padding: 14px 36px;
+  border-radius: var(--radius);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
   transition: var(--transition);
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: none;
+  border: 1px solid var(--primary);
   cursor: pointer;
-  font-size: 1rem;
 }
 
 .btn-primary:hover {
   background: var(--primary-dark);
+  color: #fff;
+  border-color: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(43, 122, 120, 0.3);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: var(--primary);
-  padding: 12px 32px;
-  border-radius: 50px;
-  font-weight: 600;
-  border: 2px solid var(--primary);
+  background: var(--secondary);
+  color: #fff;
+  padding: 14px 36px;
+  border-radius: var(--radius);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  border: 1px solid var(--secondary);
   transition: var(--transition);
   display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  font-size: 1rem;
 }
 
 .btn-secondary:hover {
+  background: #B88D2E;
+  color: #fff;
+  border-color: #B88D2E;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  padding: 14px 36px;
+  border-radius: var(--radius);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  border: 1px solid var(--primary);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
   background: var(--primary);
   color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-gold {
+  background: var(--secondary);
+  color: #fff;
+  padding: 14px 36px;
+  border-radius: var(--radius);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  border: 1px solid var(--secondary);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-gold:hover {
+  background: #B88D2E;
+  color: #fff;
+  border-color: #B88D2E;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-danger {
+  background: #DC2626;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: var(--radius);
+  font-weight: 500;
+  border: 1px solid #DC2626;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #B91C1C;
+  border-color: #B91C1C;
 }
 
 .card {
   background: #fff;
   border-radius: var(--radius);
+  border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
   overflow: hidden;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
 }
 
 .badge {
   display: inline-block;
-  padding: 4px 14px;
-  border-radius: 50px;
-  font-size: 0.75rem;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 }
 
 .badge-sale {
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--primary);
+  color: #fff;
 }
 
 .badge-rent {
-  background: #dbeafe;
-  color: #2563eb;
+  background: var(--secondary);
+  color: #fff;
 }
 
 .badge-sold {
@@ -149,7 +236,7 @@ body {
 .animate-fade-up {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.6s ease;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .animate-fade-up.visible {
@@ -159,7 +246,7 @@ body {
 
 .animate-fade-in {
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .animate-fade-in.visible {
@@ -176,7 +263,7 @@ body {
 .nav-link {
   position: relative;
   font-weight: 600;
-  color: var(--text-dark);
+  color: inherit;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
 }
@@ -198,9 +285,6 @@ body {
   width: 100%;
 }
 
-.nav-link:hover {
-  color: var(--primary);
-}
 
 .feature-icon {
   width: 56px;

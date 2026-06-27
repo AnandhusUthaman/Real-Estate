@@ -2,22 +2,29 @@ import React from 'react';
 
 export default function CTA({ onContactClick, onBrowseListings }) {
   return (
-    <section id="cta" className="section bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white animate-fade-in">
+    <section id="cta" className="section bg-[#07111D] border-t border-gray-800 text-white animate-fade-in">
       <div className="container text-center animate-fade-up">
-        <h2 className="section-title text-white">Ready to Find Your Perfect Home?</h2>
-        <p className="text-lg text-white/80 max-w-lg mx-auto mb-8">Let our experts guide you to the property of your dreams.</p>
-        <div className="flex flex-wrap justify-center gap-4">
+        <span className="inline-block text-[var(--secondary)] text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+          Begin Your Journey
+        </span>
+        <h2 className="text-3xl md:text-5xl font-serif text-white font-light leading-tight mb-4">
+          Ready to Find Your <span className="italic text-[var(--secondary)]">Perfect Estate</span>?
+        </h2>
+        <p className="text-gray-400 max-w-lg mx-auto mb-10 font-light text-sm tracking-wide">
+          Let our bespoke real estate advisors guide you to the property of your dreams.
+        </p>
+        <div className="flex flex-wrap justify-center gap-6">
           <button
             onClick={onContactClick}
-            className="bg-white text-[var(--primary)] font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition cursor-pointer"
+            className="btn-gold px-8 py-3.5 rounded hover:bg-white hover:text-[var(--primary)] hover:border-white transition-all duration-300 font-medium tracking-wider text-xs cursor-pointer shadow-lg"
           >
-            <i className="fas fa-phone-alt mr-2"></i> Contact Us
+            <i className="fas fa-phone-alt mr-2 text-[10px]"></i> Contact Advisors
           </button>
           <button
             onClick={onBrowseListings}
-            className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-[var(--primary)] transition cursor-pointer"
+            className="border border-white/30 text-white hover:bg-white hover:text-[var(--primary)] hover:border-white px-8 py-3.5 rounded transition-all duration-300 font-medium tracking-wider text-xs cursor-pointer shadow-lg"
           >
-            <i className="fas fa-search mr-2"></i> Browse Listings
+            <i className="fas fa-search mr-2 text-[10px]"></i> Browse Portfolio
           </button>
         </div>
       </div>

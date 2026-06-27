@@ -10,56 +10,68 @@ export default function Hero({ onSearch }) {
   };
 
   return (
-    <section id="hero" className="section pt-36 pb-16 md:pt-44 md:pb-24 bg-gradient-to-br from-white via-[var(--accent)] to-white relative overflow-hidden">
-      {/* Decorative ambient glowing shapes */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-[var(--accent)] blur-[100px] opacity-60 animate-float pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-[var(--primary-light)]/20 blur-[100px] opacity-60 animate-float-delayed pointer-events-none"></div>
+    <section 
+      id="hero" 
+      className="relative min-h-[90vh] flex items-center pt-32 pb-20 overflow-hidden bg-cover bg-center"
+      style={{ backgroundImage: `url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80')` }}
+    >
+      {/* Luxury Dark Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/75 to-[#0B1F3A]/40 z-0"></div>
 
-      <div className="container text-center relative z-10">
-        <div className="animate-fade-up">
-          <span className="badge bg-[var(--primary)] text-white mb-4 px-5 py-1.5 text-xs tracking-wider">
-            🏡 Trusted by 10,000+ families
+      <div className="container relative z-10 text-center md:text-left">
+        <div className="max-w-4xl mx-auto md:mx-0 animate-fade-up">
+          <span className="inline-block text-[var(--secondary)] text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+            Altheia Luxury Estates
           </span>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 tracking-tight">
-            Find Your <span className="gradient-text">Dream Home</span><br />With Ease
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white font-light leading-[1.15] mb-6 tracking-wide">
+            The Art of <span className="italic text-[var(--secondary)]">Luxury</span> Living
           </h1>
-          <p className="text-lg md:text-xl text-[var(--text-muted)] max-w-2xl mx-auto mb-8">
-            Discover premium properties in the best neighborhoods. Expert guidance every step of the way.
+          <p className="text-base md:text-lg text-gray-300 max-w-xl mb-10 font-light leading-relaxed">
+            Discover a curated collection of signature properties in the most prestigious postcodes. Signature homes, tailored for distinction.
           </p>
 
-          <form onSubmit={handleSearchSubmit} className="hero-search flex flex-col sm:flex-row gap-2 max-w-2xl mx-auto">
-            <div className="flex-1 flex items-center gap-2 px-4 w-full sm:w-auto">
-              <i className="fas fa-search text-[var(--text-muted)]"></i>
+          {/* Premium Glassmorphic Search Form */}
+          <form 
+            onSubmit={handleSearchSubmit} 
+            className="bg-white/5 backdrop-blur-md border border-white/10 p-2 rounded flex flex-col md:flex-row gap-2 max-w-3xl shadow-2xl"
+          >
+            <div className="flex-1 flex items-center gap-3 px-4 py-3">
+              <i className="fas fa-search text-[var(--secondary)] text-sm"></i>
               <input
                 type="text"
                 placeholder="Search by city, neighborhood, or address..."
-                className="bg-transparent w-full focus:outline-none"
+                className="bg-transparent w-full focus:outline-none text-white placeholder-gray-400 text-sm font-light"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
             </div>
-            <div className="flex items-center gap-2 px-2 w-full sm:w-auto border-t sm:border-t-0 sm:border-l border-gray-200">
+            <div className="flex items-center gap-3 px-4 py-3 border-t md:border-t-0 md:border-l border-white/10">
+              <i className="fas fa-building text-[var(--secondary)] text-sm"></i>
               <select
-                className="bg-transparent border-0 w-full text-sm text-[var(--text-dark)] focus:outline-none py-2"
+                className="bg-transparent border-0 w-full text-sm text-white focus:outline-none cursor-pointer font-light"
                 value={propertyType}
                 onChange={(e) => setPropertyType(e.target.value)}
+                style={{ colorScheme: 'dark' }}
               >
-                <option value="all">All Types</option>
+                <option value="all">All Property Types</option>
                 <option value="house">House</option>
                 <option value="apartment">Apartment</option>
                 <option value="villa">Villa</option>
                 <option value="condo">Condo</option>
               </select>
             </div>
-            <button type="submit" className="btn-primary w-full sm:w-auto text-center shrink-0">
-              <i className="fas fa-search"></i> Search
+            <button 
+              type="submit" 
+              className="btn-gold px-8 py-3 rounded hover:bg-white hover:text-[var(--primary)] hover:border-white transition-all duration-300 font-medium tracking-wider text-xs shrink-0 cursor-pointer"
+            >
+              Search
             </button>
           </form>
 
-          <div className="flex flex-wrap items-center justify-center gap-6 mt-10 text-sm text-[var(--text-muted)]">
-            <span><i className="fas fa-check-circle text-[var(--primary)] mr-1"></i> 1,200+ listings</span>
-            <span><i class="fas fa-check-circle text-[var(--primary)] mr-1"></i> 98% satisfaction</span>
-            <span><i class="fas fa-check-circle text-[var(--primary)] mr-1"></i> 24/7 support</span>
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-8 mt-12 text-xs tracking-wider text-gray-400 font-light">
+            <span><i className="fas fa-circle text-[var(--secondary)] mr-2 text-[6px]"></i> 1,200+ Signature listings</span>
+            <span><i className="fas fa-circle text-[var(--secondary)] mr-2 text-[6px]"></i> 98% Client Satisfaction</span>
+            <span><i className="fas fa-circle text-[var(--secondary)] mr-2 text-[6px]"></i> Bespoke Advisory Support</span>
           </div>
         </div>
       </div>

@@ -10,9 +10,8 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }) {
 
   return (
     <div className="admin-sidebar" id="admin-sidebar">
-      <div className="logo flex items-center gap-2 text-xl font-bold">
-        <img src="/logo.svg" alt="HomeVerse Logo" className="w-6 h-6" />
-        <span>Home<span className="text-[var(--primary)]">Verse</span></span>
+      <div className="logo flex items-center justify-center">
+        <img src="/logo.png" alt="Altheia Realty Logo" className="h-40 w-auto" />
       </div>
       <nav className="flex flex-col h-full justify-between pb-12">
         <div className="flex flex-col gap-1">

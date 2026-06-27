@@ -18,17 +18,17 @@ export default function Properties({ properties, searchActive, favorites, onTogg
   return (
     <section id="properties" className="section bg-white">
       <div className="container">
-        <div className="text-center mb-12 animate-fade-up">
-          <span className="badge bg-[var(--accent)] text-[var(--primary)] mb-3">
-            {searchActive ? 'Search Results' : 'Featured Listings'}
+        <div className="text-center mb-16 animate-fade-up">
+          <span className="inline-block text-[var(--secondary)] text-xs font-semibold tracking-[0.2em] uppercase mb-3">
+            {searchActive ? 'Search Results' : 'Exquisite Selection'}
           </span>
           <h2 className="section-title">
-            {searchActive ? 'Matching Properties' : 'Premium Properties'}
+            {searchActive ? 'Matching Properties' : 'Signature Properties'}
           </h2>
           <p className="section-subtitle">
             {searchActive
               ? `Found ${displayedProperties.length} properties matching your search.`
-              : 'Hand-picked properties with exceptional value and prime locations.'}
+              : 'Hand-picked properties with exceptional architectural details and prestigious locations.'}
           </p>
         </div>
 

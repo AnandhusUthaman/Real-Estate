@@ -35,7 +35,7 @@ export default function Header() {
       id="header"
       className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[var(--bg-light)]/95 backdrop-blur-md shadow-md py-2 border-b border-gray-200/50'
+          ? 'bg-white/80 backdrop-blur-md shadow-sm py-2 border-b border-gray-200/50'
           : 'bg-transparent py-4'
       }`}
     >
@@ -43,10 +43,15 @@ export default function Header() {
         <a
           href="#"
           onClick={(e) => handleNavClick(e, "#hero")}
-          className="flex items-center gap-2 text-2xl font-extrabold tracking-tight cursor-pointer group text-[var(--primary)]"
+          className="flex items-center cursor-pointer group"
         >
-          <img src="/logo.svg" alt="HomeVerse Logo" className="w-8 h-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />
-          <span>Home<span className="text-[var(--secondary)]">Verse</span></span>
+          <img
+            src="/logo.png"
+            alt="Altheia Realty Logo"
+            className={`w-auto transition-all duration-300 group-hover:scale-105 ${
+              isScrolled ? 'h-20' : 'h-20'
+            }`}
+          />
         </a>
         <nav className="hidden md:flex items-center gap-8">
           <ul className="flex items-center gap-8">
@@ -55,9 +60,13 @@ export default function Header() {
                 <a
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="nav-link text-sm font-semibold flex items-center gap-1 hover:text-[var(--primary)] relative py-1"
+                  className={`nav-link text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 relative py-2 transition-colors duration-300 ${
+                    isScrolled
+                      ? 'text-[#334155] hover:text-[var(--primary)]'
+                      : 'text-white/90 hover:text-[var(--secondary)]'
+                  }`}
                 >
-                  {item.icon && <i className={`fas ${item.icon} text-xs`}></i>}
+                  {item.icon && <i className={`fas ${item.icon} text-[10px] text-[var(--secondary)]`}></i>}
                   {item.label}
                 </a>
               </li>
@@ -67,7 +76,9 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-2xl p-2 text-[var(--primary)] hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+            className={`md:hidden text-2xl p-2 hover:scale-105 active:scale-95 transition-transform cursor-pointer ${
+              isScrolled ? 'text-[var(--primary)]' : 'text-white'
+            }`}
             aria-label="Open menu"
           >
             <i className="fas fa-bars"></i>
@@ -79,7 +90,7 @@ export default function Header() {
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-menu-inner">
           <div className="flex items-center justify-between mb-8">
-            <span className="text-xl font-bold text-[var(--primary)]">Home<span className="text-[var(--secondary)]">Verse</span></span>
+            <img src="/logo.svg" alt="Altheia Realty Logo" className="h-5 w-auto" />
             <button
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-2xl p-2 text-[var(--primary)] hover:scale-105 active:scale-95 transition-transform cursor-pointer"
