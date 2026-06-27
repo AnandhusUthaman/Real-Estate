@@ -18,10 +18,10 @@ export const initialProperties = [
 ];
 
 export const features = [
-    { icon: "fa-map-marked-alt", color: "#2b7a78", title: "Prime Locations", desc: "Properties in the most desirable neighborhoods and up-and-coming areas." },
-    { icon: "fa-handshake", color: "#fea82f", title: "Expert Guidance", desc: "Seasoned agents with deep local market knowledge at your service." },
-    { icon: "fa-shield-alt", color: "#3b82f6", title: "Secure Process", desc: "End-to-end secure transactions with full legal and financial oversight." },
-    { icon: "fa-chart-line", color: "#8b5cf6", title: "Smart Investment", desc: "Data-driven insights to help you make informed real estate decisions." }
+    { icon: "fa-map-marked-alt", color: "#0A3B25", title: "Prime Locations", desc: "Properties in the most desirable neighborhoods and up-and-coming areas." },
+    { icon: "fa-handshake", color: "#D8C2A4", title: "Expert Guidance", desc: "Seasoned agents with deep local market knowledge at your service." },
+    { icon: "fa-shield-alt", color: "#2A6151", title: "Secure Process", desc: "End-to-end secure transactions with full legal and financial oversight." },
+    { icon: "fa-chart-line", color: "#B2B7AA", title: "Smart Investment", desc: "Data-driven insights to help you make informed real estate decisions." }
 ];
 
 export const stats = [

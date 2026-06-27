@@ -4,7 +4,6 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }) {
   const tabs = [
     { id: 'overview', label: 'Overview', icon: 'fa-chart-pie' },
     { id: 'listings', label: 'Listings', icon: 'fa-building' },
-    { id: 'users', label: 'Users', icon: 'fa-users' },
     { id: 'messages', label: 'Messages', icon: 'fa-envelope' },
     { id: 'settings', label: 'Settings', icon: 'fa-cog' }
   ];
@@ -12,7 +11,7 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }) {
   return (
     <div className="admin-sidebar" id="admin-sidebar">
       <div className="logo flex items-center gap-2 text-xl font-bold">
-        <i className="fas fa-home text-[var(--primary)]"></i>
+        <img src="/logo.svg" alt="HomeVerse Logo" className="w-6 h-6" />
         <span>Home<span className="text-[var(--primary)]">Verse</span></span>
       </div>
       <nav className="flex flex-col h-full justify-between pb-12">

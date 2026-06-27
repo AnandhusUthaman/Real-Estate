@@ -10,9 +10,13 @@ export default function Hero({ onSearch }) {
   };
 
   return (
-    <section id="hero" className="section pt-36 pb-16 md:pt-44 md:pb-24 bg-gradient-to-br from-white via-[var(--accent)] to-white">
-      <div className="container text-center">
-        <div className="animate-fade-up visible">
+    <section id="hero" className="section pt-36 pb-16 md:pt-44 md:pb-24 bg-gradient-to-br from-white via-[var(--accent)] to-white relative overflow-hidden">
+      {/* Decorative ambient glowing shapes */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-[var(--accent)] blur-[100px] opacity-60 animate-float pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-[var(--primary-light)]/20 blur-[100px] opacity-60 animate-float-delayed pointer-events-none"></div>
+
+      <div className="container text-center relative z-10">
+        <div className="animate-fade-up">
           <span className="badge bg-[var(--primary)] text-white mb-4 px-5 py-1.5 text-xs tracking-wider">
             🏡 Trusted by 10,000+ families
           </span>

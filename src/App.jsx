@@ -16,7 +16,6 @@ import AdminSidebar from './components/admin/AdminSidebar';
 import AdminHeader from './components/admin/AdminHeader';
 import AdminOverview from './components/admin/AdminOverview';
 import AdminListings from './components/admin/AdminListings';
-import AdminUsers from './components/admin/AdminUsers';
 import AdminMessages from './components/admin/AdminMessages';
 import AdminSettings from './components/admin/AdminSettings';
 
@@ -128,6 +127,27 @@ export default function App() {
 
     fetchData();
   }, []);
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-in');
+    animatedElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      animatedElements.forEach((el) => observer.unobserve(el));
+    };
+  }, [properties, currentPath]);
 
   // Search Filter State
   const [searchFilters, setSearchFilters] = useState({ query: '', type: 'all' });
@@ -355,7 +375,6 @@ export default function App() {
               {adminTab === 'overview' && (
                 <AdminOverview
                   properties={properties}
-                  users={users}
                   messages={messages}
                   onTabChange={(tab) => setAdminTab(tab)}
                   onAddPropertyClick={() => setAdminTab('listings')}
@@ -373,7 +392,7 @@ export default function App() {
                 />
               )}
 
-              {adminTab === 'users' && <AdminUsers users={users} />}
+
 
               {adminTab === 'messages' && (
                 <AdminMessages
@@ -389,14 +408,7 @@ export default function App() {
       ) : (
         /* Public Landing Page View */
         <>
-          {/* Public Navbar & Header */}
-          <Header
-            onAddListingClick={() => {
-              navigate('/login');
-              showToast('Please sign in as admin to add listings.');
-            }}
-            onAdminClick={() => navigate('/login')}
-          />
+          <Header />
 
           {/* Main Public Content */}
           <main>

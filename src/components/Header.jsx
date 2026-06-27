@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { navItems } from '../data/mockData';
 
-export default function Header({ onAddListingClick, onAdminClick }) {
+export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
-
-    if (href === "#admin") {
-      onAdminClick();
-      return;
-    }
 
     const targetId = href.substring(1);
     const targetElement = document.getElementById(targetId);
@@ -23,11 +31,22 @@ export default function Header({ onAddListingClick, onAdminClick }) {
   };
 
   return (
-    <header id="header" className="fixed top-0 left-0 w-full z-30 glass border-b border-gray-100">
-      <div className="container flex items-center justify-between h-18 py-3">
-        <a href="#" onClick={(e) => handleNavClick(e, "#hero")} className="flex items-center gap-2 text-2xl font-extrabold tracking-tight cursor-pointer">
-          <i className="fas fa-home text-[var(--primary)] text-2xl"></i>
-          Home<span className="text-[var(--primary)]">Verse</span>
+    <header
+      id="header"
+      className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-[var(--bg-light)]/95 backdrop-blur-md shadow-md py-2 border-b border-gray-200/50'
+          : 'bg-transparent py-4'
+      }`}
+    >
+      <div className="container flex items-center justify-between py-1 transition-all duration-300">
+        <a
+          href="#"
+          onClick={(e) => handleNavClick(e, "#hero")}
+          className="flex items-center gap-2 text-2xl font-extrabold tracking-tight cursor-pointer group text-[var(--primary)]"
+        >
+          <img src="/logo.svg" alt="HomeVerse Logo" className="w-8 h-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />
+          <span>Home<span className="text-[var(--secondary)]">Verse</span></span>
         </a>
         <nav className="hidden md:flex items-center gap-8">
           <ul className="flex items-center gap-8">
@@ -36,7 +55,7 @@ export default function Header({ onAddListingClick, onAdminClick }) {
                 <a
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="nav-link text-sm font-semibold flex items-center gap-1"
+                  className="nav-link text-sm font-semibold flex items-center gap-1 hover:text-[var(--primary)] relative py-1"
                 >
                   {item.icon && <i className={`fas ${item.icon} text-xs`}></i>}
                   {item.label}
@@ -47,14 +66,8 @@ export default function Header({ onAddListingClick, onAdminClick }) {
         </nav>
         <div className="flex items-center gap-4">
           <button
-            onClick={onAddListingClick}
-            className="btn-primary text-sm py-2.5 px-6 hidden sm:flex"
-          >
-            <i className="fas fa-plus"></i> Add Listing
-          </button>
-          <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-2xl p-2"
+            className="md:hidden text-2xl p-2 text-[var(--primary)] hover:scale-105 active:scale-95 transition-transform cursor-pointer"
             aria-label="Open menu"
           >
             <i className="fas fa-bars"></i>
@@ -66,10 +79,10 @@ export default function Header({ onAddListingClick, onAdminClick }) {
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-menu-inner">
           <div className="flex items-center justify-between mb-8">
-            <span className="text-xl font-bold">HomeVerse</span>
+            <span className="text-xl font-bold text-[var(--primary)]">Home<span className="text-[var(--secondary)]">Verse</span></span>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-2xl p-2"
+              className="text-2xl p-2 text-[var(--primary)] hover:scale-105 active:scale-95 transition-transform cursor-pointer"
               aria-label="Close menu"
             >
               <i className="fas fa-times"></i>
@@ -81,7 +94,7 @@ export default function Header({ onAddListingClick, onAdminClick }) {
                 <a
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-lg font-medium block py-2 border-b border-gray-100 hover:text-[var(--primary)]"
+                  className="text-lg font-medium block py-2 border-b border-gray-100 hover:text-[var(--primary)] hover:pl-2 transition-all duration-300"
                 >
                   {item.icon && <i className={`fas ${item.icon} mr-2`}></i>}
                   {item.label}
@@ -89,24 +102,6 @@ export default function Header({ onAddListingClick, onAdminClick }) {
               </li>
             ))}
           </ul>
-          <button
-            onClick={() => {
-              setIsMobileMenuOpen(false);
-              onAddListingClick();
-            }}
-            className="btn-primary w-full mt-6 text-center"
-          >
-            <i className="fas fa-plus"></i> Add Listing
-          </button>
-          <button
-            onClick={() => {
-              setIsMobileMenuOpen(false);
-              onAdminClick();
-            }}
-            className="btn-secondary w-full mt-3 text-center"
-          >
-            <i className="fas fa-shield-alt"></i> Admin Panel
-          </button>
         </div>
       </div>
     </header>
