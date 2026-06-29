@@ -163,31 +163,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Embedded Google Map Placeholder */}
-            <div className="bg-primary border border-accent-gold/20 rounded-[18px] aspect-[4/3] relative overflow-hidden flex flex-col justify-center items-center text-center p-8 shadow-luxury">
-              {/* Map vector grid background placeholder */}
-              <div className="absolute inset-0 opacity-15 mix-blend-overlay">
-                <img
-                  src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80"
-                  alt="Abstract Grid Map"
-                  className="w-full h-full object-cover filter grayscale"
-                />
-              </div>
-
-              {/* Strict Palette Graphic Pin */}
-              <div className="relative z-10 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-accent-gold/15 border-2 border-accent-gold flex items-center justify-center text-accent-gold mx-auto animate-bounce">
-                  <Compass className="w-8 h-8 stroke-1" />
-                </div>
-                <h3 className="font-display text-xl font-bold text-bg-cream">Bespoke Location Registry</h3>
-                <p className="font-sans text-xs text-neutral-laurel max-w-xs leading-relaxed mx-auto">
-                  Map integration loaded privately for sovereign clients. Local navigation routes unlocked upon viewing reservation.
-                </p>
-                <div className="inline-block border border-accent-gold text-accent-gold text-[10px] tracking-widest font-sans uppercase font-bold py-2 px-4 rounded-[50px] bg-primary/20">
-                  Secure Map Mode
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

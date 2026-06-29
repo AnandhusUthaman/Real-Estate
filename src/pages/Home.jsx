@@ -276,48 +276,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. LATEST PROJECTS */}
-      <section className="py-24 max-w-[1440px] mx-auto px-6 lg:px-12 bg-bg-cream">
-        <div className="space-y-3 mb-16 text-center">
-          <span className="text-accent-gold font-sans font-semibold text-xs uppercase tracking-[0.2em] block">Upcoming Landmarks</span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight">Luxury Private Launches</h2>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {luxuryProjects.map((project) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative rounded-[18px] overflow-hidden aspect-[16/9] group shadow-luxury cursor-pointer"
-            >
-              <img
-                src={project.img}
-                alt={project.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
-              
-              <div className="absolute top-6 left-6 flex gap-2">
-                <span className="bg-accent-gold text-primary font-sans font-bold text-[10px] tracking-widest uppercase py-1 px-3 rounded-[50px]">
-                  {project.status}
-                </span>
-                <span className="bg-bg-cream text-primary font-sans font-semibold text-[10px] tracking-widest uppercase py-1 px-3 rounded-[50px]">
-                  Est. {project.completionYear}
-                </span>
-              </div>
-
-              <div className="absolute bottom-6 left-6 right-6 text-bg-cream">
-                <span className="text-accent-gold font-sans text-xs tracking-wider uppercase mb-1 block">{project.developer}</span>
-                <h3 className="font-display text-2xl font-bold mb-2">{project.title}</h3>
-                <p className="font-sans text-sm text-neutral-laurel/90 line-clamp-2 max-w-md">{project.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
 
 
@@ -339,14 +298,7 @@ export default function Home() {
                 <p className="font-display text-2xl md:text-3xl italic text-primary leading-relaxed font-medium">
                   "{testimonials[activeTestimonial].quote}"
                 </p>
-                <div>
-                  <h4 className="font-sans font-bold text-primary tracking-widest uppercase text-sm">
-                    {testimonials[activeTestimonial].name}
-                  </h4>
-                  <p className="font-sans text-xs text-neutral-laurel tracking-wider uppercase mt-1">
-                    {testimonials[activeTestimonial].role} — {testimonials[activeTestimonial].firm}
-                  </p>
-                </div>
+
               </motion.div>
             </AnimatePresence>
           </div>

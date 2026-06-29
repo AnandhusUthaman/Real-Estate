@@ -299,28 +299,6 @@ export default function PropertyDetails() {
               </div>
             </div>
 
-            {/* Floor Plan / Plot Layout */}
-            <div className="space-y-6 border-t border-neutral-laurel/20 pt-10">
-              <h2 className="font-display text-2xl font-bold text-primary">
-                {property.beds > 0 ? "Floor Plans & Layouts" : "Plot Survey Maps & Division Layouts"}
-              </h2>
-              <div className="bg-primary/5 border border-neutral-laurel/20 rounded-[18px] p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="space-y-2">
-                  <span className="font-sans font-bold text-sm text-primary uppercase tracking-wider">{property.floorPlan}</span>
-                  <p className="font-sans text-xs text-neutral-laurel">
-                    {property.beds > 0
-                      ? "Double story layout detailing high-end kitchen integration, family salons, and terrace elevations."
-                      : "Verified survey blueprint showing exact boundaries, road frontage access width, and topography."}
-                  </p>
-                </div>
-                <button
-                  onClick={() => showToast('Downloading layouts - demo mode', 'info')}
-                  className="btn-accent px-5 py-3 text-xs tracking-wider uppercase font-semibold flex items-center gap-2 border-accent-gold/45 shrink-0"
-                >
-                  <FileText className="w-4 h-4" /> Download PDF Blueprint
-                </button>
-              </div>
-            </div>
 
             {/* Mortgage Calculator */}
             <div className="space-y-8 border-t border-neutral-laurel/20 pt-10 bg-primary/5 rounded-[18px] p-8 border border-neutral-laurel/10">

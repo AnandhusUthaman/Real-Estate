@@ -144,69 +144,8 @@ export const luxuryAgents = [
     email: "terranovarealestateoffice@gmail.com",
     phone: "8089729949",
     bio: "Co-founding director committed to helping clients find premium land, plots, and residential assets across Kerala."
-  },
-  {
-    id: 2,
-    name: "Marcus Vance",
-    role: "Managing Partner",
-    specialization: "Waterfront Penthouses & Estates",
-    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&h=400&q=80",
-    email: "marcus@terranova.com",
-    phone: "+971 (50) 808-9900",
-    bio: "Based in our Dubai office, Marcus handles high-volume transactions on Palm Jumeirah, Dubai Marina, and off-market branded residences."
-  },
-  {
-    id: 3,
-    name: "Helena Rostova",
-    role: "Senior Associate Director",
-    specialization: "European Historic Estates & Mansions",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&h=400&q=80",
-    email: "helena@terranova.com",
-    phone: "+44 20 7946 0958",
-    bio: "Helena specializes in premium listings across London, the French Riviera, and Swiss lakeside estates."
   }
 ];
 
-export const luxuryProjects = [
-  {
-    id: 1,
-    title: "One Canal Residences",
-    developer: "Ellington Properties & DAMAC",
-    status: "Under Construction",
-    completionYear: "2027",
-    location: "Water Canal, Dubai",
-    img: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80",
-    description: "Ultra-luxury branded residences featuring private pools, sky gardens, and architecture by world-famous designers."
-  },
-  {
-    id: 2,
-    title: "The L'Amara Hills",
-    developer: "Emaar Properties",
-    status: "Exclusively Launched",
-    completionYear: "2026",
-    location: "Dubai Hills Estate",
-    img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
-    description: "A limited enclave of modern masterpieces nestled alongside an 18-hole championship golf course."
-  }
-];
-
-export const luxuryBlogs = [
-  {
-    id: 1,
-    title: "The Evolution of Branded Residences: A Global Demand",
-    category: "Market Insights",
-    readTime: "6 min read",
-    date: "June 14, 2026",
-    img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
-    snippet: "Analyzing why affluent buyers continue to invest heavily in homes affiliated with legendary hospitality brands like Armani, Bulgari, and Ritz-Carlton."
-  },
-  {
-    id: 2,
-    title: "Design Philosophy: Bringing Wellness into Mansion Architecture",
-    category: "Architecture & Design",
-    readTime: "4 min read",
-    date: "May 28, 2026",
-    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
-    snippet: "Exploring how luxury developers integrate medical-grade air filtration, biological circadian lighting, and soundscape layouts."
-  }
-];
+export const luxuryProjects = [];
+export const luxuryBlogs = [];
