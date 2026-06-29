@@ -27,27 +27,33 @@ export default function PropertyDetails() {
 
   const property = properties.find((p) => p.id === parseInt(id, 10));
 
-  // If property not found, redirect to 404
-  useEffect(() => {
-    if (!property) {
-      navigate('/404');
-    }
-  }, [property, navigate]);
-
-  if (!property) return null;
-
-  const isFavorite = favorites.includes(property.id);
-
   // Gallery Active Image State
-  const [activeImage, setActiveImage] = useState(property.img);
+  const [activeImage, setActiveImage] = useState(property?.img || '');
+
+  // Update active image when property changes
+  useEffect(() => {
+    if (property?.img) {
+      setActiveImage(property.img);
+    }
+  }, [property]);
 
   // Mortgage Calculator State
   const [calculator, setCalculator] = useState({
-    price: parseInt(property.price.replace(/[^0-9]/g, ''), 10) || 10000000,
+    price: property ? (parseInt(property.price.replace(/[^0-9]/g, ''), 10) || 10000000) : 10000000,
     downPaymentPercent: 20,
     interestRate: 4.5,
     loanTerm: 30
   });
+
+  // Update calculator when property price is resolved
+  useEffect(() => {
+    if (property?.price) {
+      setCalculator(prev => ({
+        ...prev,
+        price: parseInt(property.price.replace(/[^0-9]/g, ''), 10) || 10000000
+      }));
+    }
+  }, [property]);
 
   const [mortgageResult, setMortgageResult] = useState({
     monthlyPayment: 0,
@@ -61,11 +67,29 @@ export default function PropertyDetails() {
     email: '',
     phone: '',
     date: '',
-    message: `I would like to request a private viewing for ${property.title}.`
+    message: property ? `I would like to request a private viewing for ${property.title}.` : ''
   });
+
+  // Update inquiry message when property resolves
+  useEffect(() => {
+    if (property?.title) {
+      setInquiryForm(prev => ({
+        ...prev,
+        message: `I would like to request a private viewing for ${property.title}.`
+      }));
+    }
+  }, [property]);
+
+  // If property not found, redirect to 404
+  useEffect(() => {
+    if (!property) {
+      navigate('/404');
+    }
+  }, [property, navigate]);
 
   // Calculate mortgage whenever input changes
   useEffect(() => {
+    if (!property) return;
     const loanAmount = calculator.price * (1 - calculator.downPaymentPercent / 100);
     const monthlyRate = (calculator.interestRate / 100) / 12;
     const numberOfPayments = calculator.loanTerm * 12;
@@ -87,7 +111,11 @@ export default function PropertyDetails() {
       loanAmount: Math.round(loanAmount),
       totalInterest: Math.round(totalInterest)
     });
-  }, [calculator]);
+  }, [calculator, property]);
+
+  if (!property) return null;
+
+  const isFavorite = favorites.includes(property.id);
 
   const handleInquirySubmit = (e) => {
     e.preventDefault();

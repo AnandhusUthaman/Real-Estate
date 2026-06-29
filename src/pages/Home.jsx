@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGlobalContext } from '../context/GlobalContext';
-import { luxuryAgents, luxuryProjects, luxuryBlogs } from '../data/mockData';
+import { luxuryProjects, luxuryBlogs } from '../data/mockData';
 import PropertyCard from '../components/ui/PropertyCard';
 import {
   Search,
@@ -88,7 +88,7 @@ export default function Home() {
   };
 
   return (
-    <div className="pt-20">
+    <div className="pt-0">
       {/* 1. HERO SECTION */}
       <section className="relative h-[95vh] flex items-center justify-center overflow-hidden">
         {/* Background Image with Deep Overlay */}
@@ -112,7 +112,7 @@ export default function Home() {
         >
           <motion.h1
             variants={itemVariants}
-            className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-tight"
+            className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-tight text-bg-cream"
           >
             Find Luxury Living <br />
             <span className="text-accent-gold">Without Compromise</span>
@@ -127,10 +127,10 @@ export default function Home() {
 
           {/* Primary & Secondary CTAs */}
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-16">
-            <Link to="/properties" className="btn-primary bg-accent-gold text-primary font-bold px-8 py-4 tracking-wider uppercase text-sm hover:bg-accent-gold/90 w-full sm:w-auto">
+            <Link to="/properties" className="bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold px-8 py-4 tracking-widest uppercase text-xs rounded-[12px] transition-all w-full sm:w-auto shadow-md border border-accent-gold/25">
               Explore Properties
             </Link>
-            <Link to="/contact" className="btn-secondary border-bg-cream text-bg-cream hover:bg-bg-cream hover:text-primary font-bold px-8 py-4 tracking-wider uppercase text-sm w-full sm:w-auto">
+            <Link to="/contact" className="border-2 border-bg-cream/80 text-bg-cream hover:bg-accent-gold hover:text-primary hover:border-accent-gold font-bold px-8 py-4 tracking-widest uppercase text-xs rounded-[12px] transition-all w-full sm:w-auto">
               Schedule Visit
             </Link>
           </motion.div>
@@ -139,55 +139,55 @@ export default function Home() {
           <motion.form
             variants={itemVariants}
             onSubmit={handleSearchSubmit}
-            className="glass-panel rounded-[18px] p-4 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-4 items-center shadow-luxury"
+            className="glass-panel-dark rounded-[18px] p-4 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-4 items-center shadow-luxury border border-accent-gold/20"
           >
-            <div className="flex items-center gap-3 px-3 py-2 border-b md:border-b-0 md:border-r border-neutral-laurel/30">
+            <div className="flex items-center gap-3 px-3 py-2 border-b md:border-b-0 md:border-r border-neutral-laurel/20">
               <MapPin className="w-5 h-5 text-accent-gold shrink-0" />
               <div className="text-left w-full">
-                <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-semibold">Location</label>
+                <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold">Location</label>
                 <input
                   type="text"
                   placeholder="e.g. Dubai, Bel Air"
                   value={searchFilters.location}
                   onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
-                  className="bg-transparent border-none p-0 text-primary text-sm font-semibold focus:outline-none w-full placeholder:text-primary/45"
+                  className="bg-transparent border-none p-0 text-bg-cream text-sm font-semibold focus:outline-none w-full placeholder:text-bg-cream/40 mt-1"
                 />
               </div>
             </div>
 
-            <div className="flex items-center gap-3 px-3 py-2 border-b md:border-b-0 md:border-r border-neutral-laurel/30">
+            <div className="flex items-center gap-3 px-3 py-2 border-b md:border-b-0 md:border-r border-neutral-laurel/20">
               <HomeIcon className="w-5 h-5 text-accent-gold shrink-0" />
-              <div className="text-left w-full">
-                <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-semibold">Property Type</label>
+              <div className="text-left w-full text-bg-cream">
+                <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold">Property Type</label>
                 <select
                   value={searchFilters.type}
                   onChange={(e) => setSearchFilters({ ...searchFilters, type: e.target.value })}
-                  className="bg-transparent border-none p-0 text-primary text-sm font-semibold focus:outline-none w-full cursor-pointer"
+                  className="bg-transparent border-none p-0 text-bg-cream text-sm font-semibold focus:outline-none w-full cursor-pointer mt-1"
                 >
-                  <option value="all">All Types</option>
-                  <option value="sale">For Sale</option>
-                  <option value="rent">For Lease</option>
+                  <option value="all" className="text-primary bg-bg-cream">All Types</option>
+                  <option value="sale" className="text-primary bg-bg-cream">For Sale</option>
+                  <option value="rent" className="text-primary bg-bg-cream">For Lease</option>
                 </select>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 px-3 py-2">
+            <div className="flex items-center gap-3 px-3 py-2 border-b md:border-b-0 md:w-full">
               <DollarSign className="w-5 h-5 text-accent-gold shrink-0" />
               <div className="text-left w-full">
-                <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-semibold">Budget (Max)</label>
+                <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold">Budget (Max)</label>
                 <input
                   type="text"
                   placeholder="e.g. $25,000,000"
                   value={searchFilters.budget}
                   onChange={(e) => setSearchFilters({ ...searchFilters, budget: e.target.value })}
-                  className="bg-transparent border-none p-0 text-primary text-sm font-semibold focus:outline-none w-full placeholder:text-primary/45"
+                  className="bg-transparent border-none p-0 text-bg-cream text-sm font-semibold focus:outline-none w-full placeholder:text-bg-cream/40 mt-1"
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              className="btn-primary w-full py-4 text-xs font-bold uppercase tracking-widest bg-primary text-bg-cream flex items-center justify-center gap-2"
+              className="bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold py-4 rounded-[12px] text-xs uppercase tracking-widest transition-all w-full flex items-center justify-center gap-2 border border-accent-gold/20 cursor-pointer"
             >
               <Search className="w-4 h-4" /> Search
             </button>
@@ -310,42 +310,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. ELITE AGENTS */}
-      <section className="py-24 bg-primary text-bg-cream">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 text-center">
-          <span className="text-accent-gold font-sans font-semibold text-xs uppercase tracking-[0.2em] block mb-3">Expert Brokers</span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mb-16">Meet Our Advisors</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {luxuryAgents.map((agent) => (
-              <motion.div
-                key={agent.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="flex flex-col items-center text-center space-y-4"
-              >
-                <div className="w-48 h-48 rounded-full overflow-hidden border-2 border-accent-gold p-1 shadow-luxury">
-                  <img
-                    src={agent.avatar}
-                    alt={agent.name}
-                    className="w-full h-full object-cover rounded-full filter grayscale hover:grayscale-0 transition-all duration-500"
-                  />
-                </div>
-                <h3 className="font-display text-xl font-bold text-accent-gold">{agent.name}</h3>
-                <p className="font-sans text-xs uppercase tracking-widest text-neutral-laurel">{agent.role}</p>
-                <p className="font-sans text-sm text-neutral-laurel/80 max-w-xs">{agent.specialization}</p>
-                <Link
-                  to="/agents"
-                  className="btn-accent border-accent-gold/45 text-bg-cream hover:bg-accent-gold hover:text-primary px-5 py-2 text-xs tracking-wider uppercase font-semibold"
-                >
-                  Contact Broker
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 6. TESTIMONIALS (Luxury Carousel) */}
       <section className="py-24 bg-bg-cream relative">

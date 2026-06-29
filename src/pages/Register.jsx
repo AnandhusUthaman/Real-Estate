@@ -110,15 +110,7 @@ export default function Register() {
           </form>
         </div>
 
-        {/* Login redirect footer */}
-        <div className="text-center mt-6">
-          <p className="font-sans text-sm text-primary/75">
-            Already have secure access?{' '}
-            <Link to="/login" className="text-accent-gold hover:text-primary transition-colors font-semibold">
-              Sign In
-            </Link>
-          </p>
-        </div>
+
       </motion.div>
     </div>
   );

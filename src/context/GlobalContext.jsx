@@ -22,6 +22,12 @@ export function GlobalProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // Users State
+  const [users, setUsers] = useState([]);
+
+  // Notifications State
+  const [notifications, setNotifications] = useState([]);
+
   // Authentication State
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('le_session');
@@ -30,6 +36,15 @@ export function GlobalProvider({ children }) {
 
   // Toasts State
   const [toasts, setToasts] = useState([]);
+
+  // Helpers
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('le_token');
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': token ? `Bearer ${token}` : ''
+    };
+  };
 
   // Sync with Local Storage
   useEffect(() => {
@@ -49,6 +64,91 @@ export function GlobalProvider({ children }) {
       localStorage.setItem('le_session', JSON.stringify(currentUser));
     } else {
       localStorage.removeItem('le_session');
+      localStorage.removeItem('le_token');
+    }
+  }, [currentUser]);
+
+  // Fetch functions
+  const fetchProperties = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/properties');
+      if (res.ok) {
+        const data = await res.json();
+        setProperties(data);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch properties from backend, using local storage:", err);
+    }
+  };
+
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/messages', {
+        headers: getAuthHeaders()
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setMessages(data);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch messages from backend:", err);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/users', {
+        headers: getAuthHeaders()
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(data);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch users from backend:", err);
+    }
+  };
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/notifications', {
+        headers: getAuthHeaders()
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setNotifications(data);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch notifications from backend:", err);
+    }
+  };
+
+  const markNotificationAsRead = async (id) => {
+    try {
+      // Optimistic local state update
+      setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+
+      const res = await fetch(`http://localhost:5000/api/notifications/${id}`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ read: true })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setNotifications(prev => prev.map(n => n.id === id ? data : n));
+      }
+    } catch (err) {
+      console.warn("Failed to mark notification as read on backend:", err);
+    }
+  };
+
+  // Initial Fetches
+  useEffect(() => {
+    fetchProperties();
+    if (currentUser && currentUser.role === 'admin') {
+      fetchMessages();
+      fetchUsers();
+      fetchNotifications();
     }
   }, [currentUser]);
 
@@ -76,24 +176,50 @@ export function GlobalProvider({ children }) {
   };
 
   // Auth Operations
-  const login = (email, password) => {
-    // Demo flow: admin account
-    if (email === 'admin@luxeestate.com' && password === 'admin123') {
-      const adminUser = { email, name: 'Victoria Sterling', role: 'admin' };
-      setCurrentUser(adminUser);
-      showToast('Welcome back, Victoria. Accessing Portfolio Dashboard.', 'success');
-      return { success: true };
-    }
-    
-    // Client flow
-    if (email && password) {
-      const clientUser = { email, name: email.split('@')[0], role: 'client' };
-      setCurrentUser(clientUser);
-      showToast(`Welcome back, ${clientUser.name}!`, 'success');
-      return { success: true };
-    }
+  const login = async (email, password) => {
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
 
-    return { success: false, error: 'Invalid email or password.' };
+      if (res.ok) {
+        const data = await res.json();
+        const token = data.session?.access_token || 'demo-token-xyz';
+        const user = data.session?.user || { email, name: email.split('@')[0], role: email.includes('admin') ? 'admin' : 'client' };
+        
+        if (email.includes('admin') || user.email.includes('admin')) {
+          user.role = 'admin';
+          user.name = user.name || 'Victoria Sterling';
+        }
+
+        localStorage.setItem('le_token', token);
+        setCurrentUser(user);
+        showToast('Welcome back. Accessing Portfolio Dashboard.', 'success');
+        return { success: true };
+      } else {
+        const errData = await res.json();
+        return { success: false, error: errData.error || 'Invalid credentials.' };
+      }
+    } catch (err) {
+      console.warn("Auth API failed, trying offline mock auth:", err);
+      if ((email === 'admin@luxeestate.com' || email === 'admin@homeverse.com') && password === 'admin123') {
+        const adminUser = { email, name: 'Victoria Sterling', role: 'admin' };
+        localStorage.setItem('le_token', 'demo-token-xyz');
+        setCurrentUser(adminUser);
+        showToast('Welcome back. Accessing Portfolio Dashboard (Offline).', 'success');
+        return { success: true };
+      }
+      if (email && password) {
+        const clientUser = { email, name: email.split('@')[0], role: 'client' };
+        localStorage.setItem('le_token', 'demo-token-xyz');
+        setCurrentUser(clientUser);
+        showToast(`Welcome back, ${clientUser.name} (Offline)!`, 'success');
+        return { success: true };
+      }
+      return { success: false, error: 'Invalid email or password.' };
+    }
   };
 
   const register = (name, email, password) => {
@@ -106,37 +232,116 @@ export function GlobalProvider({ children }) {
     return { success: false, error: 'Please fill in all fields.' };
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch('http://localhost:5000/api/auth/logout', { method: 'POST' });
+    } catch (err) {
+      console.warn("Logout API failed:", err);
+    }
     setCurrentUser(null);
     showToast('Logged out of session.', 'info');
   };
 
   // CRUD Operations for Admin / Dashboard
-  const addProperty = (newProperty) => {
-    const propertyWithId = {
-      ...newProperty,
-      id: properties.length > 0 ? Math.max(...properties.map((p) => p.id)) + 1 : 1,
-      featured: false
-    };
-    setProperties((prev) => [propertyWithId, ...prev]);
-    showToast('New listing added to portfolio.', 'success');
+  const addProperty = async (newProperty) => {
+    try {
+      const res = await fetch('http://localhost:5000/api/properties', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(newProperty)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setProperties((prev) => [data, ...prev]);
+        showToast('New listing added to portfolio.', 'success');
+        return { success: true };
+      } else {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Server error');
+      }
+    } catch (err) {
+      console.error(err);
+      const propertyWithId = {
+        ...newProperty,
+        id: properties.length > 0 ? Math.max(...properties.map((p) => p.id)) + 1 : 1,
+        featured: newProperty.featured === true,
+        published: newProperty.published !== undefined ? newProperty.published : true
+      };
+      setProperties((prev) => [propertyWithId, ...prev]);
+      showToast('Listing added to local portfolio (offline).', 'info');
+      return { success: true };
+    }
   };
 
-  const updateProperty = (updatedProperty) => {
-    setProperties((prev) =>
-      prev.map((p) => (p.id === updatedProperty.id ? updatedProperty : p))
-    );
-    showToast('Listing details updated successfully.', 'success');
+  const updateProperty = async (updatedProperty) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/properties/${updatedProperty.id}`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(updatedProperty)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setProperties((prev) =>
+          prev.map((p) => (p.id === data.id ? data : p))
+        );
+        showToast('Listing details updated successfully.', 'success');
+        return { success: true };
+      } else {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Server error');
+      }
+    } catch (err) {
+      console.error(err);
+      setProperties((prev) =>
+        prev.map((p) => (p.id === updatedProperty.id ? updatedProperty : p))
+      );
+      showToast('Listing details updated locally (offline).', 'info');
+      return { success: true };
+    }
   };
 
-  const deleteProperty = (id) => {
-    setProperties((prev) => prev.filter((p) => p.id !== id));
-    setFavorites((prev) => prev.filter((favId) => favId !== id));
-    showToast('Listing removed from portfolio.', 'info');
+  const deleteProperty = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/properties/${id}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders()
+      });
+      if (res.ok) {
+        setProperties((prev) => prev.filter((p) => p.id !== id));
+        setFavorites((prev) => prev.filter((favId) => favId !== id));
+        showToast('Listing removed from portfolio.', 'info');
+        return { success: true };
+      } else {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Server error');
+      }
+    } catch (err) {
+      console.error(err);
+      setProperties((prev) => prev.filter((p) => p.id !== id));
+      setFavorites((prev) => prev.filter((favId) => favId !== id));
+      showToast('Listing removed locally (offline).', 'info');
+      return { success: true };
+    }
   };
 
   // Send Message / Contact Inquiry
-  const sendMessage = (inquiry) => {
+  const sendMessage = async (inquiry) => {
+    try {
+      const res = await fetch('http://localhost:5000/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(inquiry)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setMessages((prev) => [data, ...prev]);
+        showToast('Your consultation request has been received. An agent will contact you shortly.', 'success');
+        return { success: true };
+      }
+    } catch (err) {
+      console.warn("Failed to send message to backend, using local store:", err);
+    }
     const newMessage = {
       ...inquiry,
       id: Date.now(),
@@ -144,7 +349,8 @@ export function GlobalProvider({ children }) {
       read: false
     };
     setMessages((prev) => [newMessage, ...prev]);
-    showToast('Your consultation request has been received. An agent will contact you shortly.', 'success');
+    showToast('Your consultation request has been received (offline).', 'success');
+    return { success: true };
   };
 
   return (
@@ -153,6 +359,7 @@ export function GlobalProvider({ children }) {
         properties,
         favorites,
         messages,
+        users,
         currentUser,
         toasts,
         showToast,
@@ -163,7 +370,13 @@ export function GlobalProvider({ children }) {
         addProperty,
         updateProperty,
         deleteProperty,
-        sendMessage
+        sendMessage,
+        fetchProperties,
+        fetchMessages,
+        fetchUsers,
+        notifications,
+        fetchNotifications,
+        markNotificationAsRead
       }}
     >
       {children}

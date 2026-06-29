@@ -29,17 +29,16 @@ export default function Navbar() {
   const navLinks = [
     { label: "Home", path: "/" },
     { label: "Properties", path: "/properties" },
-    { label: "Agents", path: "/agents" },
     { label: "About", path: "/about" },
     { label: "Blog", path: "/blog" },
     { label: "Contact", path: "/contact" }
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
       isScrolled || !isHome
-        ? 'bg-primary py-4 shadow-luxury'
-        : 'bg-gradient-to-b from-primary/80 to-transparent py-6'
+        ? 'bg-primary/80 backdrop-blur-lg border-b border-accent-gold/15 py-4 shadow-luxury'
+        : 'bg-white/5 backdrop-blur-[8px] border-b border-white/10 py-6'
     }`}>
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between items-center">
         {/* Logo */}
@@ -80,7 +79,7 @@ export default function Navbar() {
             )}
           </Link>
 
-          {currentUser ? (
+          {currentUser && (
             <div className="flex items-center gap-4">
               <Link
                 to="/dashboard"
@@ -99,18 +98,11 @@ export default function Navbar() {
                 Logout
               </button>
             </div>
-          ) : (
-            <Link
-              to="/login"
-              className="text-bg-cream hover:text-accent-gold font-sans text-sm tracking-wider flex items-center gap-1 transition-colors duration-300"
-            >
-              <User className="w-4 h-4" /> Sign In
-            </Link>
           )}
 
           <Link
             to="/contact"
-            className="btn-accent px-6 py-2.5 text-xs tracking-widest uppercase font-medium"
+            className="bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold px-6 py-2.5 rounded-[12px] text-xs tracking-widest uppercase transition-all shadow-sm inline-flex items-center justify-center cursor-pointer border border-accent-gold/25"
           >
             Book Consultation
           </Link>
@@ -155,7 +147,7 @@ export default function Navbar() {
           </div>
 
           <div className="border-t border-accent-gold/20 pt-8 flex flex-col gap-4 mt-auto">
-            {currentUser ? (
+            {currentUser && (
               <div className="flex flex-col gap-4">
                 <Link
                   to="/dashboard"
@@ -176,20 +168,12 @@ export default function Navbar() {
                   Logout
                 </button>
               </div>
-            ) : (
-              <Link
-                to="/login"
-                onClick={() => setIsOpen(false)}
-                className="btn-secondary w-full py-3 text-center"
-              >
-                Sign In
-              </Link>
             )}
 
             <Link
               to="/contact"
               onClick={() => setIsOpen(false)}
-              className="btn-primary w-full py-3 text-center bg-accent-gold text-primary font-bold tracking-wider hover:bg-accent-gold/90"
+              className="w-full py-3 text-center bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold tracking-wider rounded-[12px] transition-all border border-accent-gold/25"
             >
               Book Consultation
             </Link>
