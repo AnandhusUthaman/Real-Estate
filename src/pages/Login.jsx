@@ -8,7 +8,7 @@ export default function Login() {
   const { login, showToast } = useGlobalContext();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('admin@luxeestate.com');
+  const [email, setEmail] = useState('terranovarealestateoffice@gmail.com');
   const [password, setPassword] = useState('admin123');
   const [loading, setLoading] = useState(false);
 
@@ -47,7 +47,7 @@ export default function Login() {
           <Link to="/" className="inline-flex items-center gap-2 mb-4 group">
             <Compass className="w-8 h-8 text-accent-gold group-hover:rotate-45 transition-transform duration-500" />
             <span className="font-display text-2xl font-bold tracking-widest text-primary">
-              LUXE<span className="text-accent-gold">ESTATE</span>
+              TERRA<span className="text-accent-gold">NOVA</span>
             </span>
           </Link>
           <h1 className="font-display text-3xl font-bold text-primary">Admin Gateway</h1>
@@ -69,7 +69,7 @@ export default function Login() {
                 <Mail className="absolute left-3.5 top-3 w-4 h-4 text-neutral-laurel" />
                 <input
                   type="email"
-                  placeholder="admin@luxeestate.com"
+                  placeholder="terranovarealestateoffice@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-bg-cream text-primary border-neutral-laurel/20 rounded-[12px] text-sm pl-10 pr-4 py-2.5 w-full focus:outline-none focus:ring-1 focus:ring-accent-gold/50 transition-all placeholder:text-primary/30"
@@ -101,7 +101,7 @@ export default function Login() {
             <div className="bg-secondary/20 rounded-[12px] p-3 text-center border border-accent-gold/10 flex items-center justify-center gap-2">
               <ShieldAlert className="w-4 h-4 text-accent-gold shrink-0" />
               <p className="text-[10.5px] font-sans text-neutral-laurel leading-normal">
-                Credentials: <span className="text-bg-cream font-bold">admin@luxeestate.com</span> / <span className="text-bg-cream font-bold">admin123</span>
+                Credentials: <span className="text-bg-cream font-bold">terranovarealestateoffice@gmail.com</span> / <span className="text-bg-cream font-bold">admin123</span>
               </p>
             </div>
 

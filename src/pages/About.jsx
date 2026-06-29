@@ -18,12 +18,12 @@ export default function About() {
         {/* Brand Story Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
           <div className="space-y-6">
-            <h2 className="font-display text-3xl font-bold text-primary">The Vision of Luxury Brokerage</h2>
+            <h2 className="font-display text-3xl font-bold text-primary">The Vision of TerraNova</h2>
             <p className="font-sans text-primary/80 leading-relaxed">
-              For nearly two decades, LuxeEstate has catered to sovereign individuals, high-growth entrepreneurs, and legacy families. We recognize that acquiring prime real estate is not merely a purchase—it is the creation of a lifestyle and the securing of generational wealth.
+              TerraNova Real Estate is a trusted real estate agency based in Thiruvananthapuram, Kerala, specializing in buying and selling land, residential properties, and commercial spaces. We are committed to helping clients find the right property with transparency, integrity, and personalized service.
             </p>
             <p className="font-sans text-primary/80 leading-relaxed">
-              Our brokers operate with complete discretion and possess deep local knowledge of structural dynamics, luxury amenities, and zoning laws in Dubai, Beverly Hills, London, and the French Riviera.
+              Our agents operate with complete discretion and possess deep local knowledge of structural dynamics, development potential, and zoning laws in Thiruvananthapuram and across Kerala.
             </p>
           </div>
           <div className="aspect-[4/3] rounded-[18px] overflow-hidden shadow-luxury">
@@ -62,8 +62,8 @@ export default function About() {
             },
             {
               icon: MapPin,
-              title: "Global Network",
-              desc: "With key offices in Dubai, London, and Beverly Hills, we bridge luxury portfolios across three continents."
+              title: "Local Expertise",
+              desc: "With deep roots in Thiruvananthapuram and Kerala, we guide you seamlessly through agricultural, commercial, and residential acquisitions."
             }
           ].map((val, idx) => {
             const Icon = val.icon;

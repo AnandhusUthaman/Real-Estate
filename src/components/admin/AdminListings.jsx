@@ -807,7 +807,7 @@ export default function AdminListings({ properties, onAddProperty, onUpdatePrope
                       type="text"
                       value={seoTitle}
                       onChange={(e) => setSeoTitle(e.target.value)}
-                      placeholder="Luxury Penthouse in Dubai Marina | LuxeEstate"
+                      placeholder="Premium Plot in Thiruvananthapuram | TerraNova"
                       className="bg-white border border-neutral-laurel/10 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none"
                     />
                   </div>

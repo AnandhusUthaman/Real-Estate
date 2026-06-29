@@ -45,7 +45,7 @@ export default function Navbar() {
         <Link to="/" className="flex items-center gap-2 group">
           <Compass className="w-8 h-8 text-accent-gold group-hover:rotate-45 transition-transform duration-500" />
           <span className="font-display text-2xl font-bold tracking-widest text-bg-cream">
-            LUXE<span className="text-accent-gold">ESTATE</span>
+            TERRA<span className="text-accent-gold">NOVA</span>
           </span>
         </Link>
 

@@ -224,7 +224,7 @@ let usersStore = [
 
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
-  const isAdminEmail = email === 'admin@homeverse.com' || email === 'admin@luxeestate.com';
+  const isAdminEmail = email === 'admin@homeverse.com' || email === 'terranovarealestateoffice@gmail.com';
 
   if (isSupabaseConfigured) {
     try {
@@ -285,7 +285,7 @@ app.post('/api/auth/login', async (req, res) => {
         session: { user: { email, role: 'admin', name: 'Victoria Sterling' }, access_token: 'demo-token-xyz' }
       });
     } else {
-      return res.status(401).json({ error: 'Invalid credentials. Try admin@luxeestate.com / admin123' });
+      return res.status(401).json({ error: 'Invalid credentials. Try terranovarealestateoffice@gmail.com / admin123' });
     }
   }
 });

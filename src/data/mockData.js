@@ -116,7 +116,7 @@ export const luxuryAgents = [
     role: "Senior Private Broker & Founder",
     specialization: "Ultra-High-Net-Worth Advisory (Global)",
     avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&h=400&q=80",
-    email: "victoria@luxeestate.com",
+    email: "victoria@terranova.com",
     phone: "+1 (310) 909-8800",
     bio: "Over 18 years of experience representing royal families, corporate titans, and elite athletes in securing their private residential assets globally."
   },
@@ -126,7 +126,7 @@ export const luxuryAgents = [
     role: "Managing Partner",
     specialization: "Waterfront Penthouses & Estates",
     avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&h=400&q=80",
-    email: "marcus@luxeestate.com",
+    email: "marcus@terranova.com",
     phone: "+971 (50) 808-9900",
     bio: "Based in our Dubai office, Marcus handles high-volume transactions on Palm Jumeirah, Dubai Marina, and off-market branded residences."
   },
@@ -136,7 +136,7 @@ export const luxuryAgents = [
     role: "Senior Associate Director",
     specialization: "European Historic Estates & Mansions",
     avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&h=400&q=80",
-    email: "helena@luxeestate.com",
+    email: "helena@terranova.com",
     phone: "+44 20 7946 0958",
     bio: "Helena specializes in premium listings across London, the French Riviera, and Swiss lakeside estates."
   }

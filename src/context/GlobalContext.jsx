@@ -204,7 +204,7 @@ export function GlobalProvider({ children }) {
       }
     } catch (err) {
       console.warn("Auth API failed, trying offline mock auth:", err);
-      if ((email === 'admin@luxeestate.com' || email === 'admin@homeverse.com') && password === 'admin123') {
+      if ((email === 'terranovarealestateoffice@gmail.com' || email === 'admin@homeverse.com') && password === 'admin123') {
         const adminUser = { email, name: 'Victoria Sterling', role: 'admin' };
         localStorage.setItem('le_token', 'demo-token-xyz');
         setCurrentUser(adminUser);
@@ -226,7 +226,7 @@ export function GlobalProvider({ children }) {
     if (name && email && password) {
       const newUser = { email, name, role: 'client' };
       setCurrentUser(newUser);
-      showToast(`Account created! Welcome to LuxeEstate, ${name}.`, 'success');
+      showToast(`Account created! Welcome to TerraNova, ${name}.`, 'success');
       return { success: true };
     }
     return { success: false, error: 'Please fill in all fields.' };

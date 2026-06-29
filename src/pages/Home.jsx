@@ -37,7 +37,7 @@ export default function Home() {
     {
       name: "Countess Alexandra",
       role: "Estate Investor",
-      quote: "LuxeEstate has set a new benchmark for discretion and white-glove service. Securing our penthouse in One Canal was completely seamless.",
+      quote: "TerraNova has set a new benchmark for discretion and personalized service. Securing our properties in Kerala was completely seamless.",
       firm: "Sterling Holdings"
     },
     {
@@ -114,15 +114,14 @@ export default function Home() {
             variants={itemVariants}
             className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-tight text-bg-cream"
           >
-            Find Luxury Living <br />
-            <span className="text-accent-gold">Without Compromise</span>
+            From Land to <span className="text-accent-gold">Legacy</span>
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
             className="font-sans text-lg md:text-xl text-neutral-laurel/90 mb-12 max-w-2xl mx-auto leading-relaxed font-light"
           >
-            Securing elite residential masterpieces, private penthouses, and waterfront estates for the most discerning global client.
+            TerraNova Real Estate: Trusted real estate partner in Thiruvananthapuram, Kerala for land, residential, and commercial properties.
           </motion.p>
 
           {/* Primary & Secondary CTAs */}
@@ -219,7 +218,7 @@ export default function Home() {
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
           <div className="max-w-2xl mb-20 space-y-4">
             <span className="text-accent-gold font-sans font-semibold text-xs uppercase tracking-[0.2em] block">Discerning Service</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-bg-cream">The LuxeEstate Standard</h2>
+            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-bg-cream">The TerraNova Standard</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

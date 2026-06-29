@@ -6,7 +6,7 @@ export default function AdminHeader({ activeTab, notifications = [], onNotificat
   const dropdownRef = React.useRef(null);
 
   const titles = {
-    overview: { title: "Dashboard Overview", subtitle: "Welcome back to the LuxeEstate Command Center" },
+    overview: { title: "Dashboard Overview", subtitle: "Welcome back to the TerraNova Command Center" },
     listings: { title: "Properties Portfolio", subtitle: "Create, edit, duplicate and publish luxury property listings" },
     categories: { title: "Property Categories", subtitle: "Organize luxury listings into collections" },
     messages: { title: "Client Enquiries", subtitle: "Private brokerage inquiries and consultation requests" },

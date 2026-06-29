@@ -43,7 +43,7 @@ export default function Dashboard() {
   // Form State for User Profile
   const [profileForm, setProfileForm] = useState({
     name: currentUser?.name || 'Victoria Sterling',
-    email: currentUser?.email || 'admin@luxeestate.com'
+    email: currentUser?.email || 'terranovarealestateoffice@gmail.com'
   });
 
   // Handle tab and item selection from URL query parameters (e.g. notifications redirects)
@@ -274,7 +274,7 @@ export default function Dashboard() {
                     <div>
                       <h4 className="font-bold text-sm text-primary">Platform Health Integrity</h4>
                       <p className="text-xs text-neutral-laurel mt-1.5 leading-relaxed">
-                        LuxeEstate core database server connections, image CDNs, and Supabase replication protocols are operating within normal limits (99.98% uptime).
+                        TerraNova core database server connections, image CDNs, and Supabase replication protocols are operating within normal limits (99.98% uptime).
                       </p>
                     </div>
                     <div className="flex items-center gap-2 text-xs font-semibold text-green-700">

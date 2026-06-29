@@ -10,9 +10,9 @@ import {
 } from 'lucide-react';
 
 export default function AdminSettings({ showToast }) {
-  const [siteName, setSiteName] = useState('LuxeEstate');
-  const [supportEmail, setSupportEmail] = useState('concierge@luxeestate.com');
-  const [phone, setPhone] = useState('+1 (800) 555-LUXE');
+  const [siteName, setSiteName] = useState('TerraNova');
+  const [supportEmail, setSupportEmail] = useState('concierge@terranova.com');
+  const [phone, setPhone] = useState('8089729949');
   const [currency, setCurrency] = useState('$ USD');
 
   const [currentPassword, setCurrentPassword] = useState('');

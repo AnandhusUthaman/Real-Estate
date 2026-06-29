@@ -23,11 +23,11 @@ export default function Footer() {
           <Link to="/" className="flex items-center gap-2">
             <Compass className="w-8 h-8 text-accent-gold" />
             <span className="font-display text-2xl font-bold tracking-widest text-bg-cream">
-              LUXE<span className="text-accent-gold">ESTATE</span>
+              TERRA<span className="text-accent-gold">NOVA</span>
             </span>
           </Link>
           <p className="font-sans text-sm text-neutral-laurel leading-relaxed">
-            Representing the world's most luxurious residential properties. Our legacy of trust and discretion defines our concierge brokerage model.
+            TerraNova Real Estate is a trusted real estate agency based in Thiruvananthapuram, Kerala, specializing in buying and selling land, residential properties, and commercial spaces. We are committed to helping clients find the right property with transparency, integrity, and personalized service.
           </p>
           {/* Social Icons */}
           <div className="flex gap-4">
@@ -74,19 +74,19 @@ export default function Footer() {
 
         {/* Global Offices */}
         <div>
-          <h4 className="font-display text-lg font-bold text-accent-gold uppercase tracking-wider mb-6">Offices</h4>
+          <h4 className="font-display text-lg font-bold text-accent-gold uppercase tracking-wider mb-6">Contact Us</h4>
           <ul className="space-y-4 font-sans text-sm text-neutral-laurel">
             <li className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-accent-gold shrink-0 mt-0.5" />
-              <span>One Canal Pavilion, Palm Jumeirah, Dubai Marina, UAE</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 text-accent-gold shrink-0 mt-0.5" />
-              <span>9560 Bel Air Road, Beverly Hills, CA 90210, USA</span>
+              <span>Thiruvananthapuram, Kerala</span>
             </li>
             <li className="flex items-center gap-3">
               <Phone className="w-4 h-4 text-accent-gold shrink-0" />
-              <span>+1 (800) LUXE-ESTATE</span>
+              <span>8089729949</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <Mail className="w-4 h-4 text-accent-gold shrink-0" />
+              <span>terranovarealestateoffice@gmail.com</span>
             </li>
           </ul>
         </div>
@@ -121,7 +121,7 @@ export default function Footer() {
       {/* Gold Divider */}
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         <div className="border-t border-accent-gold/20 pt-8 flex flex-col md:flex-row justify-between items-center text-xs font-sans text-neutral-laurel/75 gap-4">
-          <p>© {new Date().getFullYear()} LuxeEstate. All Rights Reserved. Private Concierge Brokerage.</p>
+          <p>© {new Date().getFullYear()} TerraNova. All Rights Reserved. Private Concierge Brokerage.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-bg-cream transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-bg-cream transition-colors">Terms of Service</a>
