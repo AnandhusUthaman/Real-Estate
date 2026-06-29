@@ -38,6 +38,17 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
+  // Handle ESC key press to close menu
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   const navLinks = [
     { label: "Home", path: "/" },
     { label: "Properties", path: "/properties" },
@@ -132,9 +143,9 @@ export default function Navbar() {
 
       {/* Mobile Drawer Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-primary/95 backdrop-blur-md z-50 lg:hidden flex flex-col p-6 transition-all duration-300">
+        <div className="fixed inset-0 bg-primary z-[9999] lg:hidden flex flex-col p-6 overflow-y-auto">
           {/* Header inside Mobile Menu */}
-          <div className="flex justify-between items-center pb-6 border-b border-accent-gold/15 mb-8">
+          <div className="flex justify-between items-center pb-6 border-b border-accent-gold/15 mb-8 shrink-0">
             {/* Logo */}
             <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2">
               <Compass className="w-8 h-8 text-accent-gold" />
@@ -145,7 +156,7 @@ export default function Navbar() {
             {/* Close Button */}
             <button
               onClick={() => setIsOpen(false)}
-              className="text-bg-cream hover:text-accent-gold focus:outline-none transition-colors duration-300"
+              className="text-bg-cream hover:text-accent-gold focus:outline-none transition-colors duration-300 p-2"
               aria-label="Close navigation menu"
             >
               <X className="w-7 h-7" />
@@ -153,7 +164,7 @@ export default function Navbar() {
           </div>
 
           {/* Navigation Links */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-3">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
@@ -161,9 +172,10 @@ export default function Navbar() {
                   key={link.path}
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className={`font-display text-2xl tracking-wider py-2 border-b border-white/5 flex justify-between items-center ${
-                    isActive ? 'text-accent-gold font-bold' : 'text-bg-cream/90 hover:text-bg-cream'
+                  className={`font-display text-2xl tracking-wider py-4 px-2 border-b border-white/5 flex justify-between items-center transition-all ${
+                    isActive ? 'text-accent-gold font-bold bg-white/5' : 'text-bg-cream/90 hover:text-bg-cream hover:bg-white/5'
                   }`}
+                  style={{ minHeight: '48px' }}
                 >
                   <span>{link.label}</span>
                   {isActive && <div className="w-2 h-2 rounded-full bg-accent-gold" />}
@@ -173,7 +185,8 @@ export default function Navbar() {
             <Link
               to="/wishlist"
               onClick={() => setIsOpen(false)}
-              className="font-display text-2xl text-bg-cream/90 hover:text-bg-cream py-2 border-b border-white/5 flex justify-between items-center"
+              className="font-display text-2xl text-bg-cream/90 hover:text-bg-cream py-4 px-2 border-b border-white/5 flex justify-between items-center hover:bg-white/5"
+              style={{ minHeight: '48px' }}
             >
               <span>Wishlist ({favorites.length})</span>
               {favorites.length > 0 && (
@@ -185,13 +198,13 @@ export default function Navbar() {
           </div>
 
           {/* Bottom Actions */}
-          <div className="border-t border-accent-gold/15 pt-8 flex flex-col gap-4 mt-auto">
+          <div className="border-t border-accent-gold/15 pt-8 flex flex-col gap-4 mt-auto shrink-0">
             {currentUser ? (
               <div className="flex flex-col gap-4">
                 <Link
                   to="/dashboard"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 text-bg-cream py-2"
+                  className="flex items-center gap-3 text-bg-cream py-3 px-2 rounded-[10px] hover:bg-white/5"
                 >
                   <User className="w-6 h-6 text-accent-gold" />
                   <span className="font-sans text-lg">{currentUser.name} (Dashboard)</span>
@@ -203,6 +216,7 @@ export default function Navbar() {
                     navigate('/');
                   }}
                   className="btn-secondary w-full py-3.5 text-sm uppercase tracking-wider font-bold"
+                  style={{ minHeight: '48px' }}
                 >
                   Logout
                 </button>
@@ -212,7 +226,8 @@ export default function Navbar() {
             <Link
               to="/contact"
               onClick={() => setIsOpen(false)}
-              className="w-full py-4 text-center bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold text-sm tracking-widest uppercase rounded-[12px] transition-all border border-accent-gold/25 shadow-luxury"
+              className="w-full py-4 text-center bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold text-sm tracking-widest uppercase rounded-[12px] transition-all border border-accent-gold/25 shadow-luxury flex items-center justify-center"
+              style={{ minHeight: '48px' }}
             >
               Book Consultation
             </Link>
