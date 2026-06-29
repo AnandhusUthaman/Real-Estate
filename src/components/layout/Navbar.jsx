@@ -58,88 +58,90 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-      isScrolled || !isHome
-        ? 'bg-primary/80 backdrop-blur-lg border-b border-accent-gold/15 py-4 shadow-luxury'
-        : 'bg-white/5 backdrop-blur-[8px] border-b border-white/10 py-6'
-    }`}>
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <Compass className="w-8 h-8 text-accent-gold group-hover:rotate-45 transition-transform duration-500" />
-          <span className="font-display text-2xl font-bold tracking-widest text-bg-cream">
-            TERRA<span className="text-accent-gold">NOVA</span>
-          </span>
-        </Link>
+    <>
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isScrolled || !isHome
+          ? 'bg-primary/80 backdrop-blur-lg border-b border-accent-gold/15 py-4 shadow-luxury'
+          : 'bg-white/5 backdrop-blur-[8px] border-b border-white/10 py-6'
+      }`}>
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between items-center">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 group">
+            <Compass className="w-8 h-8 text-accent-gold group-hover:rotate-45 transition-transform duration-500" />
+            <span className="font-display text-2xl font-bold tracking-widest text-bg-cream">
+              TERRA<span className="text-accent-gold">NOVA</span>
+            </span>
+          </Link>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => {
-            const isActive = location.pathname === link.path;
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`font-sans text-sm tracking-widest uppercase transition-colors duration-300 relative nav-underline-anim ${
-                  isActive ? 'text-accent-gold' : 'text-bg-cream/80 hover:text-bg-cream'
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </div>
+          {/* Desktop Navigation Links */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`font-sans text-sm tracking-widest uppercase transition-colors duration-300 relative nav-underline-anim ${
+                    isActive ? 'text-accent-gold' : 'text-bg-cream/80 hover:text-bg-cream'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </div>
 
-        {/* Action Buttons */}
-        <div className="hidden lg:flex items-center gap-6">
-          {/* Wishlist Link */}
-          <Link to="/wishlist" className="relative text-bg-cream hover:text-accent-gold transition-colors duration-300">
-            <Heart className="w-5 h-5" />
-            {favorites.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-accent-gold text-primary font-bold text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                {favorites.length}
-              </span>
+          {/* Action Buttons */}
+          <div className="hidden lg:flex items-center gap-6">
+            {/* Wishlist Link */}
+            <Link to="/wishlist" className="relative text-bg-cream hover:text-accent-gold transition-colors duration-300">
+              <Heart className="w-5 h-5" />
+              {favorites.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-accent-gold text-primary font-bold text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {favorites.length}
+                </span>
+              )}
+            </Link>
+
+            {currentUser && (
+              <div className="flex items-center gap-4">
+                <Link
+                  to="/dashboard"
+                  className="flex items-center gap-1.5 text-bg-cream hover:text-accent-gold transition-colors duration-300"
+                >
+                  <User className="w-5 h-5 text-accent-gold" />
+                  <span className="text-sm font-sans tracking-wider max-w-[100px] truncate">{currentUser.name}</span>
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                  }}
+                  className="text-xs tracking-wider uppercase font-sans border border-accent-gold/40 text-bg-cream/80 hover:text-bg-cream hover:border-accent-gold px-3 py-1.5 rounded-button transition-all duration-300"
+                >
+                  Logout
+                </button>
+              </div>
             )}
-          </Link>
 
-          {currentUser && (
-            <div className="flex items-center gap-4">
-              <Link
-                to="/dashboard"
-                className="flex items-center gap-1.5 text-bg-cream hover:text-accent-gold transition-colors duration-300"
-              >
-                <User className="w-5 h-5 text-accent-gold" />
-                <span className="text-sm font-sans tracking-wider max-w-[100px] truncate">{currentUser.name}</span>
-              </Link>
-              <button
-                onClick={() => {
-                  logout();
-                  navigate('/');
-                }}
-                className="text-xs tracking-wider uppercase font-sans border border-accent-gold/40 text-bg-cream/80 hover:text-bg-cream hover:border-accent-gold px-3 py-1.5 rounded-button transition-all duration-300"
-              >
-                Logout
-              </button>
-            </div>
-          )}
+            <Link
+              to="/contact"
+              className="bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold px-6 py-2.5 rounded-[12px] text-xs tracking-widest uppercase transition-all shadow-sm inline-flex items-center justify-center cursor-pointer border border-accent-gold/25"
+            >
+              Book Consultation
+            </Link>
+          </div>
 
-          <Link
-            to="/contact"
-            className="bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold px-6 py-2.5 rounded-[12px] text-xs tracking-widest uppercase transition-all shadow-sm inline-flex items-center justify-center cursor-pointer border border-accent-gold/25"
+          {/* Mobile Hamburger Trigger */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="lg:hidden text-bg-cream hover:text-accent-gold focus:outline-none transition-colors duration-300"
+            aria-label="Toggle navigation menu"
           >
-            Book Consultation
-          </Link>
+            {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+          </button>
         </div>
-
-        {/* Mobile Hamburger Trigger */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden text-bg-cream hover:text-accent-gold focus:outline-none transition-colors duration-300"
-          aria-label="Toggle navigation menu"
-        >
-          {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
-        </button>
-      </div>
+      </nav>
 
       {/* Mobile Drawer Overlay */}
       {isOpen && (
@@ -234,6 +236,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </nav>
+    </>
   );
 }
