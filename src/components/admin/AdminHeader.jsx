@@ -1,7 +1,9 @@
 import React from 'react';
 import { Plus, Bell, Search, Home, UserCheck, Mail } from 'lucide-react';
+import { useGlobalContext } from '../../context/GlobalContext';
 
 export default function AdminHeader({ activeTab, notifications = [], onNotificationSelect, onAddPropertyClick }) {
+  const { currentUser } = useGlobalContext();
   const [showDropdown, setShowDropdown] = React.useState(false);
   const dropdownRef = React.useRef(null);
 
@@ -149,10 +151,10 @@ export default function AdminHeader({ activeTab, notifications = [], onNotificat
           {/* User Profile Area */}
           <div className="flex items-center gap-3 border-l border-neutral-laurel/20 pl-4 md:pl-6">
             <div className="w-9 h-9 rounded-full bg-primary text-bg-cream font-display font-bold text-xs flex items-center justify-center border border-accent-gold/30 shadow-sm">
-              VS
+              {currentUser?.name ? currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'AN'}
             </div>
             <div className="hidden sm:block text-left">
-              <p className="text-xs font-bold text-primary leading-none">Victoria Sterling</p>
+              <p className="text-xs font-bold text-primary leading-none">{currentUser?.name || 'Andhu'}</p>
               <p className="text-[9px] uppercase tracking-wider text-neutral-laurel font-bold mt-0.5">Admin Broker</p>
             </div>
           </div>

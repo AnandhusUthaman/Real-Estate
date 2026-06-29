@@ -161,7 +161,8 @@ const mergeMessage = (msg, metadata) => {
   const meta = metadata[msg.id] || {};
   return {
     ...msg,
-    message: meta.message || ''
+    message: meta.message || '',
+    replied: msg.replied !== undefined ? msg.replied : (meta.replied || false)
   };
 };
 
@@ -197,14 +198,13 @@ if (isSupabaseConfigured) {
 
 // In-Memory fallback store for demo mode
 let propertiesStore = [
-  { id: 1, title: "Modern Family Villa", location: "Beverly Hills, CA", price: "$2,450,000", type: "sale", status: "For Sale", beds: 4, baths: 3, area: "3,200 sqft", img: "https://picsum.photos/400/300?random=1", featured: true },
-  { id: 2, title: "Luxury Waterfront Apt", location: "Miami Beach, FL", price: "$4,800/mo", type: "rent", status: "For Rent", beds: 3, baths: 2, area: "1,800 sqft", img: "https://picsum.photos/400/300?random=2", featured: true },
-  { id: 3, title: "Downtown Penthouse", location: "New York, NY", price: "$3,950,000", type: "sale", status: "For Sale", beds: 5, baths: 4, area: "4,100 sqft", img: "https://picsum.photos/400/300?random=3", featured: true },
-  { id: 4, title: "Cozy Suburban Home", location: "Austin, TX", price: "$2,100/mo", type: "rent", status: "For Rent", beds: 3, baths: 2, area: "1,500 sqft", img: "https://picsum.photos/400/300?random=4", featured: true },
-  { id: 5, title: "Hilltop Estate", location: "San Francisco, CA", price: "$5,800,000", type: "sale", status: "For Sale", beds: 6, baths: 5, area: "5,500 sqft", img: "https://picsum.photos/400/300?random=5", featured: false },
-  { id: 6, title: "Chic Studio Loft", location: "Chicago, IL", price: "$1,800/mo", type: "rent", status: "For Rent", beds: 1, baths: 1, area: "750 sqft", img: "https://picsum.photos/400/300?random=6", featured: false },
-  { id: 7, title: "Oceanview Paradise", location: "Malibu, CA", price: "$6,200,000", type: "sale", status: "For Sale", beds: 5, baths: 4, area: "4,800 sqft", img: "https://picsum.photos/400/300?random=7", featured: false },
-  { id: 8, title: "Garden Apartment", location: "Seattle, WA", price: "$2,500/mo", type: "rent", status: "For Rent", beds: 2, baths: 1, area: "1,100 sqft", img: "https://picsum.photos/400/300?random=8", featured: false }
+  { id: 1, title: "Premium Residential Plot", location: "Kowdiar, Thiruvananthapuram", price: "₹ 1,85,00,000", type: "Residential Plot", status: "For Sale", beds: 0, baths: 0, area: "12.5 Cents", roadAccess: "12m Tar Road", img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80", featured: true },
+  { id: 2, title: "NH 66 Commercial Land", location: "Kazhakoottam, Thiruvananthapuram", price: "₹ 8,90,00,000", type: "Commercial Plot", status: "For Sale", beds: 0, baths: 0, area: "45 Cents", roadAccess: "National Highway Frontage", img: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80", featured: true },
+  { id: 3, title: "Agricultural Farm Land", location: "Wayanad, Kerala", price: "₹ 1,20,00,000", type: "Agricultural Land", status: "For Sale", beds: 0, baths: 0, area: "2.5 Acres", roadAccess: "Paved Village Road", img: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80", featured: true },
+  { id: 4, title: "Industrial Development Plot", location: "Kinfra Industrial Park, Thiruvananthapuram", price: "₹ 3,50,00,000", type: "Industrial Land", status: "For Sale", beds: 0, baths: 0, area: "1.2 Acres", roadAccess: "Heavy Vehicle Access Road", img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80", featured: true },
+  { id: 5, title: "Premium Gated Community Plot", location: "Akkulam, Thiruvananthapuram", price: "₹ 95,00,000", type: "Residential Plot", status: "For Sale", beds: 0, baths: 0, area: "10 Cents", roadAccess: "8m Wide Private Road", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80", featured: false },
+  { id: 6, title: "Commercial Corner Plot", location: "East Fort, Thiruvananthapuram", price: "₹ 2,40,00,000", type: "Commercial Plot", status: "For Sale", beds: 0, baths: 0, area: "8 Cents", roadAccess: "Dual Tar Road Frontage", img: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80", featured: false },
+  { id: 7, title: "Oceanfront Luxury Villa", location: "Kovalam, Thiruvananthapuram", price: "₹ 5,20,00,000", type: "Villa/House", status: "For Sale", beds: 4, baths: 5, area: "4,500 sqft (18 Cents)", roadAccess: "6m Private Road", img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80", featured: false }
 ];
 
 let messagesStore = [
@@ -282,10 +282,10 @@ app.post('/api/auth/login', async (req, res) => {
     if (isAdminEmail && password === 'admin123') {
       return res.status(200).json({
         message: 'Success (Demo)',
-        session: { user: { email, role: 'admin', name: 'Victoria Sterling' }, access_token: 'demo-token-xyz' }
+        session: { user: { email, role: 'admin', name: 'Andhu' }, access_token: 'demo-token-xyz' }
       });
     } else {
-      return res.status(401).json({ error: 'Invalid credentials. Try terranovarealestateoffice@gmail.com / admin123' });
+      return res.status(401).json({ error: 'Invalid credentials. Try terranovarealestateoffice@gmail.com / TerraNova@Vinod' });
     }
   }
 });
@@ -659,29 +659,87 @@ app.post('/api/messages', async (req, res) => {
 
 app.put('/api/messages/:id', verifyAdmin, async (req, res) => {
   const { id } = req.params;
-  const { read } = req.body;
+  const { read, replied } = req.body;
 
   if (isSupabaseConfigured) {
     try {
+      const updateFields = {};
+      if (read !== undefined) updateFields.read = read;
+      if (replied !== undefined) updateFields.replied = replied;
+
       const { data, error } = await supabase
         .from('messages')
-        .update({ read })
+        .update(updateFields)
         .eq('id', id)
         .select();
 
       if (error) throw error;
       const updatedMsg = data[0];
       const metadata = getMessagesMetadata();
+
+      if (replied !== undefined) {
+        metadata[id] = { ...metadata[id], replied };
+        saveMessagesMetadata(metadata);
+      }
+
       return res.status(200).json(mergeMessage(updatedMsg, metadata));
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
   } else {
     const numericId = parseInt(id);
-    messagesStore = messagesStore.map(m => m.id === numericId ? { ...m, read } : m);
+    messagesStore = messagesStore.map(m => {
+      if (m.id === numericId) {
+        const u = { ...m };
+        if (read !== undefined) u.read = read;
+        if (replied !== undefined) u.replied = replied;
+        return u;
+      }
+      return m;
+    });
     const updated = messagesStore.find(m => m.id === numericId);
     const metadata = getMessagesMetadata();
+
+    if (replied !== undefined) {
+      metadata[id] = { ...metadata[id], replied };
+      saveMessagesMetadata(metadata);
+    }
+
     return res.status(200).json(mergeMessage(updated, metadata));
+  }
+});
+
+app.delete('/api/messages/:id', verifyAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  if (isSupabaseConfigured) {
+    try {
+      const { error } = await supabase
+        .from('messages')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      // Delete metadata
+      const metadata = getMessagesMetadata();
+      delete metadata[id];
+      saveMessagesMetadata(metadata);
+
+      return res.status(200).json({ message: 'Message deleted successfully' });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else {
+    const numericId = parseInt(id);
+    messagesStore = messagesStore.filter(m => m.id !== numericId);
+
+    // Delete metadata
+    const metadata = getMessagesMetadata();
+    delete metadata[id];
+    saveMessagesMetadata(metadata);
+
+    return res.status(200).json({ message: 'Message deleted successfully' });
   }
 });
 

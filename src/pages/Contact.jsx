@@ -62,7 +62,7 @@ export default function Contact() {
                     <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold mb-1.5">Full Name *</label>
                     <input
                       type="text"
-                      placeholder="e.g. Elizabeth Vance"
+                      placeholder="e.g. Vinod Kumar"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none"
@@ -73,7 +73,7 @@ export default function Contact() {
                     <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold mb-1.5">Telephone *</label>
                     <input
                       type="tel"
-                      placeholder="e.g. +1 (310) 909-8800"
+                      placeholder="e.g. 8089729949"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
                       className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none"
@@ -86,7 +86,7 @@ export default function Contact() {
                   <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold mb-1.5">Email Address *</label>
                   <input
                     type="email"
-                    placeholder="e.g. elizabeth@vance.com"
+                    placeholder="e.g. client@gmail.com"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none"
@@ -101,10 +101,9 @@ export default function Contact() {
                     onChange={(e) => setForm({ ...form, interest: e.target.value })}
                     className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none text-primary cursor-pointer"
                   >
-                    <option value="Buy Luxury Property">Buy Luxury Property</option>
-                    <option value="Lease Luxury Residence">Lease Luxury Residence</option>
-                    <option value="List My Property">List My Property</option>
-                    <option value="Partnership & Development">Partnership & Development</option>
+                    <option value="Buy Premium Land">Buy Premium Land</option>
+                    <option value="List My Land/Property">List My Land/Property</option>
+                    <option value="Joint Venture Development">Joint Venture Development</option>
                   </select>
                 </div>
 
@@ -112,7 +111,7 @@ export default function Contact() {
                   <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold mb-1.5">Message / Requirements *</label>
                   <textarea
                     rows="4"
-                    placeholder="Provide details regarding budget scale, bedroom counts, or specific beachfront desires..."
+                    placeholder="Provide details regarding budget scale, cent/acre size requirements, or road access needs..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                     className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none"
@@ -134,30 +133,23 @@ export default function Contact() {
           <div className="space-y-10">
             {/* Contact cards */}
             <div className="bg-white rounded-[18px] border border-neutral-laurel/20 p-8 space-y-6 shadow-sm">
-              <h2 className="font-display text-2xl font-bold text-primary">Global Contact Registry</h2>
+              <h2 className="font-display text-2xl font-bold text-primary">Regional Contact Registry</h2>
               
               <div className="space-y-4 font-sans text-sm text-primary/80">
                 <div className="flex items-start gap-4">
                   <MapPin className="w-5 h-5 text-accent-gold shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-primary">Dubai Marina HQ</h4>
-                    <p className="text-xs text-neutral-laurel">One Canal Pavilion, Palm Jumeirah, Dubai Marina, UAE</p>
+                    <h4 className="font-bold text-primary">Thiruvananthapuram HQ</h4>
+                    <p className="text-xs text-neutral-laurel">TerraNova Real Estate, Thiruvananthapuram, Kerala, India</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <MapPin className="w-5 h-5 text-accent-gold shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-bold text-primary">Beverly Hills Salon</h4>
-                    <p className="text-xs text-neutral-laurel">9560 Bel Air Road, Beverly Hills, CA 90210, USA</p>
-                  </div>
-                </div>
 
                 <div className="flex items-center gap-4">
                   <Phone className="w-5 h-5 text-accent-gold shrink-0" />
                   <div>
                     <h4 className="font-bold text-primary">Brokerage Direct</h4>
-                    <p className="text-xs text-neutral-laurel">+1 (800) LUXE-ESTATE</p>
+                    <p className="text-xs text-neutral-laurel">8089729949</p>
                   </div>
                 </div>
 
@@ -165,7 +157,7 @@ export default function Contact() {
                   <Clock className="w-5 h-5 text-accent-gold shrink-0" />
                   <div>
                     <h4 className="font-bold text-primary">Operating Hours</h4>
-                    <p className="text-xs text-neutral-laurel">Mon-Fri: 9AM - 7PM, Sat: 10AM - 4PM (GMT/PST)</p>
+                    <p className="text-xs text-neutral-laurel">Mon-Sat: 9:00 AM - 6:00 PM (IST)</p>
                   </div>
                 </div>
               </div>

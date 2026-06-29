@@ -6,7 +6,7 @@ import {
   Heart,
   ChevronLeft,
   Calendar,
-  DollarSign,
+  IndianRupee,
   Percent,
   Calculator,
   Compass,
@@ -141,9 +141,9 @@ export default function PropertyDetails() {
   };
 
   const formatCurrency = (val) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'INR',
       maximumFractionDigits: 0
     }).format(val);
   };
@@ -160,7 +160,7 @@ export default function PropertyDetails() {
   ];
 
   return (
-    <div className="pt-32 pb-24 bg-bg-cream min-h-screen">
+    <div className="pt-24 sm:pt-32 pb-16 sm:pb-24 bg-bg-cream min-h-screen">
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Back Link & Title Area */}
         <div className="flex justify-between items-center mb-8">
@@ -190,10 +190,10 @@ export default function PropertyDetails() {
             </span>
           </div>
           <div className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-4">
-            <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-primary leading-tight">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-primary leading-tight">
               {property.title}
             </h1>
-            <span className="font-display text-3xl md:text-4xl font-bold text-primary shrink-0">
+            <span className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-primary shrink-0">
               {property.price}
             </span>
           </div>
@@ -228,36 +228,67 @@ export default function PropertyDetails() {
           <div className="lg:col-span-2 space-y-12">
             {/* Description */}
             <div className="space-y-4">
-              <h2 className="font-display text-2xl font-bold text-primary">The Architecture & Concept</h2>
+              <h2 className="font-display text-2xl font-bold text-primary">
+                {property.beds > 0 ? "The Architecture & Concept" : "Land Features & Concept"}
+              </h2>
               <p className="font-sans text-primary/80 leading-relaxed text-base">{property.description}</p>
               <p className="font-sans text-secondary font-medium italic text-base">"{property.tagline}"</p>
             </div>
 
             {/* Core Specs */}
             <div className="grid grid-cols-3 bg-primary text-bg-cream rounded-[18px] p-6 text-center border border-accent-gold/25 shadow-luxury">
-              <div className="border-r border-accent-gold/15">
-                <span className="text-[10px] uppercase tracking-widest text-neutral-laurel mb-1 block">Bedrooms</span>
-                <span className="font-display text-2xl font-bold text-accent-gold flex items-center justify-center gap-1.5">
-                  <BedDouble className="w-5 h-5 stroke-1" /> {property.beds}
-                </span>
-              </div>
-              <div className="border-r border-accent-gold/15">
-                <span className="text-[10px] uppercase tracking-widest text-neutral-laurel mb-1 block">Bathrooms</span>
-                <span className="font-display text-2xl font-bold text-accent-gold flex items-center justify-center gap-1.5">
-                  <Bath className="w-5 h-5 stroke-1" /> {property.baths}
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] uppercase tracking-widest text-neutral-laurel mb-1 block">Living Space</span>
-                <span className="font-display text-2xl font-bold text-accent-gold flex items-center justify-center gap-1.5">
-                  <Maximize2 className="w-5 h-5 stroke-1" /> {property.area}
-                </span>
-              </div>
+              {property.beds > 0 || property.baths > 0 ? (
+                <>
+                  <div className="border-r border-accent-gold/15">
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-laurel mb-1 block">Bedrooms</span>
+                    <span className="font-display text-2xl font-bold text-accent-gold flex items-center justify-center gap-1.5">
+                      <BedDouble className="w-5 h-5 stroke-1" /> {property.beds}
+                    </span>
+                  </div>
+                  <div className="border-r border-accent-gold/15">
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-laurel mb-1 block">Bathrooms</span>
+                    <span className="font-display text-2xl font-bold text-accent-gold flex items-center justify-center gap-1.5">
+                      <Bath className="w-5 h-5 stroke-1" /> {property.baths}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-laurel mb-1 block">Living Space</span>
+                    <span className="font-display text-2xl font-bold text-accent-gold flex items-center justify-center gap-1.5">
+                      <Maximize2 className="w-5 h-5 stroke-1" /> {property.area}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="border-r border-accent-gold/15">
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-laurel mb-1 block">Total Area</span>
+                    <span className="font-display text-2xl font-bold text-accent-gold flex items-center justify-center gap-1.5">
+                      <Maximize2 className="w-5 h-5 stroke-1" /> {property.area}
+                    </span>
+                  </div>
+                  <div className="border-r border-accent-gold/15">
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-laurel mb-1 block">Road Frontage</span>
+                    <span className="font-display text-xl font-bold text-accent-gold flex items-center justify-center gap-1.5">
+                      <MapPin className="w-5 h-5 stroke-1 shrink-0" />
+                      <span className="truncate text-sm md:text-base" title={property.roadAccess}>{property.roadAccess || "Paved Road"}</span>
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-laurel mb-1 block">Property Type</span>
+                    <span className="font-display text-base md:text-lg font-bold text-accent-gold flex items-center justify-center gap-1">
+                      <Compass className="w-5 h-5 stroke-1 shrink-0" />
+                      <span className="truncate">{property.type}</span>
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Amenities */}
             <div className="space-y-6">
-              <h2 className="font-display text-2xl font-bold text-primary">Private Amenities</h2>
+              <h2 className="font-display text-2xl font-bold text-primary">
+                {property.beds > 0 ? "Private Amenities" : "Site Specifications & Highlights"}
+              </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {property.amenities.map((amenity, index) => (
                   <div key={index} className="flex items-center gap-2 font-sans text-sm text-primary font-medium">
@@ -268,18 +299,22 @@ export default function PropertyDetails() {
               </div>
             </div>
 
-            {/* Floor Plan */}
+            {/* Floor Plan / Plot Layout */}
             <div className="space-y-6 border-t border-neutral-laurel/20 pt-10">
-              <h2 className="font-display text-2xl font-bold text-primary">Floor Plans & Layouts</h2>
+              <h2 className="font-display text-2xl font-bold text-primary">
+                {property.beds > 0 ? "Floor Plans & Layouts" : "Plot Survey Maps & Division Layouts"}
+              </h2>
               <div className="bg-primary/5 border border-neutral-laurel/20 rounded-[18px] p-6 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="space-y-2">
                   <span className="font-sans font-bold text-sm text-primary uppercase tracking-wider">{property.floorPlan}</span>
                   <p className="font-sans text-xs text-neutral-laurel">
-                    Double story layout detailing high-end kitchen integration, family salons, and terrace elevations.
+                    {property.beds > 0
+                      ? "Double story layout detailing high-end kitchen integration, family salons, and terrace elevations."
+                      : "Verified survey blueprint showing exact boundaries, road frontage access width, and topography."}
                   </p>
                 </div>
                 <button
-                  onClick={() => showToast('Downloading floor plans - demo mode', 'info')}
+                  onClick={() => showToast('Downloading layouts - demo mode', 'info')}
                   className="btn-accent px-5 py-3 text-xs tracking-wider uppercase font-semibold flex items-center gap-2 border-accent-gold/45 shrink-0"
                 >
                   <FileText className="w-4 h-4" /> Download PDF Blueprint
@@ -297,9 +332,9 @@ export default function PropertyDetails() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Property Price */}
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold">Property Price ($)</label>
+                  <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold">Property Price (₹)</label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-2.5 w-4 h-4 text-neutral-laurel" />
+                    <IndianRupee className="absolute left-3 top-2.5 w-4 h-4 text-neutral-laurel" />
                     <input
                       type="number"
                       value={calculator.price}

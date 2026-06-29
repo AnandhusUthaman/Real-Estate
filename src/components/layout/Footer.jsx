@@ -58,9 +58,6 @@ export default function Footer() {
               <Link to="/properties" className="hover:text-bg-cream transition-colors duration-300">Browse Properties</Link>
             </li>
             <li>
-              <Link to="/agents" className="hover:text-bg-cream transition-colors duration-300">Elite Agents</Link>
-            </li>
-            <li>
               <Link to="/about" className="hover:text-bg-cream transition-colors duration-300">About Our Brand</Link>
             </li>
             <li>

@@ -8,7 +8,7 @@ import {
   Search,
   MapPin,
   Home as HomeIcon,
-  DollarSign,
+  IndianRupee,
   ShieldCheck,
   Award,
   FileText,
@@ -90,12 +90,12 @@ export default function Home() {
   return (
     <div className="pt-0">
       {/* 1. HERO SECTION */}
-      <section className="relative h-[95vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[90vh] sm:h-[95vh] py-24 sm:py-0 flex items-center justify-center overflow-hidden">
         {/* Background Image with Deep Overlay */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80"
-            alt="Luxury Waterfront Villa"
+            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1920&q=80"
+            alt="Premium Land & Plots"
             className="w-full h-full object-cover scale-105"
           />
           {/* Strict Palette Overlay: #0A3B25 (Deep Bluish Green) with 80% opacity */}
@@ -108,18 +108,25 @@ export default function Home() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-12 w-full text-center text-bg-cream"
+          className="relative z-10 text-center px-6 max-w-5xl mx-auto"
         >
+          <motion.span
+            variants={itemVariants}
+            className="text-accent-gold font-sans font-bold text-xs uppercase tracking-[0.3em] block mb-4"
+          >
+            Exclusive Plotted Developments
+          </motion.span>
+          
           <motion.h1
             variants={itemVariants}
-            className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-tight text-bg-cream"
+            className="font-display text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-tight text-bg-cream"
           >
             From Land to <span className="text-accent-gold">Legacy</span>
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
-            className="font-sans text-lg md:text-xl text-neutral-laurel/90 mb-12 max-w-2xl mx-auto leading-relaxed font-light"
+            className="font-sans text-sm sm:text-lg md:text-xl text-neutral-laurel/90 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed font-light"
           >
             TerraNova Real Estate: Trusted real estate partner in Thiruvananthapuram, Kerala for land, residential, and commercial properties.
           </motion.p>
@@ -146,7 +153,7 @@ export default function Home() {
                 <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold">Location</label>
                 <input
                   type="text"
-                  placeholder="e.g. Dubai, Bel Air"
+                  placeholder="e.g. Petta, Thiruvananthapuram"
                   value={searchFilters.location}
                   onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
                   className="bg-transparent border-none p-0 text-bg-cream text-sm font-semibold focus:outline-none w-full placeholder:text-bg-cream/40 mt-1"
@@ -164,19 +171,22 @@ export default function Home() {
                   className="bg-transparent border-none p-0 text-bg-cream text-sm font-semibold focus:outline-none w-full cursor-pointer mt-1"
                 >
                   <option value="all" className="text-primary bg-bg-cream">All Types</option>
-                  <option value="sale" className="text-primary bg-bg-cream">For Sale</option>
-                  <option value="rent" className="text-primary bg-bg-cream">For Lease</option>
+                  <option value="Residential Plot" className="text-primary bg-bg-cream">Residential Plot</option>
+                  <option value="Commercial Plot" className="text-primary bg-bg-cream">Commercial Plot</option>
+                  <option value="Agricultural Land" className="text-primary bg-bg-cream">Agricultural Land</option>
+                  <option value="Industrial Land" className="text-primary bg-bg-cream">Industrial Land</option>
+                  <option value="Villa/House" className="text-primary bg-bg-cream">Villa/House</option>
                 </select>
               </div>
             </div>
 
             <div className="flex items-center gap-3 px-3 py-2 border-b md:border-b-0 md:w-full">
-              <DollarSign className="w-5 h-5 text-accent-gold shrink-0" />
+              <IndianRupee className="w-5 h-5 text-accent-gold shrink-0" />
               <div className="text-left w-full">
                 <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold">Budget (Max)</label>
                 <input
                   type="text"
-                  placeholder="e.g. $25,000,000"
+                  placeholder="e.g. ₹ 50 Lakhs"
                   value={searchFilters.budget}
                   onChange={(e) => setSearchFilters({ ...searchFilters, budget: e.target.value })}
                   className="bg-transparent border-none p-0 text-bg-cream text-sm font-semibold focus:outline-none w-full placeholder:text-bg-cream/40 mt-1"

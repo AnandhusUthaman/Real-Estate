@@ -14,7 +14,7 @@ export default function PropertyCard({ property }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="relative overflow-hidden rounded-[22px] property-card-shadow aspect-[3/4.2] flex flex-col justify-end p-5 group cursor-pointer bg-primary"
+      className="relative overflow-hidden rounded-[22px] property-card-shadow min-h-[480px] sm:min-h-0 sm:aspect-[3/4.2] flex flex-col justify-end p-5 group cursor-pointer bg-primary"
     >
       {/* 1. Large Immersive Background Image */}
       <div className="absolute inset-0 z-0">
@@ -63,20 +63,20 @@ export default function PropertyCard({ property }) {
       </div>
 
       {/* 3. Floating Frosted Glass Information Panel */}
-      <div className="relative z-10 luxury-glass p-5 flex flex-col justify-between w-full text-primary min-h-[190px]">
+      <div className="relative z-10 luxury-glass p-5 flex flex-col justify-between w-full text-bg-cream min-h-[190px]">
         {/* Top Details (Title, Location, Price) */}
         <div>
           <div className="flex justify-between items-baseline gap-2 mb-1.5">
-            <h3 className="font-display text-lg font-bold text-primary tracking-wide line-clamp-1">
+            <h3 className="font-display text-lg font-bold text-bg-cream tracking-wide line-clamp-1">
               {property.title}
             </h3>
-            <span className="font-display text-lg font-bold text-primary shrink-0">
+            <span className="font-display text-lg font-bold text-accent-gold shrink-0">
               {property.price}
             </span>
           </div>
 
-          <p className="font-sans text-xs text-primary/75 flex items-center gap-1 leading-none mb-4">
-            <MapPin className="w-3.5 h-3.5 text-secondary shrink-0" />
+          <p className="font-sans text-xs text-neutral-laurel flex items-center gap-1 leading-none mb-4">
+            <MapPin className="w-3.5 h-3.5 text-accent-gold shrink-0" />
             <span className="line-clamp-1">{property.location}</span>
           </p>
         </div>
@@ -84,27 +84,42 @@ export default function PropertyCard({ property }) {
         {/* Bottom Details (Specs & Navigation Action) */}
         <div className="space-y-4">
           {/* Specs: Beds, Baths, Area */}
-          <div className="grid grid-cols-3 border-t border-primary/10 pt-3 text-[11px] font-sans font-medium text-primary/80">
-            <div className="flex items-center gap-1.5 justify-center border-r border-primary/10">
-              <BedDouble className="w-3.5 h-3.5 text-secondary stroke-1" />
-              <span>{property.beds} Bed</span>
-            </div>
-            <div className="flex items-center gap-1.5 justify-center border-r border-primary/10">
-              <Bath className="w-3.5 h-3.5 text-secondary stroke-1" />
-              <span>{property.baths} Bath</span>
-            </div>
-            <div className="flex items-center gap-1.5 justify-center">
-              <Maximize2 className="w-3.5 h-3.5 text-secondary stroke-1" />
-              <span className="truncate">{property.area.split(' ')[0]} SF</span>
-            </div>
+          <div className="grid grid-cols-3 border-t border-bg-cream/10 pt-3 text-[11px] font-sans font-medium text-bg-cream/80">
+            {property.beds > 0 || property.baths > 0 ? (
+              <>
+                <div className="flex items-center gap-1.5 justify-center border-r border-bg-cream/10">
+                  <BedDouble className="w-3.5 h-3.5 text-accent-gold stroke-1" />
+                  <span>{property.beds} Bed</span>
+                </div>
+                <div className="flex items-center gap-1.5 justify-center border-r border-bg-cream/10">
+                  <Bath className="w-3.5 h-3.5 text-accent-gold stroke-1" />
+                  <span>{property.baths} Bath</span>
+                </div>
+                <div className="flex items-center gap-1.5 justify-center">
+                  <Maximize2 className="w-3.5 h-3.5 text-accent-gold stroke-1" />
+                  <span className="truncate">{property.area.split(' ')[0]} SF</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-1.5 justify-center border-r border-bg-cream/10 col-span-1">
+                  <Maximize2 className="w-3.5 h-3.5 text-accent-gold stroke-1" />
+                  <span className="truncate font-bold">{property.area}</span>
+                </div>
+                <div className="col-span-2 flex items-center gap-1.5 justify-center pl-2">
+                  <MapPin className="w-3.5 h-3.5 text-accent-gold stroke-1" />
+                  <span className="truncate text-[10px]" title={property.roadAccess || "Road Access"}>{property.roadAccess || "Road Access"}</span>
+                </div>
+              </>
+            )}
           </div>
 
           {/* View Details Action */}
           <Link
             to={`/property/${property.id}`}
-            className="w-full btn-primary bg-primary hover:bg-secondary text-bg-cream text-[10px] tracking-widest uppercase font-bold py-3.5 rounded-[12px] flex items-center justify-center gap-2 group/btn border-none"
+            className="w-full btn-primary bg-primary hover:bg-accent-gold hover:text-primary text-bg-cream text-[10px] tracking-widest uppercase font-bold py-3.5 rounded-[12px] flex items-center justify-center gap-2 group/btn border-none"
           >
-            <span>View Residence</span>
+            <span>View Details</span>
             <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1.5 transition-transform duration-300" />
           </Link>
         </div>

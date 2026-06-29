@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { luxuryProperties } from '../data/mockData';
 
 const GlobalContext = createContext();
@@ -7,7 +7,20 @@ export function GlobalProvider({ children }) {
   // Properties State
   const [properties, setProperties] = useState(() => {
     const saved = localStorage.getItem('le_properties');
-    return saved ? JSON.parse(saved) : luxuryProperties;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        const hasOldData = parsed.some(p => p.price && (p.price.includes('$') || p.location.toLowerCase().includes('london') || p.location.toLowerCase().includes('riviera')));
+        if (hasOldData) {
+          localStorage.setItem('le_properties', JSON.stringify(luxuryProperties));
+          return luxuryProperties;
+        }
+        return parsed;
+      } catch (e) {
+        return luxuryProperties;
+      }
+    }
+    return luxuryProperties;
   });
 
   // Favorites/Wishlist State
@@ -153,13 +166,13 @@ export function GlobalProvider({ children }) {
   }, [currentUser]);
 
   // Toast Functionality
-  const showToast = (message, type = 'success') => {
+  const showToast = useCallback((message, type = 'success') => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 4000);
-  };
+  }, []);
 
   // Toggle Favorite
   const toggleFavorite = (id) => {
@@ -191,7 +204,7 @@ export function GlobalProvider({ children }) {
         
         if (email.includes('admin') || user.email.includes('admin')) {
           user.role = 'admin';
-          user.name = user.name || 'Victoria Sterling';
+          user.name = user.name || 'Andhu';
         }
 
         localStorage.setItem('le_token', token);
@@ -205,7 +218,7 @@ export function GlobalProvider({ children }) {
     } catch (err) {
       console.warn("Auth API failed, trying offline mock auth:", err);
       if ((email === 'terranovarealestateoffice@gmail.com' || email === 'admin@homeverse.com') && password === 'admin123') {
-        const adminUser = { email, name: 'Victoria Sterling', role: 'admin' };
+        const adminUser = { email, name: 'Andhu', role: 'admin' };
         localStorage.setItem('le_token', 'demo-token-xyz');
         setCurrentUser(adminUser);
         showToast('Welcome back. Accessing Portfolio Dashboard (Offline).', 'success');
@@ -240,6 +253,14 @@ export function GlobalProvider({ children }) {
     }
     setCurrentUser(null);
     showToast('Logged out of session.', 'info');
+  };
+
+  const updateProfile = (name, email) => {
+    if (currentUser) {
+      const updatedUser = { ...currentUser, name, email };
+      setCurrentUser(updatedUser);
+      localStorage.setItem('le_session', JSON.stringify(updatedUser));
+    }
   };
 
   // CRUD Operations for Admin / Dashboard
@@ -353,6 +374,43 @@ export function GlobalProvider({ children }) {
     return { success: true };
   };
 
+  const deleteMessage = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/messages/${id}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders()
+      });
+      if (res.ok) {
+        setMessages((prev) => prev.filter((m) => m.id !== id));
+        showToast('Message deleted successfully', 'info');
+        return { success: true };
+      }
+    } catch (err) {
+      console.warn("Failed to delete message on backend, fallback local:", err);
+    }
+    setMessages((prev) => prev.filter((m) => m.id !== id));
+    showToast('Message deleted locally (offline).', 'info');
+    return { success: true };
+  };
+
+  const toggleMessageReplied = async (id, currentRepliedState) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/messages/${id}`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ replied: !currentRepliedState })
+      });
+      if (res.ok) {
+        setMessages(prev => prev.map(m => m.id === id ? { ...m, replied: !currentRepliedState } : m));
+        return { success: true };
+      }
+    } catch (err) {
+      console.warn("Failed to toggle replied state on server, fallback local:", err);
+    }
+    setMessages(prev => prev.map(m => m.id === id ? { ...m, replied: !currentRepliedState } : m));
+    return { success: true };
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -367,10 +425,13 @@ export function GlobalProvider({ children }) {
         login,
         register,
         logout,
+        updateProfile,
         addProperty,
         updateProperty,
         deleteProperty,
         sendMessage,
+        deleteMessage,
+        toggleMessageReplied,
         fetchProperties,
         fetchMessages,
         fetchUsers,

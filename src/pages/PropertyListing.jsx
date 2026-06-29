@@ -13,8 +13,8 @@ export default function PropertyListing() {
   const [filters, setFilters] = useState({
     location: searchParams.get('location') || '',
     type: searchParams.get('type') || 'all',
-    beds: 'all',
-    priceRange: 'all', // 'all', 'under-20m', '20m-40m', 'over-40m'
+    roadAccess: 'all',
+    priceRange: 'all', // 'all', 'under-150l', '150l-400l', 'over-400l'
     searchQuery: ''
   });
 
@@ -44,7 +44,15 @@ export default function PropertyListing() {
 
     const matchesType = filters.type === 'all' ? true : p.type === filters.type;
 
-    const matchesBeds = filters.beds === 'all' ? true : p.beds >= parseInt(filters.beds, 10);
+    const matchesRoad = filters.roadAccess === 'all'
+      ? true
+      : filters.roadAccess === 'nh'
+      ? p.roadAccess?.toLowerCase().includes('highway')
+      : filters.roadAccess === 'tar'
+      ? p.roadAccess?.toLowerCase().includes('tar') || p.roadAccess?.toLowerCase().includes('paved')
+      : filters.roadAccess === 'private'
+      ? p.roadAccess?.toLowerCase().includes('private')
+      : true;
 
     const matchesSearch = filters.searchQuery
       ? p.title.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
@@ -53,15 +61,15 @@ export default function PropertyListing() {
 
     const price = parsePrice(p.price);
     let matchesPrice = true;
-    if (filters.priceRange === 'under-20m') {
-      matchesPrice = price < 20000000;
-    } else if (filters.priceRange === '20m-40m') {
-      matchesPrice = price >= 20000000 && price <= 40000000;
-    } else if (filters.priceRange === 'over-40m') {
+    if (filters.priceRange === 'under-150l') {
+      matchesPrice = price < 15000000;
+    } else if (filters.priceRange === '150l-400l') {
+      matchesPrice = price >= 15000000 && price <= 40000000;
+    } else if (filters.priceRange === 'over-400l') {
       matchesPrice = price > 40000000;
     }
 
-    return matchesLoc && matchesType && matchesBeds && matchesSearch && matchesPrice;
+    return matchesLoc && matchesType && matchesRoad && matchesSearch && matchesPrice;
   });
 
   // Sorted Properties
@@ -79,7 +87,7 @@ export default function PropertyListing() {
     setFilters({
       location: '',
       type: 'all',
-      beds: 'all',
+      roadAccess: 'all',
       priceRange: 'all',
       searchQuery: ''
     });
@@ -87,7 +95,7 @@ export default function PropertyListing() {
   };
 
   return (
-    <div className="pt-36 pb-32 bg-bg-cream min-h-screen relative overflow-hidden">
+    <div className="pt-24 sm:pt-36 pb-20 sm:pb-32 bg-bg-cream min-h-screen relative overflow-hidden">
       {/* Decorative large low-opacity blurred background spheres */}
       <div className="absolute top-[10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-primary/3 filter blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-accent-gold/4 filter blur-[120px] pointer-events-none" />
@@ -95,7 +103,7 @@ export default function PropertyListing() {
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12 relative z-10">
         
         {/* Header Section */}
-        <div className="space-y-4 mb-20 text-center max-w-3xl mx-auto">
+        <div className="space-y-4 mb-10 sm:mb-20 text-center max-w-3xl mx-auto">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -109,7 +117,7 @@ export default function PropertyListing() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display text-5xl md:text-7xl font-bold tracking-tight text-primary leading-none"
+            className="font-display text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-primary leading-none"
           >
             The Global Portfolio
           </motion.h1>
@@ -118,7 +126,7 @@ export default function PropertyListing() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.2 }}
-            className="font-sans text-neutral-laurel text-base md:text-lg max-w-xl mx-auto leading-relaxed font-light pt-2"
+            className="font-sans text-sm sm:text-base md:text-lg max-w-xl mx-auto leading-relaxed font-light pt-2"
           >
             A master list of iconic private properties, modern beachfront masterpieces, and high-floor penthouses.
           </motion.p>
@@ -129,7 +137,7 @@ export default function PropertyListing() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="luxury-glass p-3 flex flex-col md:flex-row items-center gap-4 max-w-5xl mx-auto shadow-2xl border border-white/30 mb-20"
+          className="luxury-glass p-3 flex flex-col md:flex-row items-center gap-4 max-w-5xl mx-auto shadow-2xl border border-white/30 mb-10 sm:mb-20"
         >
           {/* Main search key input */}
           <div className="relative flex-grow w-full">
@@ -218,7 +226,7 @@ export default function PropertyListing() {
                 <MapPin className="absolute left-3.5 top-3 w-4 h-4 text-primary/45 stroke-1" />
                 <input
                   type="text"
-                  placeholder="e.g. Dubai Marina, Bel Air"
+                  placeholder="e.g. Petta, Thiruvananthapuram"
                   value={filters.location}
                   onChange={(e) => setFilters({ ...filters, location: e.target.value })}
                   className="bg-white/40 border border-primary/15 text-primary text-sm placeholder:text-neutral-laurel rounded-[12px] pl-10 pr-4 py-2.5 w-full focus:outline-none focus:border-accent-gold focus:bg-white transition-all"
@@ -228,12 +236,15 @@ export default function PropertyListing() {
 
             {/* Property Type Pills */}
             <div className="space-y-2.5">
-              <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold block">Acquisition Mode</label>
+              <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold block">Land & Property Type</label>
               <div className="flex flex-col gap-2 font-sans text-sm text-primary/80">
                 {[
-                  { value: 'all', label: 'All Portfolios' },
-                  { value: 'sale', label: 'For Sale' },
-                  { value: 'rent', label: 'For Lease' }
+                  { value: 'all', label: 'All Categories' },
+                  { value: 'Residential Plot', label: 'Residential Plots' },
+                  { value: 'Commercial Plot', label: 'Commercial Plots' },
+                  { value: 'Agricultural Land', label: 'Agricultural Land' },
+                  { value: 'Industrial Land', label: 'Industrial Land' },
+                  { value: 'Villa/House', label: 'Villas & Houses' }
                 ].map((typeItem) => (
                   <label
                     key={typeItem.value}
@@ -263,32 +274,32 @@ export default function PropertyListing() {
                 className="bg-white/40 border border-primary/15 text-primary text-xs rounded-[12px] px-4 py-3 w-full focus:outline-none focus:border-accent-gold transition-all cursor-pointer font-sans font-semibold"
               >
                 <option value="all">All Portfolios</option>
-                <option value="under-20m">Under $20 Million</option>
-                <option value="20m-40m">$20M - $40 Million</option>
-                <option value="over-40m">Over $40 Million</option>
+                <option value="under-150l">Under ₹ 1.5 Crores</option>
+                <option value="150l-400l">₹ 1.5 - ₹ 4 Crores</option>
+                <option value="over-400l">Over ₹ 4 Crores</option>
               </select>
             </div>
 
-            {/* Bedroom Pill Counters */}
+            {/* Road Access Filters */}
             <div className="space-y-2.5">
-              <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold block">Beds & Suites</label>
-              <div className="grid grid-cols-4 gap-2">
+              <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold block">Road Access</label>
+              <div className="grid grid-cols-2 gap-2">
                 {[
-                  { val: 'all', label: 'All' },
-                  { val: '3', label: '3+' },
-                  { val: '5', label: '5+' },
-                  { val: '7', label: '7+' }
-                ].map((bedsOption) => (
+                  { val: 'all', label: 'All Roads' },
+                  { val: 'nh', label: 'Highway' },
+                  { val: 'tar', label: 'Tar/Paved' },
+                  { val: 'private', label: 'Private' }
+                ].map((roadOption) => (
                   <button
-                    key={bedsOption.val}
-                    onClick={() => setFilters({ ...filters, beds: bedsOption.val })}
+                    key={roadOption.val}
+                    onClick={() => setFilters({ ...filters, roadAccess: roadOption.val })}
                     className={`py-2 rounded-[10px] text-xs font-sans font-bold uppercase transition-all duration-300 ${
-                      filters.beds === bedsOption.val
+                      filters.roadAccess === roadOption.val
                         ? 'bg-primary text-bg-cream shadow-sm'
                         : 'bg-white/30 border border-primary/10 text-primary/80 hover:bg-white/60 hover:text-primary'
                     }`}
                   >
-                    {bedsOption.label}
+                    {roadOption.label}
                   </button>
                 ))}
               </div>

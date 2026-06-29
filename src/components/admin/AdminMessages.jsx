@@ -7,12 +7,13 @@ import {
   ChevronDown,
   ChevronUp,
   Reply,
-  Inbox
+  Inbox,
+  Trash2
 } from 'lucide-react';
 
-export default function AdminMessages({ messages, onToggleRead, showToast }) {
+export default function AdminMessages({ messages, onToggleRead, onDeleteMessage, onToggleReplied, showToast }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterUnread, setFilterUnread] = useState(false);
+  const [filterType, setFilterType] = useState('all'); // 'all' | 'unread' | 'read' | 'replied'
   const [expandedId, setExpandedId] = useState(null);
   const location = useLocation();
 
@@ -39,10 +40,13 @@ export default function AdminMessages({ messages, onToggleRead, showToast }) {
     }
   }, [location.search]);
 
-  const handleReplyClick = (e, email, subject) => {
+  const handleReplyClick = (e, msg) => {
     e.stopPropagation();
-    window.location.href = `mailto:${email}?subject=RE: ${encodeURIComponent(subject)}&body=Dear client,`;
-    showToast(`Drafted email reply to ${email}`);
+    if (!msg.replied) {
+      onToggleReplied(msg.id, false);
+    }
+    window.location.href = `mailto:${msg.email}?subject=RE: ${encodeURIComponent(msg.subject)}&body=Dear client,`;
+    showToast(`Drafted email reply to ${msg.email}`);
   };
 
   // Filter messages
@@ -53,9 +57,14 @@ export default function AdminMessages({ messages, onToggleRead, showToast }) {
         m.subject.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
 
-    const matchesUnread = filterUnread ? !m.read : true;
+    const matchesFilterType =
+      filterType === 'all' ? true :
+      filterType === 'unread' ? !m.read :
+      filterType === 'read' ? m.read :
+      filterType === 'replied' ? m.replied === true :
+      true;
 
-    return matchesSearch && matchesUnread;
+    return matchesSearch && matchesFilterType;
   });
 
   const unreadCount = messages.filter((m) => !m.read).length;
@@ -75,16 +84,26 @@ export default function AdminMessages({ messages, onToggleRead, showToast }) {
           />
         </div>
 
-        <div className="flex gap-4 items-center shrink-0">
-          <label className="flex items-center gap-2 cursor-pointer text-xs font-sans font-semibold text-primary">
-            <input
-              type="checkbox"
-              checked={filterUnread}
-              onChange={(e) => setFilterUnread(e.target.checked)}
-              className="rounded text-accent-gold focus:ring-accent-gold w-4 h-4 cursor-pointer"
-            />
-            <span>Show Unread Only ({unreadCount})</span>
-          </label>
+        {/* Segmented Filter Control */}
+        <div className="flex bg-bg-cream p-1 rounded-[12px] border border-neutral-laurel/10 shrink-0">
+          {[
+            { val: 'all', label: 'All' },
+            { val: 'unread', label: `Unread (${unreadCount})` },
+            { val: 'read', label: 'Read' },
+            { val: 'replied', label: 'Replied' }
+          ].map((tab) => (
+            <button
+              key={tab.val}
+              onClick={() => setFilterType(tab.val)}
+              className={`px-3 py-1.5 rounded-[8px] text-xs font-semibold font-sans transition-all ${
+                filterType === tab.val
+                  ? 'bg-primary text-bg-cream shadow-sm'
+                  : 'text-primary/70 hover:text-primary'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -124,6 +143,9 @@ export default function AdminMessages({ messages, onToggleRead, showToast }) {
                       <div className="flex gap-2 items-center flex-wrap">
                         <span className="font-bold text-primary text-sm">{m.from}</span>
                         <span className="text-[10px] text-neutral-laurel font-mono bg-primary/5 px-2 py-0.5 rounded-[4px]">{m.email}</span>
+                        {m.replied && (
+                          <span className="text-[9px] text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-[4px] font-bold font-sans uppercase">Replied</span>
+                        )}
                       </div>
                       <span className="text-xs uppercase tracking-widest text-accent-gold block font-semibold mt-0.5">{m.subject}</span>
                     </div>
@@ -154,9 +176,33 @@ export default function AdminMessages({ messages, onToggleRead, showToast }) {
                       </p>
                     </div>
 
-                    <div className="flex gap-3 justify-end">
+                    <div className="flex gap-3 justify-end items-center flex-wrap">
                       <button
-                        onClick={(e) => handleReplyClick(e, m.email, m.subject)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onToggleReplied(m.id, m.replied || false);
+                        }}
+                        className={`border py-2 px-4 text-xs tracking-wider uppercase font-semibold flex items-center gap-1.5 rounded-[10px] transition-all ${
+                          m.replied 
+                            ? 'bg-green-50 border-green-200 text-green-700' 
+                            : 'border-primary/10 text-primary/70 hover:bg-primary/5'
+                        }`}
+                      >
+                        {m.replied ? 'Replied ✓' : 'Mark Replied'}
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (confirm("Are you sure you want to delete this client inquiry?")) {
+                            onDeleteMessage(m.id);
+                          }
+                        }}
+                        className="border border-red-200 text-red-600 hover:bg-red-50 py-2 px-4 text-xs tracking-wider uppercase font-semibold flex items-center gap-1.5 rounded-[10px] transition-all"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" /> Delete
+                      </button>
+                      <button
+                        onClick={(e) => handleReplyClick(e, m)}
                         className="btn-accent border-accent-gold/45 text-primary py-2 px-4 text-xs tracking-wider uppercase font-semibold flex items-center gap-1.5 hover:bg-accent-gold/10"
                       >
                         <Reply className="w-3.5 h-3.5 text-accent-gold" /> Compose Reply

@@ -6,14 +6,14 @@ import {
   Phone,
   ShieldCheck,
   CheckCircle2,
-  DollarSign
+  IndianRupee
 } from 'lucide-react';
 
 export default function AdminSettings({ showToast }) {
-  const [siteName, setSiteName] = useState('TerraNova');
-  const [supportEmail, setSupportEmail] = useState('concierge@terranova.com');
-  const [phone, setPhone] = useState('8089729949');
-  const [currency, setCurrency] = useState('$ USD');
+  const [siteName, setSiteName] = useState(() => localStorage.getItem('ts_site_name') || 'TerraNova');
+  const [supportEmail, setSupportEmail] = useState(() => localStorage.getItem('ts_support_email') || 'terranovarealestateoffice@gmail.com');
+  const [phone, setPhone] = useState(() => localStorage.getItem('ts_phone') || '8089729949');
+  const [currency, setCurrency] = useState(() => localStorage.getItem('ts_currency') || '₹ INR');
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -21,6 +21,10 @@ export default function AdminSettings({ showToast }) {
 
   const handleGeneralSubmit = (e) => {
     e.preventDefault();
+    localStorage.setItem('ts_site_name', siteName);
+    localStorage.setItem('ts_support_email', supportEmail);
+    localStorage.setItem('ts_phone', phone);
+    localStorage.setItem('ts_currency', currency);
     showToast('General platform settings updated successfully!', 'success');
   };
 
@@ -89,17 +93,13 @@ export default function AdminSettings({ showToast }) {
           <div>
             <label className="block text-[10px] uppercase tracking-widest text-neutral-laurel font-bold mb-1.5">Default Currency</label>
             <div className="relative">
-              <DollarSign className="absolute left-3.5 top-3 w-4 h-4 text-neutral-laurel" />
+              <IndianRupee className="absolute left-3.5 top-3 w-4 h-4 text-neutral-laurel" />
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
                 className="bg-bg-cream border border-neutral-laurel/10 rounded-[12px] text-sm pl-10 pr-4 py-2.5 w-full focus:outline-none focus:ring-1 focus:ring-accent-gold/40 text-primary font-semibold cursor-pointer"
               >
-                <option>$ USD</option>
-                <option>€ EUR</option>
-                <option>£ GBP</option>
                 <option>₹ INR</option>
-                <option>AED Dirhams</option>
               </select>
             </div>
           </div>

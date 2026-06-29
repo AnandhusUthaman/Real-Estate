@@ -19,7 +19,6 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }) {
   const menuItems = [
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'listings', label: 'Properties', icon: Building },
-    { id: 'categories', label: 'Categories', icon: Tags },
     { id: 'messages', label: 'Property Inquiries', icon: Mail },
     { id: 'settings', label: 'Settings', icon: Settings },
     { id: 'profile', label: 'Profile', icon: User }
@@ -32,7 +31,7 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }) {
         <Link to="/" className="flex items-center gap-2">
           <Compass className="w-6 h-6 text-accent-gold" />
           <span className="font-display text-lg font-bold text-bg-cream tracking-widest">
-            LUXE<span className="text-accent-gold">ESTATE</span>
+            TERRA<span className="text-accent-gold">NOVA</span>
           </span>
         </Link>
         <button
@@ -55,7 +54,7 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }) {
           <div className="hidden lg:flex items-center gap-2 mb-10 px-2">
             <Compass className="w-8 h-8 text-accent-gold" />
             <span className="font-display text-xl font-bold tracking-widest text-bg-cream">
-              LUXE<span className="text-accent-gold">ESTATE</span>
+              TERRA<span className="text-accent-gold">NOVA</span>
             </span>
           </div>
 

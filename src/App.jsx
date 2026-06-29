@@ -11,7 +11,6 @@ import Home from './pages/Home';
 import PropertyListing from './pages/PropertyListing';
 import PropertyDetails from './pages/PropertyDetails';
 import About from './pages/About';
-import Agents from './pages/Agents';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
@@ -47,7 +46,6 @@ function AppContent() {
           <Route path="/properties" element={<PropertyListing />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
           <Route path="/about" element={<About />} />
-          <Route path="/agents" element={<Agents />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<Register />} />

@@ -42,7 +42,7 @@ export default function About() {
             "We do not collect transactions; we build relationships. Every penthouse, private cove estate, and luxury plot is vetted as if it were our own."
           </h2>
           <div>
-            <h4 className="font-sans font-bold text-accent-gold tracking-widest uppercase text-sm">Victoria Sterling</h4>
+            <h4 className="font-sans font-bold text-accent-gold tracking-widest uppercase text-sm">Andhu</h4>
             <p className="font-sans text-xs text-neutral-laurel tracking-wider uppercase mt-1">Founder & Executive Director</p>
           </div>
         </div>

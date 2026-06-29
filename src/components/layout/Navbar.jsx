@@ -26,6 +26,18 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Block body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const navLinks = [
     { label: "Home", path: "/" },
     { label: "Properties", path: "/properties" },
@@ -120,8 +132,28 @@ export default function Navbar() {
 
       {/* Mobile Drawer Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 top-[70px] bg-primary z-40 lg:hidden flex flex-col px-6 py-10 transition-all duration-300">
-          <div className="flex flex-col gap-6 mb-10">
+        <div className="fixed inset-0 bg-primary/95 backdrop-blur-md z-50 lg:hidden flex flex-col p-6 transition-all duration-300">
+          {/* Header inside Mobile Menu */}
+          <div className="flex justify-between items-center pb-6 border-b border-accent-gold/15 mb-8">
+            {/* Logo */}
+            <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2">
+              <Compass className="w-8 h-8 text-accent-gold" />
+              <span className="font-display text-2xl font-bold tracking-widest text-bg-cream">
+                TERRA<span className="text-accent-gold">NOVA</span>
+              </span>
+            </Link>
+            {/* Close Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-bg-cream hover:text-accent-gold focus:outline-none transition-colors duration-300"
+              aria-label="Close navigation menu"
+            >
+              <X className="w-7 h-7" />
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="flex flex-col gap-6">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
@@ -129,32 +161,39 @@ export default function Navbar() {
                   key={link.path}
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className={`font-display text-2xl tracking-wider ${
-                    isActive ? 'text-accent-gold' : 'text-bg-cream'
+                  className={`font-display text-2xl tracking-wider py-2 border-b border-white/5 flex justify-between items-center ${
+                    isActive ? 'text-accent-gold font-bold' : 'text-bg-cream/90 hover:text-bg-cream'
                   }`}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
+                  {isActive && <div className="w-2 h-2 rounded-full bg-accent-gold" />}
                 </Link>
               );
             })}
             <Link
               to="/wishlist"
               onClick={() => setIsOpen(false)}
-              className="font-display text-2xl text-bg-cream flex items-center gap-3"
+              className="font-display text-2xl text-bg-cream/90 hover:text-bg-cream py-2 border-b border-white/5 flex justify-between items-center"
             >
-              Wishlist ({favorites.length})
+              <span>Wishlist ({favorites.length})</span>
+              {favorites.length > 0 && (
+                <span className="bg-accent-gold text-primary font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {favorites.length}
+                </span>
+              )}
             </Link>
           </div>
 
-          <div className="border-t border-accent-gold/20 pt-8 flex flex-col gap-4 mt-auto">
-            {currentUser && (
+          {/* Bottom Actions */}
+          <div className="border-t border-accent-gold/15 pt-8 flex flex-col gap-4 mt-auto">
+            {currentUser ? (
               <div className="flex flex-col gap-4">
                 <Link
                   to="/dashboard"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2 text-bg-cream"
+                  className="flex items-center gap-3 text-bg-cream py-2"
                 >
-                  <User className="w-5 h-5 text-accent-gold" />
+                  <User className="w-6 h-6 text-accent-gold" />
                   <span className="font-sans text-lg">{currentUser.name} (Dashboard)</span>
                 </Link>
                 <button
@@ -163,17 +202,17 @@ export default function Navbar() {
                     setIsOpen(false);
                     navigate('/');
                   }}
-                  className="btn-secondary w-full py-3"
+                  className="btn-secondary w-full py-3.5 text-sm uppercase tracking-wider font-bold"
                 >
                   Logout
                 </button>
               </div>
-            )}
+            ) : null}
 
             <Link
               to="/contact"
               onClick={() => setIsOpen(false)}
-              className="w-full py-3 text-center bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold tracking-wider rounded-[12px] transition-all border border-accent-gold/25"
+              className="w-full py-4 text-center bg-primary text-bg-cream hover:bg-accent-gold hover:text-primary font-bold text-sm tracking-widest uppercase rounded-[12px] transition-all border border-accent-gold/25 shadow-luxury"
             >
               Book Consultation
             </Link>

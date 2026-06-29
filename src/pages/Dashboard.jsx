@@ -31,7 +31,10 @@ export default function Dashboard() {
     showToast,
     fetchMessages,
     notifications,
-    markNotificationAsRead
+    markNotificationAsRead,
+    updateProfile,
+    deleteMessage,
+    toggleMessageReplied
   } = useGlobalContext();
 
   const navigate = useNavigate();
@@ -42,7 +45,7 @@ export default function Dashboard() {
 
   // Form State for User Profile
   const [profileForm, setProfileForm] = useState({
-    name: currentUser?.name || 'Victoria Sterling',
+    name: currentUser?.name || 'Andhu',
     email: currentUser?.email || 'terranovarealestateoffice@gmail.com'
   });
 
@@ -69,6 +72,7 @@ export default function Dashboard() {
 
   const handleProfileSubmit = (e) => {
     e.preventDefault();
+    updateProfile(profileForm.name, profileForm.email);
     showToast('Broker profile configurations updated successfully!', 'success');
   };
 
@@ -231,6 +235,8 @@ export default function Dashboard() {
               <AdminMessages
                 messages={messages}
                 onToggleRead={handleToggleMessageRead}
+                onDeleteMessage={deleteMessage}
+                onToggleReplied={toggleMessageReplied}
                 showToast={showToast}
               />
             )}
@@ -301,10 +307,10 @@ export default function Dashboard() {
                   <form onSubmit={handleProfileSubmit} className="space-y-4 text-sm">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 rounded-full bg-primary text-bg-cream text-xl font-display font-bold flex items-center justify-center border border-accent-gold/45">
-                        VS
+                        {profileForm.name ? profileForm.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'AN'}
                       </div>
                       <div>
-                        <h4 className="font-bold text-sm">Victoria Sterling</h4>
+                        <h4 className="font-bold text-sm">{profileForm.name}</h4>
                         <p className="text-xs text-neutral-laurel font-semibold uppercase mt-0.5">Senior Private Broker & Founder</p>
                       </div>
                     </div>
