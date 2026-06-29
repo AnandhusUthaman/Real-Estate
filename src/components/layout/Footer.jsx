@@ -60,9 +60,7 @@ export default function Footer() {
             <li>
               <Link to="/about" className="hover:text-bg-cream transition-colors duration-300">About Our Brand</Link>
             </li>
-            <li>
-              <Link to="/blog" className="hover:text-bg-cream transition-colors duration-300">Real Estate Insights</Link>
-            </li>
+
             <li>
               <Link to="/contact" className="hover:text-bg-cream transition-colors duration-300">Book Private Viewing</Link>
             </li>

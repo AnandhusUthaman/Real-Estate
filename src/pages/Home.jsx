@@ -372,57 +372,7 @@ export default function Home() {
       </section>
 
       {/* 7. BLOG SECTION */}
-      <section className="py-24 max-w-[1440px] mx-auto px-6 lg:px-12 bg-bg-cream">
-        <div className="flex justify-between items-baseline mb-16">
-          <div className="space-y-3">
-            <span className="text-accent-gold font-sans font-semibold text-xs uppercase tracking-[0.2em] block">Journal & Insights</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight">Luxury Market Reports</h2>
-          </div>
-          <Link to="/blog" className="text-primary hover:text-secondary font-sans font-semibold text-sm tracking-widest uppercase flex items-center gap-1 group">
-            Read Journal <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </Link>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {luxuryBlogs.map((post) => (
-            <motion.div
-              key={post.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-bg-cream border border-neutral-laurel/20 rounded-[18px] overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-luxury transition-all duration-300"
-            >
-              <div className="md:w-1/2 overflow-hidden aspect-[4/3] md:aspect-auto">
-                <img
-                  src={post.img}
-                  alt={post.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out"
-                />
-              </div>
-              <div className="p-6 md:w-1/2 flex flex-col justify-between">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-4 text-xs font-sans text-neutral-laurel">
-                    <span className="text-accent-gold font-bold uppercase tracking-wider">{post.category}</span>
-                    <span>{post.readTime}</span>
-                  </div>
-                  <h3 className="font-display text-xl font-bold text-primary tracking-wide leading-snug">
-                    {post.title}
-                  </h3>
-                  <p className="font-sans text-sm text-primary/75 leading-relaxed line-clamp-3">
-                    {post.snippet}
-                  </p>
-                </div>
-                <Link
-                  to="/blog"
-                  className="text-accent-gold font-sans font-semibold text-xs uppercase tracking-widest hover:text-primary transition-colors flex items-center gap-1.5 mt-6"
-                >
-                  Read Article <span>→</span>
-                </Link>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
