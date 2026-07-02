@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useGlobalContext } from '../context/GlobalContext';
-import { Compass, Lock, Mail, ArrowRight } from 'lucide-react';
+import { Compass, Lock, Mail, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Login() {
@@ -11,6 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState('terranovarealestateoffice@gmail.com');
   const [password, setPassword] = useState('admin123');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -83,17 +84,28 @@ export default function Login() {
               <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold mb-1.5">
                 Authorization Password
               </label>
-              <div className="relative">
+              <div className="relative text-neutral-laurel">
                 <Lock className="absolute left-3.5 top-3 w-4 h-4 text-neutral-laurel" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-bg-cream text-primary border-neutral-laurel/20 rounded-[12px] text-sm pl-10 pr-4 py-2.5 w-full focus:outline-none focus:ring-1 focus:ring-accent-gold/50 transition-all placeholder:text-primary/30"
+                  className="bg-bg-cream text-primary border-neutral-laurel/20 rounded-[12px] text-sm pl-10 pr-10 py-2.5 w-full focus:outline-none focus:ring-1 focus:ring-accent-gold/50 transition-all placeholder:text-primary/30"
                   required
                   disabled={loading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-3 text-neutral-laurel hover:text-primary transition-colors cursor-pointer flex items-center justify-center"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
               </div>
             </div>
 
