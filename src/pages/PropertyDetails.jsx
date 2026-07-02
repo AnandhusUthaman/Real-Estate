@@ -6,9 +6,6 @@ import {
   Heart,
   ChevronLeft,
   Calendar,
-  IndianRupee,
-  Percent,
-  Calculator,
   Compass,
   MapPin,
   BedDouble,
@@ -19,13 +16,45 @@ import {
   FileText
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../components/layout/SEO';
+import { getPropertySchema } from '../utils/seo';
 
 export default function PropertyDetails() {
-  const { id } = useParams();
+  const { id, slug } = useParams();
   const navigate = useNavigate();
   const { properties, favorites, toggleFavorite, sendMessage, showToast } = useGlobalContext();
 
-  const property = properties.find((p) => p.id === parseInt(id, 10));
+  const getPropertySlug = (p) => {
+    const firstLocationPart = p.location ? p.location.split(',')[0] : '';
+    const slugify = (text) => {
+      if (!text) return '';
+      return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
+    };
+    return slugify(`${p.title}-${firstLocationPart}`);
+  };
+
+  const property = properties.find((p) => {
+    const identifier = id || slug;
+    if (!identifier) return false;
+    if (p.id.toString() === identifier) return true;
+    return getPropertySlug(p) === identifier;
+  });
+
+  // Redirect old ID-based routes to SEO-friendly slug routes
+  useEffect(() => {
+    if (property && id) {
+      const propSlug = getPropertySlug(property);
+      navigate(`/properties/${propSlug}`, { replace: true });
+    }
+  }, [property, id, navigate]);
 
   // Gallery Active Image State
   const [activeImage, setActiveImage] = useState(property?.img || '');
@@ -36,30 +65,6 @@ export default function PropertyDetails() {
       setActiveImage(property.img);
     }
   }, [property]);
-
-  // Mortgage Calculator State
-  const [calculator, setCalculator] = useState({
-    price: property ? (parseInt(property.price.replace(/[^0-9]/g, ''), 10) || 10000000) : 10000000,
-    downPaymentPercent: 20,
-    interestRate: 4.5,
-    loanTerm: 30
-  });
-
-  // Update calculator when property price is resolved
-  useEffect(() => {
-    if (property?.price) {
-      setCalculator(prev => ({
-        ...prev,
-        price: parseInt(property.price.replace(/[^0-9]/g, ''), 10) || 10000000
-      }));
-    }
-  }, [property]);
-
-  const [mortgageResult, setMortgageResult] = useState({
-    monthlyPayment: 0,
-    loanAmount: 0,
-    totalInterest: 0
-  });
 
   // Schedule / Enquiry Form State
   const [inquiryForm, setInquiryForm] = useState({
@@ -86,32 +91,6 @@ export default function PropertyDetails() {
       navigate('/404');
     }
   }, [property, navigate]);
-
-  // Calculate mortgage whenever input changes
-  useEffect(() => {
-    if (!property) return;
-    const loanAmount = calculator.price * (1 - calculator.downPaymentPercent / 100);
-    const monthlyRate = (calculator.interestRate / 100) / 12;
-    const numberOfPayments = calculator.loanTerm * 12;
-
-    let monthlyPayment = 0;
-    if (monthlyRate === 0) {
-      monthlyPayment = loanAmount / numberOfPayments;
-    } else {
-      monthlyPayment =
-        (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
-        (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
-    }
-
-    const totalCost = monthlyPayment * numberOfPayments;
-    const totalInterest = totalCost - loanAmount;
-
-    setMortgageResult({
-      monthlyPayment: Math.round(monthlyPayment),
-      loanAmount: Math.round(loanAmount),
-      totalInterest: Math.round(totalInterest)
-    });
-  }, [calculator, property]);
 
   if (!property) return null;
 
@@ -159,8 +138,24 @@ export default function PropertyDetails() {
     "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80"
   ];
 
+  const propertySlug = property ? getPropertySlug(property) : '';
+  const propertySchema = property ? getPropertySchema(property) : null;
+  const propertyKeywords = property 
+    ? `${property.title}, ${property.type} for sale, ${property.location} real estate, buy property ${property.location.split(',')[0]}, TerraNova`
+    : '';
+
   return (
     <div className="pt-24 sm:pt-32 pb-16 sm:pb-24 bg-bg-cream min-h-screen">
+      {property && (
+        <SEO 
+          title={`${property.title} in ${property.location}`} 
+          description={property.description || property.tagline} 
+          canonicalPath={`/properties/${propertySlug}`}
+          image={property.img}
+          keywords={propertyKeywords}
+          schema={propertySchema}
+        />
+      )}
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Back Link & Title Area */}
         <div className="flex justify-between items-center mb-8">
@@ -300,88 +295,7 @@ export default function PropertyDetails() {
             </div>
 
 
-            {/* Mortgage Calculator */}
-            <div className="space-y-8 border-t border-neutral-laurel/20 pt-10 bg-primary/5 rounded-[18px] p-8 border border-neutral-laurel/10">
-              <div className="flex items-center gap-2">
-                <Calculator className="w-6 h-6 text-accent-gold" />
-                <h2 className="font-display text-2xl font-bold text-primary">Mortgage Estimation</h2>
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Property Price */}
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold">Property Price (₹)</label>
-                  <div className="relative">
-                    <IndianRupee className="absolute left-3 top-2.5 w-4 h-4 text-neutral-laurel" />
-                    <input
-                      type="number"
-                      value={calculator.price}
-                      onChange={(e) => setCalculator({ ...calculator, price: parseFloat(e.target.value) || 0 })}
-                      className="bg-bg-cream border-neutral-laurel/30 text-primary text-sm font-semibold pl-8 pr-3 py-2 w-full focus:border-primary"
-                    />
-                  </div>
-                </div>
-
-                {/* Down Payment % */}
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold">Down Payment (%)</label>
-                  <div className="relative">
-                    <Percent className="absolute right-3 top-2.5 w-3.5 h-3.5 text-neutral-laurel" />
-                    <input
-                      type="number"
-                      value={calculator.downPaymentPercent}
-                      onChange={(e) => setCalculator({ ...calculator, downPaymentPercent: parseFloat(e.target.value) || 0 })}
-                      className="bg-bg-cream border-neutral-laurel/30 text-primary text-sm font-semibold px-3 py-2 w-full focus:border-primary"
-                    />
-                  </div>
-                </div>
-
-                {/* Interest Rate */}
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold">Interest Rate (%)</label>
-                  <div className="relative">
-                    <Percent className="absolute right-3 top-2.5 w-3.5 h-3.5 text-neutral-laurel" />
-                    <input
-                      type="number"
-                      step="0.1"
-                      value={calculator.interestRate}
-                      onChange={(e) => setCalculator({ ...calculator, interestRate: parseFloat(e.target.value) || 0 })}
-                      className="bg-bg-cream border-neutral-laurel/30 text-primary text-sm font-semibold px-3 py-2 w-full focus:border-primary"
-                    />
-                  </div>
-                </div>
-
-                {/* Loan Term */}
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-neutral-laurel font-bold">Loan Term (Years)</label>
-                  <select
-                    value={calculator.loanTerm}
-                    onChange={(e) => setCalculator({ ...calculator, loanTerm: parseInt(e.target.value, 10) || 30 })}
-                    className="bg-bg-cream border-neutral-laurel/30 text-primary text-sm font-semibold px-3 py-2 w-full focus:border-primary rounded-[12px] cursor-pointer"
-                  >
-                    <option value={15}>15 Years</option>
-                    <option value={20}>20 Years</option>
-                    <option value={30}>30 Years</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Outputs */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-primary text-bg-cream rounded-[12px] p-6 text-center shadow-md">
-                <div className="border-r border-accent-gold/15">
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-laurel block mb-1">Monthly Payment</span>
-                  <span className="font-display text-2xl font-bold text-accent-gold">{formatCurrency(mortgageResult.monthlyPayment)}/mo</span>
-                </div>
-                <div className="border-r border-accent-gold/15">
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-laurel block mb-1">Total Loan Amount</span>
-                  <span className="font-display text-lg font-bold text-bg-cream">{formatCurrency(mortgageResult.loanAmount)}</span>
-                </div>
-                <div>
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-laurel block mb-1">Total Interest Paid</span>
-                  <span className="font-display text-lg font-bold text-bg-cream">{formatCurrency(mortgageResult.totalInterest)}</span>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Sticky Enquiry & Booking Card (Right, 1 column) */}
@@ -453,27 +367,25 @@ export default function PropertyDetails() {
               </form>
             </div>
 
-            {/* Dedicated Agent Card */}
-            <div className="bg-bg-cream rounded-[18px] border border-neutral-laurel/20 p-6 shadow-sm flex flex-col items-center text-center space-y-4">
-              <div className="w-24 h-24 rounded-full overflow-hidden border border-accent-gold p-0.5">
-                <img src={agent.avatar} alt={agent.name} className="w-full h-full object-cover rounded-full" />
-              </div>
-              <div>
-                <h4 className="font-display text-lg font-bold text-primary">{agent.name}</h4>
-                <span className="font-sans text-[10px] uppercase tracking-widest text-neutral-laurel font-bold block mb-2">{agent.role}</span>
-                <p className="font-sans text-xs text-primary/75 max-w-xs leading-relaxed">{agent.bio}</p>
-              </div>
-
-              <div className="w-full border-t border-neutral-laurel/20 pt-4 flex flex-col gap-2 font-sans text-xs text-primary/80">
-                <div className="flex items-center justify-center gap-2">
-                  <Phone className="w-3.5 h-3.5 text-accent-gold shrink-0" />
-                  <span>{agent.phone}</span>
-                </div>
-                <div className="flex items-center justify-center gap-2">
-                  <Mail className="w-3.5 h-3.5 text-accent-gold shrink-0" />
-                  <span>{agent.email}</span>
-                </div>
-              </div>
+            {/* Broker Contact Information */}
+            <div className="bg-bg-cream rounded-[18px] border border-neutral-laurel/20 p-6 shadow-sm flex flex-col gap-4">
+              <h4 className="font-display text-base font-bold text-primary uppercase tracking-wider text-center border-b border-neutral-laurel/10 pb-3">Contact Private Broker</h4>
+              
+              <a
+                href={`tel:${agent.phone}`}
+                className="w-full bg-primary hover:bg-accent-gold hover:text-primary text-bg-cream font-bold py-3.5 uppercase tracking-widest text-xs rounded-[12px] flex items-center justify-center gap-2 border-none transition-all duration-300 cursor-pointer text-center"
+              >
+                <Phone className="w-4 h-4 shrink-0 text-accent-gold" />
+                <span>Call +91 {agent.phone}</span>
+              </a>
+              
+              <a
+                href={`mailto:${agent.email}`}
+                className="w-full border border-primary/20 hover:border-accent-gold text-primary hover:text-accent-gold font-bold py-3.5 uppercase tracking-widest text-xs rounded-[12px] flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer text-center"
+              >
+                <Mail className="w-4 h-4 shrink-0 text-accent-gold" />
+                <span>Email Broker</span>
+              </a>
             </div>
           </aside>
         </div>

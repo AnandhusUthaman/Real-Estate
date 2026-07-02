@@ -3,6 +3,7 @@ import { useGlobalContext } from '../context/GlobalContext';
 import PropertyCard from '../components/ui/PropertyCard';
 import { Heart, Compass } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/layout/SEO';
 
 export default function Wishlist() {
   const { properties, favorites } = useGlobalContext();
@@ -11,6 +12,11 @@ export default function Wishlist() {
 
   return (
     <div className="pt-32 pb-24 bg-bg-cream min-h-screen">
+      <SEO 
+        title="Your Wishlist" 
+        noindex={true} 
+        canonicalPath="/wishlist" 
+      />
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Header Title */}
         <div className="space-y-4 mb-16 max-w-xl">

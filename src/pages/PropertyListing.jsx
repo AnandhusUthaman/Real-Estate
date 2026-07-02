@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { useGlobalContext } from '../context/GlobalContext';
 import PropertyCard from '../components/ui/PropertyCard';
 import { Search, MapPin, Grid, List, SlidersHorizontal, ArrowUpDown, ChevronDown, Check, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SEO from '../components/layout/SEO';
+import { getPropertySlug } from '../utils/seo';
 
 export default function PropertyListing() {
   const { properties } = useGlobalContext();
@@ -96,6 +98,11 @@ export default function PropertyListing() {
 
   return (
     <div className="pt-24 sm:pt-36 pb-20 sm:pb-32 bg-bg-cream min-h-screen relative overflow-hidden">
+      <SEO 
+        title="Luxury Real Estate Portfolio" 
+        description="Browse our master list of premium properties, luxury villas, commercial plots, and farm lands for sale in Kerala." 
+        canonicalPath="/properties"
+      />
       {/* Decorative large low-opacity blurred background spheres */}
       <div className="absolute top-[10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-primary/3 filter blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-accent-gold/4 filter blur-[120px] pointer-events-none" />
@@ -406,12 +413,12 @@ export default function PropertyListing() {
                             <span>{property.area}</span>
                           </div>
                           
-                          <a
-                            href={`/property/${property.id}`}
+                          <Link
+                            to={`/properties/${getPropertySlug(property)}`}
                             className="btn-accent px-5 py-3 text-[10px] tracking-widest uppercase font-bold border-accent-gold text-bg-cream hover:bg-accent-gold hover:text-primary transition-all duration-300 rounded-[12px] flex items-center gap-1.5"
                           >
                             <span>Details</span>
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     </motion.div>

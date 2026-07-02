@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useGlobalContext } from '../context/GlobalContext';
 import { Compass, Lock, Mail, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../components/layout/SEO';
 
 export default function Login() {
   const { login, showToast } = useGlobalContext();
@@ -33,6 +34,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-cream px-6 py-32 relative overflow-hidden">
+      <SEO title="Admin Gateway Login" noindex={true} />
       {/* Premium Decorative Glows */}
       <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] rounded-full bg-primary/5 filter blur-[80px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] rounded-full bg-accent-gold/5 filter blur-[80px] pointer-events-none" />

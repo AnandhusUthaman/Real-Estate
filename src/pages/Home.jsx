@@ -18,6 +18,8 @@ import {
   ChevronRight,
   ArrowUpRight
 } from 'lucide-react';
+import SEO from '../components/layout/SEO';
+import { getWebsiteSchema, getOrganizationSchema, getLocalBusinessSchema } from '../utils/seo';
 
 export default function Home() {
   const { properties, showToast } = useGlobalContext();
@@ -87,8 +89,23 @@ export default function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
   };
 
+  const combinedSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      getWebsiteSchema(),
+      getOrganizationSchema(),
+      getLocalBusinessSchema()
+    ]
+  };
+
   return (
     <div className="pt-0">
+      <SEO 
+        title="Premium Plots & Luxury Real Estate in Kerala"
+        description="Discover luxury living with TerraNova. Explore premium residential plots, commercial properties, and agricultural lands in Thiruvananthapuram and across Kerala."
+        canonicalPath="/"
+        schema={combinedSchema}
+      />
       {/* 1. HERO SECTION */}
       <section className="relative min-h-[90vh] sm:h-[95vh] py-24 sm:py-0 flex items-center justify-center overflow-hidden">
         {/* Background Image with Deep Overlay */}

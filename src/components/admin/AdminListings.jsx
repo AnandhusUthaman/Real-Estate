@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getPropertySlug } from '../../utils/seo';
 import {
   Search,
   SlidersHorizontal,
@@ -501,7 +502,7 @@ export default function AdminListings({ properties, onAddProperty, onUpdatePrope
                     <td className="py-4 px-6 text-right">
                       <div className="flex justify-end gap-1.5">
                         <Link
-                          to={`/property/${p.id}`}
+                          to={`/properties/${getPropertySlug(p)}`}
                           className="p-2 border border-neutral-laurel/25 hover:border-accent-gold text-primary rounded-[8px] hover:bg-accent-gold/10 transition-colors"
                           title="View Live Listing"
                         >

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { GlobalProvider } from './context/GlobalContext';
+import { HelmetProvider } from 'react-helmet-async';
 
 // Layout Components
 import Navbar from './components/layout/Navbar';
@@ -43,6 +44,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/properties" element={<PropertyListing />} />
+          <Route path="/properties/:slug" element={<PropertyDetails />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
@@ -63,11 +65,13 @@ function AppContent() {
 
 export default function App() {
   return (
-    <GlobalProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <AppContent />
-      </BrowserRouter>
-    </GlobalProvider>
+    <HelmetProvider>
+      <GlobalProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <AppContent />
+        </BrowserRouter>
+      </GlobalProvider>
+    </HelmetProvider>
   );
 }

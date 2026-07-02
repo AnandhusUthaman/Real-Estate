@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../context/GlobalContext';
 import { Compass, User, Lock, Mail, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../components/layout/SEO';
 
 export default function Register() {
   const { register, showToast } = useGlobalContext();
@@ -29,6 +30,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-cream px-6 py-24 relative overflow-hidden">
+      <SEO title="Client Registration" noindex={true} />
       {/* Absolute graphic backgrounds */}
       <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] rounded-full bg-primary/5 filter blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] rounded-full bg-accent-gold/5 filter blur-3xl pointer-events-none" />

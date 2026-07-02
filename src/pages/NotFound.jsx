@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Compass, HelpCircle } from 'lucide-react';
+import SEO from '../components/layout/SEO';
 
 export default function NotFound() {
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center text-center bg-bg-cream px-6 py-24 relative overflow-hidden">
+      <SEO title="404 Page Not Found" noindex={true} />
       {/* Absolute decorative graphic */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/5 filter blur-3xl pointer-events-none" />
 

@@ -17,6 +17,7 @@ import AdminListings from '../components/admin/AdminListings';
 import AdminMessages from '../components/admin/AdminMessages';
 import AdminUsers from '../components/admin/AdminUsers';
 import AdminSettings from '../components/admin/AdminSettings';
+import SEO from '../components/layout/SEO';
 
 export default function Dashboard() {
   const {
@@ -147,6 +148,7 @@ export default function Dashboard() {
 
   return (
     <div className="pt-20 lg:pt-0 pb-24 bg-[#FCF7F0] min-h-screen flex">
+      <SEO title="Brokerage Dashboard" noindex={true} />
       {/* Sidebar navigation */}
       <AdminSidebar
         activeTab={activeTab}

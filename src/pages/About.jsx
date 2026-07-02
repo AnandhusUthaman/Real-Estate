@@ -1,10 +1,23 @@
 import React from 'react';
 import { Compass, ShieldCheck, MapPin, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../components/layout/SEO';
+import { getBreadcrumbSchema } from '../utils/seo';
 
 export default function About() {
+  const crumbsSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://www.terranovarealestates.in/' },
+    { name: 'About Us', url: 'https://www.terranovarealestates.in/about' }
+  ]);
+
   return (
     <div className="pt-32 pb-24 bg-bg-cream">
+      <SEO 
+        title="About Us - Luxury Brokerage Heritage"
+        description="Learn about TerraNova Real Estates, our peak real estate vision, private client brokerage values, and our co-founding senior private broker Andhu."
+        canonicalPath="/about"
+        schema={crumbsSchema}
+      />
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Brand Narrative Title */}
         <div className="space-y-4 mb-20 max-w-xl">
@@ -31,6 +44,9 @@ export default function About() {
               src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
               alt="Luxury Dining Room"
               className="w-full h-full object-cover"
+              loading="lazy"
+              width="600"
+              height="450"
             />
           </div>
         </div>

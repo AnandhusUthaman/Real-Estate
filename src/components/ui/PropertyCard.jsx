@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart, BedDouble, Bath, Maximize2, MapPin, ArrowRight } from 'lucide-react';
 import { useGlobalContext } from '../../context/GlobalContext';
+import { getPropertySlug } from '../../utils/seo';
 
 export default function PropertyCard({ property }) {
   const { favorites, toggleFavorite } = useGlobalContext();
@@ -116,7 +117,7 @@ export default function PropertyCard({ property }) {
 
           {/* View Details Action */}
           <Link
-            to={`/property/${property.id}`}
+            to={`/properties/${getPropertySlug(property)}`}
             className="w-full btn-primary bg-primary hover:bg-accent-gold hover:text-primary text-bg-cream text-[10px] tracking-widest uppercase font-bold py-3.5 rounded-[12px] flex items-center justify-center gap-2 group/btn border-none"
           >
             <span>View Details</span>

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useGlobalContext } from '../context/GlobalContext';
 import { Mail, Phone, MapPin, Clock, Compass, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../components/layout/SEO';
+import { getBreadcrumbSchema } from '../utils/seo';
 
 export default function Contact() {
   const { sendMessage, showToast } = useGlobalContext();
@@ -37,8 +39,19 @@ export default function Contact() {
     });
   };
 
+  const crumbsSchema = getBreadcrumbSchema([
+    { name: 'Home', url: 'https://www.terranovarealestates.in/' },
+    { name: 'Contact Us', url: 'https://www.terranovarealestates.in/contact' }
+  ]);
+
   return (
     <div className="pt-32 pb-24 bg-bg-cream min-h-screen">
+      <SEO 
+        title="Contact Us - Schedule Private Viewing"
+        description="Get in touch with TerraNova Real Estates. Schedule a private viewing for luxury plots, commercial properties, and coffee plantations in Kerala."
+        canonicalPath="/contact"
+        schema={crumbsSchema}
+      />
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
         {/* Header Title */}
         <div className="space-y-4 mb-20 max-w-xl">
