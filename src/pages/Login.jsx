@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useGlobalContext } from '../context/GlobalContext';
-import { Compass, ShieldAlert, Lock, Mail, ArrowRight } from 'lucide-react';
+import { Compass, Lock, Mail, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Login() {
@@ -97,13 +97,7 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Premium credentials helper */}
-            <div className="bg-secondary/20 rounded-[12px] p-3 text-center border border-accent-gold/10 flex items-center justify-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-accent-gold shrink-0" />
-              <p className="text-[10.5px] font-sans text-neutral-laurel leading-normal">
-                Credentials: <span className="text-bg-cream font-bold">terranovarealestateoffice@gmail.com</span> / <span className="text-bg-cream font-bold">admin123</span>
-              </p>
-            </div>
+
 
             <button
               type="submit"
