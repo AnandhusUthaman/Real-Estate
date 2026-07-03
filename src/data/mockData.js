@@ -137,7 +137,7 @@ export const luxuryProperties = [
 export const luxuryAgents = [
   {
     id: 1,
-    name: "Andhu",
+    name: "Vinod",
     role: "Senior Private Broker & Founder",
     specialization: "Kerala Real Estate Advisory",
     avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&h=400&q=80",

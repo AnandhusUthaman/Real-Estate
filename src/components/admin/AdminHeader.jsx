@@ -151,10 +151,10 @@ export default function AdminHeader({ activeTab, notifications = [], onNotificat
           {/* User Profile Area */}
           <div className="flex items-center gap-3 border-l border-neutral-laurel/20 pl-4 md:pl-6">
             <div className="w-9 h-9 rounded-full bg-primary text-bg-cream font-display font-bold text-xs flex items-center justify-center border border-accent-gold/30 shadow-sm">
-              {currentUser?.name ? currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'AN'}
+              {currentUser?.name ? currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'VI'}
             </div>
             <div className="hidden sm:block text-left">
-              <p className="text-xs font-bold text-primary leading-none">{currentUser?.name || 'Andhu'}</p>
+              <p className="text-xs font-bold text-primary leading-none">{currentUser?.name || 'Vinod'}</p>
               <p className="text-[9px] uppercase tracking-wider text-neutral-laurel font-bold mt-0.5">Admin Broker</p>
             </div>
           </div>

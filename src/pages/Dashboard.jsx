@@ -46,7 +46,7 @@ export default function Dashboard() {
 
   // Form State for User Profile
   const [profileForm, setProfileForm] = useState({
-    name: currentUser?.name || 'Andhu',
+    name: currentUser?.name || 'Vinod',
     email: currentUser?.email || 'terranovarealestateoffice@gmail.com'
   });
 

@@ -204,7 +204,7 @@ export function GlobalProvider({ children }) {
         
         if (email.includes('admin') || user.email.includes('admin')) {
           user.role = 'admin';
-          user.name = user.name || 'Andhu';
+          user.name = user.name || 'Vinod';
         }
 
         localStorage.setItem('le_token', token);
@@ -218,7 +218,7 @@ export function GlobalProvider({ children }) {
     } catch (err) {
       console.warn("Auth API failed, trying offline mock auth:", err);
       if ((email === 'terranovarealestateoffice@gmail.com' || email === 'admin@homeverse.com') && password === 'admin123') {
-        const adminUser = { email, name: 'Andhu', role: 'admin' };
+        const adminUser = { email, name: 'Vinod', role: 'admin' };
         localStorage.setItem('le_token', 'demo-token-xyz');
         setCurrentUser(adminUser);
         showToast('Welcome back. Accessing Portfolio Dashboard (Offline).', 'success');
