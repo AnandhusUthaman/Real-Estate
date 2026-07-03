@@ -101,7 +101,7 @@ export default function Home() {
   return (
     <div className="pt-0">
       <SEO 
-        title="Premium Plots & Luxury Real Estate in Kerala"
+        title="TERRANOVA | Premium Plots & Luxury Real Estate in Kerala"
         description="Discover luxury living with TerraNova. Explore premium residential plots, commercial properties, and agricultural lands in Thiruvananthapuram and across Kerala."
         canonicalPath="/"
         schema={combinedSchema}

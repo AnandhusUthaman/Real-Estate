@@ -19,7 +19,7 @@ export default function SEO({
   const defaultDesc = 'Explore premium residential plots, commercial spaces, and agricultural farm lands in Kowdiar, Kazhakoottam, and Wayanad. Find luxury investments with TerraNova Real Estates.';
   const defaultKeywords = 'real estate Kerala, premium plots Trivandrum, land for sale Kowdiar, commercial land Kazhakoottam, Wayanad coffee plantation, luxury properties Kerala, TerraNova';
   
-  const displayTitle = title ? `${title} | TerraNova Real Estates` : defaultTitle;
+  const displayTitle = title ? (title.toLowerCase().includes('terranova') ? title : `${title} | TerraNova Real Estates`) : defaultTitle;
   const displayDesc = description || defaultDesc;
   const displayKeywords = keywords || defaultKeywords;
   
