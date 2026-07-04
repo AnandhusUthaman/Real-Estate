@@ -67,7 +67,7 @@ export default function PropertyDetails() {
   }, [property]);
 
   // Schedule / Enquiry Form State
-  const [inquiryForm, setInquiryForm] = useState({
+  const [enquiryForm, setEnquiryForm] = useState({
     name: '',
     email: '',
     phone: '',
@@ -75,10 +75,10 @@ export default function PropertyDetails() {
     message: property ? `I would like to request a private viewing for ${property.title}.` : ''
   });
 
-  // Update inquiry message when property resolves
+  // Update enquiry message when property resolves
   useEffect(() => {
     if (property?.title) {
-      setInquiryForm(prev => ({
+      setEnquiryForm(prev => ({
         ...prev,
         message: `I would like to request a private viewing for ${property.title}.`
       }));
@@ -96,21 +96,21 @@ export default function PropertyDetails() {
 
   const isFavorite = favorites.includes(property.id);
 
-  const handleInquirySubmit = (e) => {
+  const handleEnquirySubmit = (e) => {
     e.preventDefault();
-    if (!inquiryForm.name || !inquiryForm.email || !inquiryForm.phone) {
+    if (!enquiryForm.name || !enquiryForm.email || !enquiryForm.phone) {
       showToast('Please fill out all contact fields.', 'error');
       return;
     }
     
     sendMessage({
-      from: inquiryForm.name,
-      email: inquiryForm.email,
-      subject: `Inquiry: ${property.title}`,
-      message: `${inquiryForm.message} | Phone: ${inquiryForm.phone} | Date: ${inquiryForm.date || 'Flexible'}`
+      from: enquiryForm.name,
+      email: enquiryForm.email,
+      subject: `Enquiry: ${property.title}`,
+      message: `${enquiryForm.message} | Phone: ${enquiryForm.phone} | Date: ${enquiryForm.date || 'Flexible'}`
     });
 
-    setInquiryForm({
+    setEnquiryForm({
       name: '',
       email: '',
       phone: '',
@@ -300,17 +300,17 @@ export default function PropertyDetails() {
 
           {/* Sticky Enquiry & Booking Card (Right, 1 column) */}
           <aside className="space-y-8 sticky top-32">
-            {/* Contact Inquiry Card */}
+            {/* Contact Enquiry Card */}
             <div className="bg-primary text-bg-cream rounded-[18px] border border-accent-gold/25 p-6 shadow-luxury">
               <h3 className="font-display text-xl font-bold text-accent-gold uppercase tracking-wider mb-6">Book Private Viewing</h3>
               
-              <form onSubmit={handleInquirySubmit} className="space-y-4 font-sans text-primary">
+              <form onSubmit={handleEnquirySubmit} className="space-y-4 font-sans text-primary">
                 <div>
                   <input
                     type="text"
                     placeholder="Full Name"
-                    value={inquiryForm.name}
-                    onChange={(e) => setInquiryForm({ ...inquiryForm, name: e.target.value })}
+                    value={enquiryForm.name}
+                    onChange={(e) => setEnquiryForm({ ...enquiryForm, name: e.target.value })}
                     className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none"
                     required
                   />
@@ -320,8 +320,8 @@ export default function PropertyDetails() {
                   <input
                     type="email"
                     placeholder="Email Address"
-                    value={inquiryForm.email}
-                    onChange={(e) => setInquiryForm({ ...inquiryForm, email: e.target.value })}
+                    value={enquiryForm.email}
+                    onChange={(e) => setEnquiryForm({ ...enquiryForm, email: e.target.value })}
                     className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none"
                     required
                   />
@@ -331,8 +331,8 @@ export default function PropertyDetails() {
                   <input
                     type="tel"
                     placeholder="Telephone Number"
-                    value={inquiryForm.phone}
-                    onChange={(e) => setInquiryForm({ ...inquiryForm, phone: e.target.value })}
+                    value={enquiryForm.phone}
+                    onChange={(e) => setEnquiryForm({ ...enquiryForm, phone: e.target.value })}
                     className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none"
                     required
                   />
@@ -343,8 +343,8 @@ export default function PropertyDetails() {
                   <Calendar className="absolute left-3 top-2.5 w-4 h-4 text-neutral-laurel pointer-events-none" />
                   <input
                     type="date"
-                    value={inquiryForm.date}
-                    onChange={(e) => setInquiryForm({ ...inquiryForm, date: e.target.value })}
+                    value={enquiryForm.date}
+                    onChange={(e) => setEnquiryForm({ ...enquiryForm, date: e.target.value })}
                     className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-xs px-4 py-2.5 pl-10 w-full focus:outline-none text-primary/80"
                   />
                 </div>
@@ -352,8 +352,8 @@ export default function PropertyDetails() {
                 <div>
                   <textarea
                     rows="3"
-                    value={inquiryForm.message}
-                    onChange={(e) => setInquiryForm({ ...inquiryForm, message: e.target.value })}
+                    value={enquiryForm.message}
+                    onChange={(e) => setEnquiryForm({ ...enquiryForm, message: e.target.value })}
                     className="bg-bg-cream border-neutral-laurel/20 rounded-[12px] text-sm px-4 py-2.5 w-full focus:outline-none"
                   />
                 </div>

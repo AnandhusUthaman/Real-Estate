@@ -18,13 +18,13 @@ export default function AdminOverview({ properties, messages, users, onTabChange
   const totalPublished = properties.filter(p => p.published !== false).length;
   const draftProperties = properties.filter(p => p.published === false).length;
   const featuredProperties = properties.filter(p => p.featured === true).length;
-  const totalInquiries = messages.length;
+  const totalEnquiries = messages.length;
   const totalUsers = users.length || 5; // Fallback to mock count
 
   // Recent activities list
   const recentActivities = [
     { id: 1, type: 'publish', text: 'Property "Obsidian Penthouse" updated & published', time: '12 mins ago' },
-    { id: 2, type: 'inquiry', text: 'Inquiry received from Countess Alexandra on "Villa Al-Zubarah"', time: '1 hour ago' },
+    { id: 2, type: 'enquiry', text: 'Enquiry received from Countess Alexandra on "Villa Al-Zubarah"', time: '1 hour ago' },
     { id: 3, type: 'featured', text: 'Property "The Luminary Estate" marked as Featured', time: '3 hours ago' },
     { id: 4, type: 'user', text: 'New investor account registered: Maximilian Kael', time: '5 hours ago' },
     { id: 5, type: 'delete', text: 'Draft property #12 deleted permanently', time: '1 day ago' }
@@ -43,7 +43,7 @@ export default function AdminOverview({ properties, messages, users, onTabChange
           { label: 'Published', value: totalPublished, icon: CheckCircle2, color: 'text-green-500 bg-green-500/10' },
           { label: 'Drafts', value: draftProperties, icon: FileText, color: 'text-neutral-laurel bg-neutral-laurel/10' },
           { label: 'Featured', value: featuredProperties, icon: Star, color: 'text-amber-500 bg-amber-500/10' },
-          { label: 'Total Inquiries', value: totalInquiries, icon: Mail, color: 'text-blue-500 bg-blue-500/10' },
+          { label: 'Total Enquiries', value: totalEnquiries, icon: Mail, color: 'text-blue-500 bg-blue-500/10' },
           { label: 'Total Users', value: totalUsers, icon: Users, color: 'text-purple-500 bg-purple-500/10' }
         ].map((card, idx) => {
           const IconComp = card.icon;

@@ -19,7 +19,7 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }) {
   const menuItems = [
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'listings', label: 'Properties', icon: Building },
-    { id: 'messages', label: 'Property Inquiries', icon: Mail },
+    { id: 'messages', label: 'Property Enquiries', icon: Mail },
     { id: 'settings', label: 'Settings', icon: Settings },
     { id: 'profile', label: 'Profile', icon: User }
   ];

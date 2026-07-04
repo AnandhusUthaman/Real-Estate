@@ -112,7 +112,7 @@ export default function AdminMessages({ messages, onToggleRead, onDeleteMessage,
         {filteredMessages.length === 0 ? (
           <div className="text-center py-16 bg-white border border-neutral-laurel/20 rounded-[18px] p-8 shadow-sm">
             <Inbox className="w-12 h-12 text-accent-gold mx-auto stroke-1 mb-4" />
-            <h3 className="font-display text-xl font-bold text-primary">No inquiries found</h3>
+            <h3 className="font-display text-xl font-bold text-primary">No enquiries found</h3>
             <p className="font-sans text-xs text-neutral-laurel max-w-xs mx-auto mt-2">
               There are no messages matching your search query or filter.
             </p>
@@ -193,7 +193,7 @@ export default function AdminMessages({ messages, onToggleRead, onDeleteMessage,
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (confirm("Are you sure you want to delete this client inquiry?")) {
+                          if (confirm("Are you sure you want to delete this client enquiry?")) {
                             onDeleteMessage(m.id);
                           }
                         }}

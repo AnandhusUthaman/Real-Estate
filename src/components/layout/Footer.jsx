@@ -118,8 +118,8 @@ export default function Footer() {
         <div className="border-t border-accent-gold/20 pt-8 flex flex-col md:flex-row justify-between items-center text-xs font-sans text-neutral-laurel/75 gap-4">
           <p>© {new Date().getFullYear()} TerraNova. All Rights Reserved. Private Concierge Brokerage.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-bg-cream transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-bg-cream transition-colors">Terms of Service</a>
+            <Link to="/privacy" className="hover:text-bg-cream transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-bg-cream transition-colors">Terms of Service</Link>
             <a href="#" className="hover:text-bg-cream transition-colors">Brokerage Disclosure</a>
           </div>
         </div>

@@ -18,6 +18,8 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Wishlist from './pages/Wishlist';
 import NotFound from './pages/NotFound';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsConditions from './pages/TermsConditions';
 
 // Helper component to scroll to top on route change
 function ScrollToTop() {
@@ -53,6 +55,8 @@ function AppContent() {
           <Route path="/admin" element={<Navigate to="/login" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsConditions />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

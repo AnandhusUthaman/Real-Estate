@@ -145,7 +145,7 @@ export default function Home() {
             variants={itemVariants}
             className="font-sans text-sm sm:text-lg md:text-xl text-neutral-laurel/90 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed font-light"
           >
-            TerraNova Real Estate: Trusted real estate partner in Thiruvananthapuram, Kerala for land, residential, and commercial properties.
+            TerraNova Real Estate: Trusted real estate partner in Thiruvananthapuram, Kerala. For or land, residential, and commercial properties.
           </motion.p>
 
           {/* Primary & Secondary CTAs */}

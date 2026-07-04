@@ -58,7 +58,7 @@ export default function Contact() {
           <span className="text-accent-gold font-sans font-semibold text-xs uppercase tracking-[0.2em] block">Get In Touch</span>
           <h1 className="font-display text-4xl md:text-6xl font-bold tracking-tight text-primary">Private Viewing</h1>
           <p className="font-sans text-neutral-laurel leading-relaxed">
-            Inquire about bespoke properties, schedule a private tour, or contact our private wealth broker team.
+            Enquire about bespoke properties, schedule a private tour, or contact our private wealth broker team.
           </p>
         </div>
 
@@ -67,7 +67,7 @@ export default function Contact() {
           {/* Left Column - Form & General Details */}
           <div className="space-y-12">
             <div className="bg-primary text-bg-cream rounded-[18px] border border-accent-gold/25 p-8 shadow-luxury">
-              <h2 className="font-display text-2xl font-bold text-accent-gold uppercase tracking-wider mb-6">Inquiry Form</h2>
+              <h2 className="font-display text-2xl font-bold text-accent-gold uppercase tracking-wider mb-6">Enquiry Form</h2>
               
               <form onSubmit={handleSubmit} className="space-y-5 font-sans text-primary">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -108,7 +108,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold mb-1.5">Nature of Inquiry</label>
+                  <label className="text-[10px] uppercase tracking-widest text-neutral-laurel block font-bold mb-1.5">Nature of Enquiry</label>
                   <select
                     value={form.interest}
                     onChange={(e) => setForm({ ...form, interest: e.target.value })}

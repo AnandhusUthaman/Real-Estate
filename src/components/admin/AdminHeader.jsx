@@ -11,7 +11,7 @@ export default function AdminHeader({ activeTab, notifications = [], onNotificat
     overview: { title: "Dashboard Overview", subtitle: "Welcome back to the TerraNova Command Center" },
     listings: { title: "Properties Portfolio", subtitle: "Create, edit, duplicate and publish luxury property listings" },
     categories: { title: "Property Categories", subtitle: "Organize luxury listings into collections" },
-    messages: { title: "Client Enquiries", subtitle: "Private brokerage inquiries and consultation requests" },
+    messages: { title: "Client Enquiries", subtitle: "Private brokerage enquiries and consultation requests" },
     settings: { title: "System Settings", subtitle: "Configure currency, phone lines, and security passwords" },
     profile: { title: "Broker Profile Settings", subtitle: "Configure your personal session details and avatar" },
     users: { title: "Registered Users", subtitle: "Manage registered user accounts and portal access" }

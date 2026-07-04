@@ -97,7 +97,7 @@ export default function ContactModal({ isOpen, onClose, showToast, onMessageSent
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-dark)] mb-1">Inquiry / Message</label>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-dark)] mb-1">Enquiry / Message</label>
             <textarea
               placeholder="I am interested in exploring listings details..."
               value={subject}
@@ -115,7 +115,7 @@ export default function ContactModal({ isOpen, onClose, showToast, onMessageSent
               </>
             ) : (
               <>
-                Submit Inquiry
+                Submit Enquiry
               </>
             )}
           </button>

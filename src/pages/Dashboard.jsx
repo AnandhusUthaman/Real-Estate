@@ -92,7 +92,7 @@ export default function Dashboard() {
         return;
       }
       navigate(route || `/property/${itemId}`);
-    } else if (type === 'inquiry' || type === 'message') {
+    } else if (type === 'enquiry' || type === 'inquiry' || type === 'message') {
       const msgExists = messages.some(m => m.id === parseInt(itemId, 10));
       if (!msgExists) {
         showToast("The requested item is no longer available.", "error");

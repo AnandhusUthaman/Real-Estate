@@ -346,13 +346,13 @@ export function GlobalProvider({ children }) {
     }
   };
 
-  // Send Message / Contact Inquiry
-  const sendMessage = async (inquiry) => {
+  // Send Message / Contact Enquiry
+  const sendMessage = async (enquiry) => {
     try {
       const res = await fetch('http://localhost:5000/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(inquiry)
+        body: JSON.stringify(enquiry)
       });
       if (res.ok) {
         const data = await res.json();
@@ -364,7 +364,7 @@ export function GlobalProvider({ children }) {
       console.warn("Failed to send message to backend, using local store:", err);
     }
     const newMessage = {
-      ...inquiry,
+      ...enquiry,
       id: Date.now(),
       date: 'Just now',
       read: false

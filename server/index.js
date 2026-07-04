@@ -43,9 +43,9 @@ if (!fs.existsSync(NOTIFICATIONS_PATH)) {
   fs.writeFileSync(NOTIFICATIONS_PATH, JSON.stringify([
     {
       id: 1,
-      title: "New Property Inquiry",
-      message: "John Doe sent an inquiry: 'Interested in Villa'",
-      type: "inquiry",
+      title: "New Property Enquiry",
+      message: "John Doe sent an enquiry: 'Interested in Villa'",
+      type: "enquiry",
       read: false,
       route: "/dashboard?tab=messages&id=1",
       itemId: 1,
@@ -623,9 +623,9 @@ app.post('/api/messages', async (req, res) => {
 
       // Create notification
       addNotification(
-        "New Property Inquiry",
-        `"${createdMsg.from}" sent an inquiry: "${createdMsg.subject}"`,
-        "inquiry",
+        "New Property Enquiry",
+        `"${createdMsg.from}" sent an enquiry: "${createdMsg.subject}"`,
+        "enquiry",
         `/dashboard?tab=messages&id=${createdMsg.id}`,
         createdMsg.id
       );
@@ -646,9 +646,9 @@ app.post('/api/messages', async (req, res) => {
 
     // Create notification
     addNotification(
-      "New Property Inquiry",
-      `"${createdMessage.from}" sent an inquiry: "${createdMessage.subject}"`,
-      "inquiry",
+      "New Property Enquiry",
+      `"${createdMessage.from}" sent an enquiry: "${createdMessage.subject}"`,
+      "enquiry",
       `/dashboard?tab=messages&id=${nextId}`,
       nextId
     );
