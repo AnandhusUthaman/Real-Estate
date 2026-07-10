@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SEO from '../components/layout/SEO';
-import { getPropertySchema } from '../utils/seo';
+import { getPropertySchema, getBreadcrumbSchema, getCanonicalUrl } from '../utils/seo';
 
 export default function PropertyDetails() {
   const { id, slug } = useParams();
@@ -139,7 +139,21 @@ export default function PropertyDetails() {
   ];
 
   const propertySlug = property ? getPropertySlug(property) : '';
-  const propertySchema = property ? getPropertySchema(property) : null;
+  const schema = property ? getPropertySchema(property) : null;
+  const breadcrumbSchema = property ? getBreadcrumbSchema([
+    { name: "Home", url: getCanonicalUrl('/') },
+    { name: "Properties", url: getCanonicalUrl('/properties') },
+    { name: property.title, url: getCanonicalUrl(`/properties/${propertySlug}`) }
+  ]) : null;
+
+  const combinedSchema = property ? {
+    "@context": "https://schema.org",
+    "@graph": [
+      schema,
+      breadcrumbSchema
+    ]
+  } : null;
+
   const propertyKeywords = property 
     ? `${property.title}, ${property.type} for sale, ${property.location} real estate, buy property ${property.location.split(',')[0]}, TerraNova`
     : '';
@@ -153,7 +167,7 @@ export default function PropertyDetails() {
           canonicalPath={`/properties/${propertySlug}`}
           image={property.img}
           keywords={propertyKeywords}
-          schema={propertySchema}
+          schema={combinedSchema}
         />
       )}
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">

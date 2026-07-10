@@ -19,7 +19,7 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 import SEO from '../components/layout/SEO';
-import { getWebsiteSchema, getOrganizationSchema, getLocalBusinessSchema } from '../utils/seo';
+import { getWebsiteSchema, getOrganizationSchema, getLocalBusinessSchema, getBreadcrumbSchema, getCanonicalUrl } from '../utils/seo';
 
 export default function Home() {
   const { properties, showToast } = useGlobalContext();
@@ -89,12 +89,17 @@ export default function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
   };
 
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: getCanonicalUrl('/') }
+  ]);
+
   const combinedSchema = {
     "@context": "https://schema.org",
     "@graph": [
       getWebsiteSchema(),
       getOrganizationSchema(),
-      getLocalBusinessSchema()
+      getLocalBusinessSchema(),
+      breadcrumbSchema
     ]
   };
 
