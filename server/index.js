@@ -163,22 +163,7 @@ const mergeMessage = (msg, metadata) => {
   const meta = metadata[msg.id] || {};
   return {
     ...msg,
-    message: meta.message || '',
-    replied: msg.replied !== undefined ? msg.replied : (meta.replied || false)
   };
-};
-
-// Admin authentication middleware
-const verifyAdmin = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized: No token provided' });
-  }
-  const token = authHeader.split(' ')[1];
-  if (token === 'demo-token-xyz' || token.length > 20) {
-    return next();
-  }
-  return res.status(401).json({ error: 'Unauthorized: Invalid token' });
 };
 
 // Initialize Supabase Client
@@ -187,9 +172,7 @@ const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.NEXT_P
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || supabaseAnonKey;
 
 const isSupabaseConfigured =
-  supabaseUrl &&
-  supabaseAnonKey &&
-  supabaseAnonKey !== 'YOUR_SUPABASE_ANON_KEY';
+  Boolean(supabaseUrl && supabaseAnonKey && supabaseAnonKey !== 'YOUR_SUPABASE_ANON_KEY');
 
 let supabase;
 if (isSupabaseConfigured) {
@@ -199,7 +182,7 @@ if (isSupabaseConfigured) {
   console.warn('Supabase not configured in .env. Running backend in In-Memory Mock Mode.');
 }
 
-// In-Memory fallback store for demo mode
+// In-Memory stores for fallback mode
 let propertiesStore = [
   { id: 1, title: "Premium Residential Plot", location: "Kowdiar, Thiruvananthapuram", price: "₹ 1,85,00,000", type: "Residential Plot", status: "For Sale", beds: 0, baths: 0, area: "12.5 Cents", roadAccess: "12m Tar Road", img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80", featured: true },
   { id: 2, title: "NH 66 Commercial Land", location: "Kazhakoottam, Thiruvananthapuram", price: "₹ 8,90,00,000", type: "Commercial Plot", status: "For Sale", beds: 0, baths: 0, area: "45 Cents", roadAccess: "National Highway Frontage", img: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80", featured: true },
@@ -225,71 +208,176 @@ let usersStore = [
   { id: 5, name: "Emily Rodriguez", email: "emily@example.com", role: "Renter", status: "active", joined: "Mar 1, 2025" }
 ];
 
+// Admin authentication middleware - strictly checks JWT from Supabase Auth
+const verifyAdmin = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized: Access token missing' });
+  }
+  const token = authHeader.split(' ')[1];
+
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser(token);
+      if (error || !user) {
+        return res.status(401).json({ error: 'Unauthorized: Invalid or expired token' });
+      }
+
+      const adminEmail = process.env.ADMIN_EMAIL;
+      const isUserAdmin = (adminEmail && user.email === adminEmail) ||
+                          user.user_metadata?.role === 'admin' ||
+                          user.app_metadata?.role === 'admin';
+
+      if (!isUserAdmin) {
+        return res.status(403).json({ error: 'Forbidden: Admin authorization required' });
+      }
+
+      req.user = user;
+      return next();
+    } catch (err) {
+      return res.status(401).json({ error: `Unauthorized: ${err.message}` });
+    }
+  } else {
+    return res.status(401).json({ error: 'Unauthorized: Database authentication service unconfigured' });
+  }
+};
+
+app.post('/api/auth/register', async (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email, and password are required' });
+  }
+
+  if (isSupabaseConfigured && supabase) {
+    try {
+      let { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+            role: 'client'
+          }
+        }
+      });
+
+      if (error && supabase.auth.admin) {
+        const adminResult = await supabase.auth.admin.createUser({
+          email,
+          password,
+          email_confirm: true,
+          user_metadata: { name, role: 'client' }
+        });
+        if (!adminResult.error) {
+          data = adminResult.data;
+          error = null;
+        }
+      }
+
+      if (error) {
+        return res.status(400).json({ error: error.message });
+      }
+
+      const userRole = 'client';
+      const enrichedUser = {
+        id: data.user?.id,
+        email: data.user?.email || email,
+        name: name,
+        role: userRole
+      };
+
+      return res.status(200).json({
+        message: 'Registration successful',
+        user: enrichedUser,
+        session: data.session ? {
+          ...data.session,
+          user: enrichedUser
+        } : {
+          access_token: data.session?.access_token,
+          user: enrichedUser
+        }
+      });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else {
+    return res.status(500).json({ error: 'Database authentication service unavailable' });
+  }
+});
+
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
-  const isAdminEmail = email === 'admin@homeverse.com' || email === 'terranovarealestateoffice@gmail.com';
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required' });
+  }
 
-  if (isSupabaseConfigured) {
+  const configuredAdminEmail = process.env.ADMIN_EMAIL;
+  const configuredAdminPassword = process.env.ADMIN_PASSWORD;
+
+  if (isSupabaseConfigured && supabase) {
     try {
       let { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
 
-      // If credentials fail, and they are using the default admin email, try to auto-create it
-      if (error && (error.message === 'Invalid login credentials' || error.status === 400) && isAdminEmail) {
-        console.log('Admin account not found. Automatically attempting to register admin account...');
+      // Auto-register/confirm configured seed admin using Admin API
+      if (error && configuredAdminEmail && email === configuredAdminEmail && configuredAdminPassword && password === configuredAdminPassword) {
+        console.log('Attempting to confirm/create seed admin account using Supabase Admin API...');
         
-        // Attempt sign up
-        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password
-        });
+        const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+        const existingAdminUser = users ? users.find(u => u.email === configuredAdminEmail) : null;
 
-        if (signUpError) {
-          console.error('Auto-registration signUp failed:', signUpError.message, signUpError);
-          return res.status(401).json({ error: `Login failed, and auto-registration failed: ${signUpError.message}` });
+        if (existingAdminUser) {
+          console.log('Updating existing admin user to confirmed status...');
+          await supabase.auth.admin.updateUserById(existingAdminUser.id, {
+            email_confirm: true,
+            password: configuredAdminPassword,
+            user_metadata: { name: 'Admin', role: 'admin' }
+          });
+        } else {
+          console.log('Creating new confirmed admin user...');
+          await supabase.auth.admin.createUser({
+            email: configuredAdminEmail,
+            password: configuredAdminPassword,
+            email_confirm: true,
+            user_metadata: { name: 'Admin', role: 'admin' }
+          });
         }
 
-        console.log('Auto-registration signUp success. Retrying signIn...');
-
-        // Retry login
-        const retry = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-
-        if (retry.error) {
-          console.error('SignIn retry after auto-registration failed:', retry.error.message, retry.error);
-          if (retry.error.message.includes('confirm') || retry.error.message.includes('verified')) {
-            return res.status(401).json({
-              error: 'Admin account created successfully, but email verification is enabled on your Supabase project. Please check your email inbox to confirm your account, or disable "Confirm email" under Authentication > Providers > Email in your Supabase Dashboard.'
-            });
-          }
-          return res.status(401).json({ error: retry.error.message });
+        const retry = await supabase.auth.signInWithPassword({ email, password });
+        if (!retry.error) {
+          data = retry.data;
+          error = null;
+        } else {
+          console.error('SignIn retry error:', retry.error.message);
         }
-
-        return res.status(200).json({ message: 'Success (Auto-registered Admin)', session: retry.data.session });
       }
 
       if (error) {
-        console.error('SignIn failed:', error.message, error);
         return res.status(401).json({ error: error.message });
       }
-      return res.status(200).json({ message: 'Success', session: data.session });
+
+      const userRole = (configuredAdminEmail && data.user.email === configuredAdminEmail) ||
+                        data.user.user_metadata?.role === 'admin' ||
+                        data.user.app_metadata?.role === 'admin' ? 'admin' : 'client';
+
+      const enrichedSession = {
+        ...data.session,
+        user: {
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.user_metadata?.name || data.user.email.split('@')[0],
+          role: userRole
+        }
+      };
+
+      return res.status(200).json({ message: 'Success', session: enrichedSession });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
   } else {
-    // In-memory demo auth
-    if (isAdminEmail && password === 'admin123') {
-      return res.status(200).json({
-        message: 'Success (Demo)',
-        session: { user: { email, role: 'admin', name: 'Andhu' }, access_token: 'demo-token-xyz' }
-      });
-    } else {
-      return res.status(401).json({ error: 'Invalid credentials. Try terranovarealestateoffice@gmail.com / TerraNova@Vinod' });
-    }
+    return res.status(401).json({ error: 'Authentication service unavailable' });
   }
 });
 
@@ -601,7 +689,10 @@ app.get('/api/messages', verifyAdmin, async (req, res) => {
       const merged = data.map(msg => mergeMessage(msg, metadata));
       return res.status(200).json(merged);
     } catch (err) {
-      return res.status(500).json({ error: err.message });
+      console.warn('Supabase messages query error (falling back to mock data):', err.message);
+      const sortedMessages = [...messagesStore].sort((a, b) => b.id - a.id);
+      const merged = sortedMessages.map(msg => mergeMessage(msg, metadata));
+      return res.status(200).json(merged);
     }
   } else {
     const sortedMessages = [...messagesStore].sort((a, b) => b.id - a.id);
@@ -774,7 +865,8 @@ app.get('/api/users', verifyAdmin, async (req, res) => {
       if (error) throw error;
       return res.status(200).json(data);
     } catch (err) {
-      return res.status(500).json({ error: err.message });
+      console.warn('Supabase users query error (falling back to mock data):', err.message);
+      return res.status(200).json(usersStore);
     }
   } else {
     return res.status(200).json(usersStore);

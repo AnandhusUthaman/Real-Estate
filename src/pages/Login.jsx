@@ -9,8 +9,8 @@ export default function Login() {
   const { login, showToast } = useGlobalContext();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('terranovarealestateoffice@gmail.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -72,7 +72,7 @@ export default function Login() {
                 <Mail className="absolute left-3.5 top-3 w-4 h-4 text-neutral-laurel" />
                 <input
                   type="email"
-                  placeholder="terranovarealestateoffice@gmail.com"
+                  placeholder="admin@terranova.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-bg-cream text-primary border-neutral-laurel/20 rounded-[12px] text-sm pl-10 pr-4 py-2.5 w-full focus:outline-none focus:ring-1 focus:ring-accent-gold/50 transition-all placeholder:text-primary/30"

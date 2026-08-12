@@ -197,52 +197,49 @@ export function GlobalProvider({ children }) {
         body: JSON.stringify({ email, password })
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        const token = data.session?.access_token || 'demo-token-xyz';
-        const user = data.session?.user || { email, name: email.split('@')[0], role: email.includes('admin') ? 'admin' : 'client' };
-        
-        if (email.includes('admin') || user.email.includes('admin')) {
-          user.role = 'admin';
-          user.name = user.name || 'Vinod';
-        }
+      const data = await res.json();
+      if (res.ok && data.session) {
+        const token = data.session.access_token;
+        const user = data.session.user;
 
-        localStorage.setItem('le_token', token);
+        if (token) {
+          localStorage.setItem('le_token', token);
+        }
         setCurrentUser(user);
-        showToast('Welcome back. Accessing Portfolio Dashboard.', 'success');
-        return { success: true };
+        showToast(`Welcome back, ${user.name || user.email}!`, 'success');
+        return { success: true, user };
       } else {
-        const errData = await res.json();
-        return { success: false, error: errData.error || 'Invalid credentials.' };
+        return { success: false, error: data.error || 'Authentication failed. Please check your credentials.' };
       }
     } catch (err) {
-      console.warn("Auth API failed, trying offline mock auth:", err);
-      if ((email === 'terranovarealestateoffice@gmail.com' || email === 'admin@homeverse.com') && password === 'admin123') {
-        const adminUser = { email, name: 'Vinod', role: 'admin' };
-        localStorage.setItem('le_token', 'demo-token-xyz');
-        setCurrentUser(adminUser);
-        showToast('Welcome back. Accessing Portfolio Dashboard (Offline).', 'success');
-        return { success: true };
-      }
-      if (email && password) {
-        const clientUser = { email, name: email.split('@')[0], role: 'client' };
-        localStorage.setItem('le_token', 'demo-token-xyz');
-        setCurrentUser(clientUser);
-        showToast(`Welcome back, ${clientUser.name} (Offline)!`, 'success');
-        return { success: true };
-      }
-      return { success: false, error: 'Invalid email or password.' };
+      return { success: false, error: 'Unable to connect to authentication service.' };
     }
   };
 
-  const register = (name, email, password) => {
-    if (name && email && password) {
-      const newUser = { email, name, role: 'client' };
-      setCurrentUser(newUser);
-      showToast(`Account created! Welcome to TerraNova, ${name}.`, 'success');
-      return { success: true };
+  const register = async (name, email, password) => {
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        if (data.session?.access_token) {
+          localStorage.setItem('le_token', data.session.access_token);
+        }
+        if (data.user) {
+          setCurrentUser(data.user);
+        }
+        showToast(`Account created! Welcome to TerraNova, ${name}.`, 'success');
+        return { success: true, user: data.user };
+      } else {
+        return { success: false, error: data.error || 'Registration failed.' };
+      }
+    } catch (err) {
+      return { success: false, error: 'Unable to connect to registration service.' };
     }
-    return { success: false, error: 'Please fill in all fields.' };
   };
 
   const logout = async () => {

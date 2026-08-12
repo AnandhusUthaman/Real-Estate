@@ -46,8 +46,8 @@ export default function Dashboard() {
 
   // Form State for User Profile
   const [profileForm, setProfileForm] = useState({
-    name: currentUser?.name || 'Vinod',
-    email: currentUser?.email || 'terranovarealestateoffice@gmail.com'
+    name: currentUser?.name || '',
+    email: currentUser?.email || ''
   });
 
   // Handle tab and item selection from URL query parameters (e.g. notifications redirects)

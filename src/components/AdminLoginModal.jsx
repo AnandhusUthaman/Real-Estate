@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 export default function AdminLoginModal({ onLoginSuccess, showToast, onNavigate }) {
-  const [email, setEmail] = useState('admin@homeverse.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -53,7 +53,7 @@ export default function AdminLoginModal({ onLoginSuccess, showToast, onNavigate 
             <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">Email Address</label>
             <input
               type="email"
-              placeholder="admin@homeverse.com"
+              placeholder="admin@terranova.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -89,7 +89,7 @@ export default function AdminLoginModal({ onLoginSuccess, showToast, onNavigate 
             )}
           </button>
           <p className="text-[10px] text-gray-500 text-center mt-4 tracking-wider uppercase">
-            Demo Credentials: admin@homeverse.com / admin123
+          
           </p>
         </form>
       </div>
