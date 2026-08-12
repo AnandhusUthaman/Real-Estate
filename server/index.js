@@ -916,7 +916,11 @@ app.put('/api/notifications/:id', verifyAdmin, (req, res) => {
   return res.status(200).json(updated);
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Backend API Server listening on port ${PORT}`);
-});
+// Start the server if executed directly
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Backend API Server listening on port ${PORT}`);
+  });
+}
+
+export default app;
