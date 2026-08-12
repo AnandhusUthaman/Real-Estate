@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 export default function ContactModal({ isOpen, onClose, showToast, onMessageSent }) {
   const [name, setName] = useState('');
@@ -21,7 +22,7 @@ export default function ContactModal({ isOpen, onClose, showToast, onMessageSent
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/messages', {
+      const response = await fetch(`${API_BASE_URL}/api/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(messageData)

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { luxuryProperties } from '../data/mockData';
+import { API_BASE_URL } from '../config/api';
 
 const GlobalContext = createContext();
 
@@ -84,7 +85,7 @@ export function GlobalProvider({ children }) {
   // Fetch functions
   const fetchProperties = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/properties');
+      const res = await fetch(`${API_BASE_URL}/api/properties`);
       if (res.ok) {
         const data = await res.json();
         setProperties(data);
@@ -96,7 +97,7 @@ export function GlobalProvider({ children }) {
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/messages', {
+      const res = await fetch(`${API_BASE_URL}/api/messages`, {
         headers: getAuthHeaders()
       });
       if (res.ok) {
@@ -110,7 +111,7 @@ export function GlobalProvider({ children }) {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/users', {
+      const res = await fetch(`${API_BASE_URL}/api/users`, {
         headers: getAuthHeaders()
       });
       if (res.ok) {
@@ -124,7 +125,7 @@ export function GlobalProvider({ children }) {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/notifications', {
+      const res = await fetch(`${API_BASE_URL}/api/notifications`, {
         headers: getAuthHeaders()
       });
       if (res.ok) {
@@ -141,7 +142,7 @@ export function GlobalProvider({ children }) {
       // Optimistic local state update
       setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
 
-      const res = await fetch(`http://localhost:5000/api/notifications/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/notifications/${id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify({ read: true })
@@ -191,7 +192,7 @@ export function GlobalProvider({ children }) {
   // Auth Operations
   const login = async (email, password) => {
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -218,7 +219,7 @@ export function GlobalProvider({ children }) {
 
   const register = async (name, email, password) => {
     try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
@@ -244,7 +245,7 @@ export function GlobalProvider({ children }) {
 
   const logout = async () => {
     try {
-      await fetch('http://localhost:5000/api/auth/logout', { method: 'POST' });
+      await fetch(`${API_BASE_URL}/api/auth/logout`, { method: 'POST' });
     } catch (err) {
       console.warn("Logout API failed:", err);
     }
@@ -263,7 +264,7 @@ export function GlobalProvider({ children }) {
   // CRUD Operations for Admin / Dashboard
   const addProperty = async (newProperty) => {
     try {
-      const res = await fetch('http://localhost:5000/api/properties', {
+      const res = await fetch(`${API_BASE_URL}/api/properties`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify(newProperty)
@@ -293,7 +294,7 @@ export function GlobalProvider({ children }) {
 
   const updateProperty = async (updatedProperty) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/properties/${updatedProperty.id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/properties/${updatedProperty.id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify(updatedProperty)
@@ -321,7 +322,7 @@ export function GlobalProvider({ children }) {
 
   const deleteProperty = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/properties/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/properties/${id}`, {
         method: 'DELETE',
         headers: getAuthHeaders()
       });
@@ -346,7 +347,7 @@ export function GlobalProvider({ children }) {
   // Send Message / Contact Enquiry
   const sendMessage = async (enquiry) => {
     try {
-      const res = await fetch('http://localhost:5000/api/messages', {
+      const res = await fetch(`${API_BASE_URL}/api/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(enquiry)
@@ -373,7 +374,7 @@ export function GlobalProvider({ children }) {
 
   const deleteMessage = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/messages/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/messages/${id}`, {
         method: 'DELETE',
         headers: getAuthHeaders()
       });
@@ -392,7 +393,7 @@ export function GlobalProvider({ children }) {
 
   const toggleMessageReplied = async (id, currentRepliedState) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/messages/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/messages/${id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify({ replied: !currentRepliedState })

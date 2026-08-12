@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getPropertySlug } from '../../utils/seo';
+import { API_BASE_URL } from '../../config/api';
 import {
   Search,
   SlidersHorizontal,
@@ -135,7 +136,7 @@ export default function AdminListings({ properties, onAddProperty, onUpdatePrope
         urls.push(imageObj.url); // Already uploaded
       } else {
         try {
-          const res = await fetch('http://localhost:5000/api/upload', {
+          const res = await fetch(`${API_BASE_URL}/api/upload`, {
             method: 'POST',
             headers,
             body: JSON.stringify({ image: imageObj.base64, name: imageObj.name })

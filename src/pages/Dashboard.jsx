@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGlobalContext } from '../context/GlobalContext';
+import { API_BASE_URL } from '../config/api';
 import {
   CheckCircle2,
   FolderOpen,
@@ -119,7 +120,7 @@ export default function Dashboard() {
     const msg = messages.find(m => m.id === id);
     if (!msg) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/messages/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/messages/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

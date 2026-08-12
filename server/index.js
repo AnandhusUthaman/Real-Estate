@@ -16,8 +16,27 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS and JSON parsing middleware (with 50mb limit for base64 uploads)
-app.use(cors());
+// Configured Production & Development CORS origins
+const allowedOrigins = [
+  'https://www.terranovarealestates.in',
+  'https://terranovarealestates.in',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://localhost:5000',
+  process.env.CLIENT_ORIGIN,
+  process.env.VITE_API_URL
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.terranovarealestates.in') || origin.endsWith('.vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
+  credentials: true
+}));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
@@ -668,7 +687,9 @@ app.post('/api/upload', verifyAdmin, async (req, res) => {
     const filePath = path.join(UPLOADS_DIR, fileName);
 
     fs.writeFileSync(filePath, buffer);
-    const fileUrl = `http://localhost:5000/uploads/${fileName}`;
+    const host = req.get('host');
+    const protocol = req.protocol === 'https' || req.get('x-forwarded-proto') === 'https' ? 'https' : 'http';
+    const fileUrl = `${protocol}://${host}/uploads/${fileName}`;
     return res.status(200).json({ url: fileUrl });
   } catch (err) {
     return res.status(500).json({ error: err.message });
