@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { luxuryProperties } from '../data/mockData';
 import { API_BASE_URL } from '../config/api';
+import { supabase } from '../supabaseClient';
 
 const GlobalContext = createContext();
 
@@ -191,6 +192,7 @@ export function GlobalProvider({ children }) {
 
   // Auth Operations
   const login = async (email, password) => {
+    // 1. Try Express API Backend server if available
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
@@ -198,26 +200,61 @@ export function GlobalProvider({ children }) {
         body: JSON.stringify({ email, password })
       });
 
-      const data = await res.json();
-      if (res.ok && data.session) {
-        const token = data.session.access_token;
-        const user = data.session.user;
+      const contentType = res.headers.get('content-type') || '';
+      if (res.ok && contentType.includes('application/json')) {
+        const data = await res.json();
+        if (data.session) {
+          const token = data.session.access_token;
+          const user = data.session.user;
 
-        if (token) {
-          localStorage.setItem('le_token', token);
+          if (token) localStorage.setItem('le_token', token);
+          setCurrentUser(user);
+          showToast(`Welcome back, ${user.name || user.email}!`, 'success');
+          return { success: true, user };
         }
-        setCurrentUser(user);
-        showToast(`Welcome back, ${user.name || user.email}!`, 'success');
-        return { success: true, user };
-      } else {
-        return { success: false, error: data.error || 'Authentication failed. Please check your credentials.' };
       }
     } catch (err) {
-      return { success: false, error: 'Unable to connect to authentication service.' };
+      console.warn("Backend API unreachable, using direct Supabase Auth:", err);
     }
+
+    // 2. Direct Supabase Auth Fallback (Client-Side)
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      if (data?.session) {
+        const token = data.session.access_token;
+        const adminEmail = 'terranovarealestateoffice@gmail.com';
+        const isUserAdmin = (data.user.email === adminEmail) ||
+                            data.user.user_metadata?.role === 'admin';
+
+        const userObj = {
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.user_metadata?.name || data.user.email.split('@')[0],
+          role: isUserAdmin ? 'admin' : 'client'
+        };
+
+        if (token) localStorage.setItem('le_token', token);
+        setCurrentUser(userObj);
+        showToast(`Welcome back, ${userObj.name || userObj.email}!`, 'success');
+        return { success: true, user: userObj };
+      }
+    } catch (sbErr) {
+      return { success: false, error: sbErr.message || 'Authentication failed. Please check credentials.' };
+    }
+
+    return { success: false, error: 'Invalid email or password.' };
   };
 
   const register = async (name, email, password) => {
+    // 1. Try Express API Backend server if available
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
@@ -225,21 +262,45 @@ export function GlobalProvider({ children }) {
         body: JSON.stringify({ name, email, password })
       });
 
-      const data = await res.json();
-      if (res.ok) {
-        if (data.session?.access_token) {
-          localStorage.setItem('le_token', data.session.access_token);
-        }
-        if (data.user) {
-          setCurrentUser(data.user);
-        }
+      const contentType = res.headers.get('content-type') || '';
+      if (res.ok && contentType.includes('application/json')) {
+        const data = await res.json();
+        if (data.session?.access_token) localStorage.setItem('le_token', data.session.access_token);
+        if (data.user) setCurrentUser(data.user);
         showToast(`Account created! Welcome to TerraNova, ${name}.`, 'success');
         return { success: true, user: data.user };
-      } else {
-        return { success: false, error: data.error || 'Registration failed.' };
       }
     } catch (err) {
-      return { success: false, error: 'Unable to connect to registration service.' };
+      console.warn("Backend API unreachable, using direct Supabase Registration:", err);
+    }
+
+    // 2. Direct Supabase Auth Fallback (Client-Side)
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { name, role: 'client' } }
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      const userObj = {
+        id: data.user?.id,
+        email: data.user?.email || email,
+        name: name,
+        role: 'client'
+      };
+
+      if (data.session?.access_token) {
+        localStorage.setItem('le_token', data.session.access_token);
+      }
+      setCurrentUser(userObj);
+      showToast(`Account created! Welcome to TerraNova, ${name}.`, 'success');
+      return { success: true, user: userObj };
+    } catch (sbErr) {
+      return { success: false, error: sbErr.message || 'Registration failed' };
     }
   };
 
