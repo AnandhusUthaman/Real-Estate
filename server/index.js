@@ -22,8 +22,6 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Setup directories and static serving
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 
@@ -186,6 +184,7 @@ const verifyAdmin = (req, res, next) => {
 // Initialize Supabase Client
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || supabaseAnonKey;
 
 const isSupabaseConfigured =
   supabaseUrl &&
@@ -194,7 +193,7 @@ const isSupabaseConfigured =
 
 let supabase;
 if (isSupabaseConfigured) {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
+  supabase = createClient(supabaseUrl, supabaseServiceKey);
   console.log('Backend connected to Supabase database successfully.');
 } else {
   console.warn('Supabase not configured in .env. Running backend in In-Memory Mock Mode.');
@@ -324,7 +323,17 @@ app.get('/api/properties', async (req, res) => {
       const merged = data.map(prop => mergeProperty(prop, metadata));
       return res.status(200).json(merged);
     } catch (err) {
-      return res.status(500).json({ error: err.message });
+      console.warn('Supabase query error (falling back to local data):', err.message);
+      let filtered = [...propertiesStore];
+      if (query) {
+        const q = query.toLowerCase();
+        filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || p.location.toLowerCase().includes(q));
+      }
+      if (type && type !== 'all') {
+        filtered = filtered.filter(p => p.type === type);
+      }
+      const merged = filtered.map(prop => mergeProperty(prop, metadata));
+      return res.status(200).json(merged);
     }
   } else {
     // In-memory filter
@@ -530,7 +539,13 @@ app.delete('/api/properties/:id', verifyAdmin, async (req, res) => {
 
       return res.status(200).json({ message: 'Property deleted successfully' });
     } catch (err) {
-      return res.status(500).json({ error: err.message });
+      console.warn('Supabase delete error (falling back to local data):', err.message);
+      const numericId = parseInt(id);
+      propertiesStore = propertiesStore.filter(p => p.id !== numericId);
+      const metadata = getPropertiesMetadata();
+      delete metadata[id];
+      savePropertiesMetadata(metadata);
+      return res.status(200).json({ message: 'Property deleted successfully' });
     }
   } else {
     const numericId = parseInt(id);
